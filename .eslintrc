@@ -1,0 +1,13 @@
+{
+  "env": {
+    "node": true
+  },
+  "globals": {
+    "User": true,
+    "UserController": true
+  },
+  "rules": {
+    "quotes": [2, "single"],
+    "no-underscore-dangle": [0]
+  }
+}
