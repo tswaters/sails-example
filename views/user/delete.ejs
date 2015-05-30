@@ -1,0 +1,10 @@
+<h2>Delete User # <%= user.id %>?</h2>
+<p>Are you sure?  This operation cannot be undone.</p>
+<p>The following information will be deleted:</p>
+
+<%- include display.ejs %>
+
+<form action="/user/delete/<%= user.id %>" method="POST">
+<input type="button" value="yes" />
+<button id="delete-cancel">no</button>
+</form>
