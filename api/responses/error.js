@@ -39,7 +39,7 @@ module.exports = function (status, statusName) {
 
     // If the user-agent wants JSON, always respond with JSON
     if (req.wantsJSON) {
-      return res.jsonx(data);
+      return res.status(status).jsonx(data);
     }
 
     // If second argument is a string, we take that to mean it refers to a view.
