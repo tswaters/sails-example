@@ -1,0 +1,56 @@
+'use strict';
+
+//var expect = require('chai').expect;
+require('../../base.js');
+
+describe('ok response', function () {
+  before(function () {
+    this.sails.get('/view-test/1', function (req, res) {
+     res.ok({});
+    });
+    this.sails.get('/view-test/2', function (req, res) {
+     res.ok({}, 'homepage');
+    });
+    this.sails.get('/view-test/3', function (req, res) {
+     res.ok({}, {status: 204});
+    });
+  });
+
+  after(function () {
+    this.sails.router.unbind('/view-test/1');
+    this.sails.router.unbind('/view-test/2');
+    this.sails.router.unbind('/view-test/3');
+  });
+
+  it('should render json when no route is provided', function (next) {
+    this.request
+      .get('/view-test/1')
+      .set('Accept', 'text/html')
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .end(next);
+  });
+
+  it('should render a route properly when string passed for view', function (next) {
+    this.request
+      .get('/view-test/2')
+      .set('Accept', 'text/html')
+      .expect('Content-Type', /html/)
+      .expect(200)
+      .end(function (err, res) {
+        next(err, res);
+      });
+  });
+
+  it('should send a 204 properly with content-type plain', function (next) {
+    this.request
+      .get('/view-test/3')
+      .set('Accept', 'text/html')
+      .expect('Content-Type', /plain/)
+      .expect(204)
+      .end(function (err, res) {
+        next(err, res);
+      });
+  });
+
+});
