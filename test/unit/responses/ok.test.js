@@ -22,7 +22,7 @@ describe('ok response', function () {
     this.sails.router.unbind('/view-test/3');
   });
 
-  it('should render json when no route provides no view', function (next) {
+  it('should render json when route provides no view', function (next) {
     this.request
       .get('/view-test/1')
       .set('Accept', 'text/html')
