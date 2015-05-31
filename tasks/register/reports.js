@@ -1,5 +1,5 @@
 'use strict';
 
 module.exports = function (grunt) {
-	grunt.registerTask('reports', ['compileAssets', 'linkAssets', 'mocha_istanbul:coverage', 'mochaTest:test']);
+	grunt.registerTask('reports', ['mocha_istanbul', 'mochaTest', 'eslint']);
 };

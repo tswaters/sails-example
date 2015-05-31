@@ -11,6 +11,9 @@
  * 		https://github.com/tomusdrw/grunt-sync
  *
  */
+
+'use strict';
+
 module.exports = function(grunt) {
 
 	grunt.config.set('sync', {

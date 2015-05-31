@@ -13,6 +13,9 @@
  * For usage docs see:
  * 		https://github.com/gruntjs/grunt-contrib-copy
  */
+
+'use strict';
+
 module.exports = function(grunt) {
 
 	grunt.config.set('copy', {

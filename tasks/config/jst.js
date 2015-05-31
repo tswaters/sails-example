@@ -12,11 +12,9 @@
  *
  */
 
-module.exports = function(grunt) {
+'use strict';
 
-	var templateFilesToInject = [
-		'templates/**/*.html'
-	];
+module.exports = function(grunt) {
 
 	grunt.config.set('jst', {
 		dev: {

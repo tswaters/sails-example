@@ -9,6 +9,9 @@
  * 		https://github.com/gruntjs/grunt-contrib-uglify
  *
  */
+
+'use strict';
+
 module.exports = function(grunt) {
 
 	grunt.config.set('uglify', {

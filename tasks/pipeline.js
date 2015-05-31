@@ -8,7 +8,7 @@
  * for matching multiple files.)
  */
 
-
+'use strict';
 
 // CSS files to inject in order
 //

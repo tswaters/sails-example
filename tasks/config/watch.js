@@ -12,6 +12,9 @@
  * 		https://github.com/gruntjs/grunt-contrib-watch
  *
  */
+
+'use strict';
+
 module.exports = function(grunt) {
 
 	grunt.config.set('watch', {
@@ -26,7 +29,7 @@ module.exports = function(grunt) {
 			files: ['assets/**/*', 'tasks/pipeline.js'],
 
 			// When assets are changed:
-			tasks: ['syncAssets' , 'linkAssets']
+			tasks: ['syncAssets', 'linkAssets']
 		}
 	});
 
