@@ -7,6 +7,8 @@
 
 'use strict';
 
+var _ = require('lodash');
+
 module.exports = {
 
 	'list': function (req, res) {
@@ -48,6 +50,7 @@ module.exports = {
 				});
 				break;
 			case 'POST':
+				if (!_.has(req.body, 'name')) { return res.badRequest('Name must be provided.'); }
 				User.update({id: req.param('id')}, req.body).exec(function (err) {
 					if (err) { return res.serverError(err); }
 					res.redirect('/user');
