@@ -33,5 +33,15 @@
     "url": "git://github.com/anonymous node/sails user/sails-example.git"
   },
   "author": "anonymous node/sails user",
-  "license": ""
+  "license": "",
+  "devDependencies": {
+    "chai": "^2.3.0",
+    "glob": "^5.0.10",
+    "grunt-mocha-istanbul": "^2.4.0",
+    "grunt-mocha-test": "^0.12.7",
+    "istanbul": "^0.3.14",
+    "mocha": "^2.2.5",
+    "mochawesome": "^1.2.0",
+    "supertest": "^1.0.1"
+  }
 }
