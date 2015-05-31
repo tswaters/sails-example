@@ -40,13 +40,17 @@ describe('UserController', function () {
     _.forEach({
       'get /user': null,
       'get /user/edit/{0}': null,
-      'get /user/delete/{0}': null
+      'get /user/delete/{0}': null,
+      'post /user/edit/{0}': {name: 'test'},
+      'post /user/delete/{0}': null,
+      'post /user/create': {name: 'test'}
     }, function (data, route) {
       var method = route.split(' ')[0];
       var url = route.split(' ')[1].replace('{0}', user.id);
       it('should throw an error for ' + url + ' when db is unavailable', function (next) {
         this.request
           [method](url)
+          .send(data)
           .set('Accept', 'text/html')
           .expect('Content-Type', /html/)
           .expect(500)
