@@ -33,8 +33,6 @@ module.exports = {
 					res.ok(null, {status: 204});
 				});
 				break;
-			default:
-				return res.status('405').send('Method not allowed');
 		}
 	},
 
@@ -55,8 +53,6 @@ module.exports = {
 					res.redirect('/user');
 				});
 				break;
-			default:
-				return res.status('405').send('Method not allowed');
 		}
 	},
 
@@ -72,8 +68,6 @@ module.exports = {
 					res.redirect('/user');
 				});
 				break;
-			default:
-				return res.status('405').send('Method not allowed');
 		}
 	}
 
