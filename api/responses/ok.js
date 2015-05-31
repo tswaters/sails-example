@@ -31,7 +31,8 @@ module.exports = function sendOK (data, options) {
   if (!options.status) {
     options.status = 200;
   }
-  else if (options.status === 204) {
+
+  if (options.status === 204) {
     // FF bug, 'no element found' because it assumes xml when no content type.
     // express also "strips irrelevant headers" in the send routine; just die.
     return res.set('Content-Type', 'text/plain').status(204).end(null);
