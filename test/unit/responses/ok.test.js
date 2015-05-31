@@ -22,7 +22,7 @@ describe('ok response', function () {
     this.sails.router.unbind('/view-test/3');
   });
 
-  it('should render json when no route is provided', function (next) {
+  it('should render json when no route provides no view', function (next) {
     this.request
       .get('/view-test/1')
       .set('Accept', 'text/html')
@@ -37,9 +37,7 @@ describe('ok response', function () {
       .set('Accept', 'text/html')
       .expect('Content-Type', /html/)
       .expect(200)
-      .end(function (err, res) {
-        next(err, res);
-      });
+      .end(next);
   });
 
   it('should send a 204 properly with content-type plain', function (next) {
@@ -48,9 +46,7 @@ describe('ok response', function () {
       .set('Accept', 'text/html')
       .expect('Content-Type', /plain/)
       .expect(204)
-      .end(function (err, res) {
-        next(err, res);
-      });
+      .end(next);
   });
 
 });
