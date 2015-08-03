@@ -1,6 +1,5 @@
 'use strict';
 
-//var expect = require('chai').expect;
 require('../../base.js');
 
 describe('ok response', function () {

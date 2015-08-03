@@ -38,7 +38,6 @@
   "author": "anonymous node/sails user",
   "license": "",
   "devDependencies": {
-    "chai": "^2.3.0",
     "eslint-html-reporter": "^0.4.10",
     "grunt-eslint": "^14.0.0",
     "grunt-mocha-istanbul": "^2.4.0",
@@ -46,6 +45,7 @@
     "istanbul": "^0.3.14",
     "mocha": "^2.2.5",
     "mochawesome": "^1.2.0",
+    "sinon": "^1.15.4",
     "supertest": "^1.0.1"
   }
 }

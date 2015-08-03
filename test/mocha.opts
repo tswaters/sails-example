@@ -1,1 +1,2 @@
---timeout 5000
+--timeout 50000
+test/unit/**/*.test.js
