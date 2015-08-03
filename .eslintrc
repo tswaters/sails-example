@@ -4,8 +4,10 @@
   },
   "globals": {
     "ExceptionService": true,
+    "sails": true,
     "User": true,
-    "UserController": true
+    "UserController": true,
+    "UserService": true
   },
   "rules": {
     "quotes": [2, "single"],

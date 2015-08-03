@@ -1,6 +1,5 @@
 'use strict';
 
-var assert = require('assert');
 var _ = require('lodash');
 var sinon = require('sinon');
 var base = require('../../base.js');
