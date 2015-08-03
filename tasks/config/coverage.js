@@ -7,10 +7,8 @@ module.exports = function (grunt) {
     coverage: {
       src: 'test', // a folder works nicely
       options: {
-          mask: 'unit/**/*.test.js',
           istanbulOptions: ['-x', '**/config/**'],
-          coverageFolder: 'reports/coverage',
-          quiet: true
+          coverageFolder: 'reports/coverage'
       }
     }
   });

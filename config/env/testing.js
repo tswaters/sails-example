@@ -11,6 +11,10 @@ module.exports = {
   models: {
     connection: 'disk',
     migrate: 'drop'
+  },
+
+  log: {
+    level: 'silent'
   }
 
 };
