@@ -3,6 +3,7 @@
     "node": true
   },
   "globals": {
+    "ExceptionService": true,
     "User": true,
     "UserController": true
   },
