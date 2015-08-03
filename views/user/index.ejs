@@ -1,0 +1,39 @@
+<div id="user-list" ng-controller="UserList">
+
+  <h2>User List</h2>
+  <p ng-hide="data.users.length > 0">No Users!</p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th colspan="2">Operations</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="user in data.users">
+        <td>{{ user.name }}</td>
+        <td><button ng-click="setState('edit', user)">Edit</button></td>
+        <td><button ng-click="setState('delete', user)">Delete</button></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p ng-show="state === 'init'"><a href="#" ng-click="setState('create')">Create User</a></p>
+
+  <fieldset ng-show="state === 'create' || state === 'edit'">
+    <legend>{{ state === 'create' ? 'Create' : 'Edit'}} Form</legend>
+    <label for="name">Name</label>
+    <input ng-model="data.user.name" type="text" name="name" id="name" />
+    <button ng-show="state === 'create'" ng-click="create()">create</button>
+    <button ng-show="state === 'edit'" ng-click="edit()">edit</button>
+    <button ng-click="setState('init')">cancel</button>
+  </fieldset>
+
+  <fieldset ng-show="state === 'delete'">
+    <legend>Delete user id {{data.user.id}} ?</legend>
+    <p>Are you sure?  This operation cannot be undone.</p>
+    <button ng-click="delete()">yes</button>
+    <button ng-click="setState('init')">no</button>
+  </fieldset>
+
+</div>

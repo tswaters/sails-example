@@ -7,71 +7,45 @@
 
 'use strict';
 
-var _ = require('lodash');
+module.exports.home = function (req, res) {
+	sails.log.info('UserController#home called');
+	return res.ok({
+		'title': 'User List'
+	}, 'user/index');
+};
 
-module.exports = {
+module.exports.list = function (req, res) {
+	sails.log.info('UserController#list called');
+	UserService.list(function (err, users) {
+		if (err) { return res.notOk(err); }
+		res.ok(users);
+	});
+};
 
-	'list': function (req, res) {
-		User.find({}).exec(function (err, result) {
-			if (err) { return res.serverError(err); }
-			return res.ok({title: 'User List', users: result}, {view: 'user/list'});
-		});
-	},
+module.exports.edit = function (req, res) {
+	sails.log.info('UserController#edit called');
+	var id = req.param('id');
+	var data = req.body;
+	UserService.edit(id, data, function (err) {
+		if (err) { return res.notOk(err); }
+		res.ok(null, {status: 204});
+	});
+};
 
-	'delete': function (req, res) {
-		var id = req.param('id');
-		if (!id) { return res.badRequest('id was not provided'); }
-		switch (req.method) {
-			case 'GET':
-				User.findOne({id: id}).exec(function (err, user) {
-					if (err) { return res.serverError(err); }
-					if (!user) { return res.notFound('User not found'); }
-					return res.ok({ title: 'Delete user #' + user.id, user: user}, {view: 'user/delete'});
-				});
-				break;
-			case 'POST':
-				User.destroy({id: id}).exec(function (err) {
-					if (err) { return res.serverError(err); }
-					res.ok(null, {status: 204});
-				});
-				break;
-		}
-	},
+module.exports.delete = function (req, res) {
+	sails.log.info('UserController#delete called');
+	var id = req.param('id');
+	UserService.delete(id, function (err) {
+		if (err) { return res.notOk(err); }
+		res.ok(null, {status: 204});
+	});
+};
 
-	'edit': function (req, res) {
-		var id = req.param('id');
-		if (!id) { return res.badRequest('id was not provided'); }
-		switch (req.method) {
-			case 'GET':
-				User.findOne({id: id}).exec(function (err, user) {
-					if (err) { return res.serverError(err); }
-					if (!user) { return res.notFound('User not found'); }
-					return res.ok({ title: 'Edit user #' + user.id, user: user}, {view: 'user/edit'});
-				});
-				break;
-			case 'POST':
-				if (!_.has(req.body, 'name')) { return res.badRequest('Name must be provided.'); }
-				User.update({id: req.param('id')}, req.body).exec(function (err) {
-					if (err) { return res.serverError(err); }
-					res.redirect('/user');
-				});
-				break;
-		}
-	},
-
-	'create': function (req, res) {
-		switch (req.method) {
-			case 'GET':
-				res.ok({title: 'Create user'}, { view: 'user/create'});
-				break;
-			case 'POST':
-				if (!req.body.name) { return res.badRequest('Name not provided.'); }
-				User.create(req.body).exec(function (err) {
-					if (err) { return res.serverError(err); }
-					res.redirect('/user');
-				});
-				break;
-		}
-	}
-
+module.exports.create = function (req, res) {
+	sails.log.info('UserController#create called');
+	var data = req.body;
+	UserService.create(data, function (err) {
+		if (err) { return res.notOk(err); }
+		res.ok(null, {status: 204});
+	});
 };

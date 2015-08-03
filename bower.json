@@ -1,6 +1,7 @@
 {
   "name": "Sails Example",
   "dependencies": {
-    "jquery": "~2.1.4"
+    "jquery": "~2.1.4",
+    "angular": "~1.4.3"
   }
 }

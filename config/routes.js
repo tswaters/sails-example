@@ -46,12 +46,10 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
-  '/user': 'UserController.list',
-  'GET /user/create': 'UserController.create',
-  'POST /user/create': 'UserController.create',
-  'GET /user/edit/:id': 'UserController.edit',
-  'POST /user/edit/:id': 'UserController.edit',
-  'GET /user/delete/:id': 'UserController.delete',
-  'POST /user/delete/:id': 'UserController.delete'
+  '/user': 'UserController.home',
+  'GET /api/user': 'UserController.list',
+  'POST /api/user': 'UserController.create',
+  'POST /api/user/:id': 'UserController.edit',
+  'DELETE /api/user/:id': 'UserController.delete'
 
 };
