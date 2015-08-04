@@ -4,8 +4,8 @@
 module.exports = function (grunt) {
 
   // generates coverage report based upon json files.
-  grunt.initConfig({
-    makeReport: {
+  grunt.config.set('makeReport.src', {
+    test: {
       src: ['reports/coverage-json/**/*.json'],
       options : {
         type : ['lcov', 'html'],
