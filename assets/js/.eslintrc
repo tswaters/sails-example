@@ -3,7 +3,11 @@
     "browser": true,
     "jquery": true
   },
-  "globals": {
-    "angular": true
-  }
+  "plugins": [
+    "angular"
+  ],
+  "rules": {
+    "angular/ng_di": [2, "array"]
+  },
+  "extends": "angular"
 }

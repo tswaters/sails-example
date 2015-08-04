@@ -21,40 +21,41 @@ angular.module('UserList', [])
       };
     }
   ])
-  .controller('UserList', [
-    '$scope', 'UserService',
-    function ($scope, UserService) {
+  .controller('UserController', [
+    'UserService',
+    function (UserService) {
+      var vm = this;
 
-      $scope.setState = function (state, user) {
-        $scope.state = state;
-        $scope.data.user = angular.copy(user);
+      vm.setState = function (state, user) {
+        vm.state = state;
+        vm.data.user = angular.copy(user);
       };
 
-      $scope.delete = function () {
-        UserService.delete($scope.data.user.id).then($scope.fetch);
+      vm.delete = function () {
+        UserService.delete(vm.data.user.id).then(vm.fetch);
       };
 
-      $scope.create = function () {
-        UserService.create($scope.data.user).then($scope.fetch);
+      vm.create = function () {
+        UserService.create(vm.data.user).then(vm.fetch);
       };
 
-      $scope.edit = function () {
-        UserService.edit($scope.data.user.id, $scope.data.user).then($scope.fetch);
+      vm.edit = function () {
+        UserService.edit(vm.data.user.id, vm.data.user).then(vm.fetch);
       };
 
-      $scope.fetch = function () {
+      vm.fetch = function () {
         UserService.list().then(function (e) {
-          $scope.data.users = e.data;
-          $scope.data.user = {};
+          vm.data.users = e.data;
+          vm.data.user = {};
         });
-        $scope.state = 'init';
+        vm.state = 'init';
       };
 
-      $scope.data = {
+      vm.data = {
         users: [],
         user: {}
       };
-      $scope.fetch();
+      vm.fetch();
 
 
     }

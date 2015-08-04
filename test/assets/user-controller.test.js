@@ -54,6 +54,7 @@ describe('user list', function () {
 
   describe('controller', function () {
     var UserService;
+    var vm;
     var scope;
 
     beforeEach(inject(function (_UserService_, $controller, $q) {
@@ -63,7 +64,7 @@ describe('user list', function () {
       sinon.stub(UserService, 'create', promiseStub);
       sinon.stub(UserService, 'edit', promiseStub);
       scope = $rootScope.$new();
-      $controller('UserList', {$scope: scope});
+      vm = $controller('UserController', {scope: scope});
       function promiseStub () {
         var deferred = $q.defer();
         deferred.resolve('Remote call result');
@@ -83,30 +84,30 @@ describe('user list', function () {
     });
 
     it('should call edit and fetch when calling edit', function () {
-      scope.edit();
+      vm.edit();
       scope.$root.$apply();
       expect(UserService.edit.callCount).to.equal(1);
       expect(UserService.list.callCount).to.equal(2);
     });
 
     it('should call delete and fetch when calling edit', function () {
-      scope.delete();
+      vm.delete();
       scope.$root.$apply();
       expect(UserService.delete.callCount.length, 1);
       expect(UserService.list.callCount.length, 2);
     });
 
     it('should call create and fetch when calling edit', function () {
-      scope.create();
+      vm.create();
       scope.$root.$apply();
       expect(UserService.create.callCount.length, 1);
       expect(UserService.list.callCount.length, 2);
     });
 
     it('should set the state and user properly when calling setState', function () {
-      scope.setState('dummy', {name:'Test'});
-      expect(scope.data.user.name).to.equal('Test');
-      expect(scope.state).to.equal('dummy');
+      vm.setState('dummy', {name:'Test'});
+      expect(vm.data.user.name).to.equal('Test');
+      expect(vm.state).to.equal('dummy');
     })
 
   });
@@ -136,11 +137,11 @@ describe('user list', function () {
 
     it('should show/hide no users div and users table based on lengths of users', function () {
 
-      formElement.scope().$apply(function (scope) { scope.data = {'users': []}; });
+      formElement.scope().$apply(function (scope) { scope.vm.data = {'users': []}; });
       $expect('#users').to.be.hidden();
       $expect('#no-users').not.to.be.hidden();
 
-      formElement.scope().$apply(function (scope) { scope.data = {'users': [{}]}; });
+      formElement.scope().$apply(function (scope) { scope.vm.data = {'users': [{}]}; });
       $expect('#users').not.to.be.hidden();
       $expect('#no-users').to.be.hidden();
 
@@ -148,19 +149,19 @@ describe('user list', function () {
 
     it('should show/hide elements based upon state', function () {
 
-      formElement.scope().$apply(function (scope) { scope.state = 'init'; });
+      formElement.scope().$apply(function (scope) { scope.vm.state = 'init'; });
       $expect('#edit-form').to.be.hidden();
       $expect('#delete-form').to.be.hidden();
 
-      formElement.scope().$apply(function (scope) { scope.state = 'edit'; });
+      formElement.scope().$apply(function (scope) { scope.vm.state = 'edit'; });
       $expect('#edit-form').not.to.be.hidden();
       $expect('#delete-form').to.be.hidden();
 
-      formElement.scope().$apply(function (scope) { scope.state = 'create'; });
+      formElement.scope().$apply(function (scope) { scope.vm.state = 'create'; });
       $expect('#edit-form').not.to.be.hidden();
       $expect('#delete-form').to.be.hidden();
 
-      formElement.scope().$apply(function (scope) { scope.state = 'delete'; });
+      formElement.scope().$apply(function (scope) { scope.vm.state = 'delete'; });
       $expect('#edit-form').to.be.hidden();
       $expect('#delete-form').not.to.be.hidden();
 
