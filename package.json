@@ -38,8 +38,12 @@
   "author": "anonymous node/sails user",
   "license": "",
   "devDependencies": {
+    "eslint": "^1.0.0",
+    "eslint-config-angular": "^0.2.0",
+    "eslint-config-defaults": "^3.1.0",
     "eslint-html-reporter": "^0.4.10",
-    "grunt-eslint": "^14.0.0",
+    "eslint-plugin-angular": "^0.2.2",
+    "grunt-eslint": "^17.0.0",
     "grunt-mocha-istanbul": "^2.4.0",
     "grunt-mocha-test": "^0.12.7",
     "istanbul": "^0.3.14",

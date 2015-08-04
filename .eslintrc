@@ -12,5 +12,6 @@
   "rules": {
     "quotes": [2, "single"],
     "no-underscore-dangle": [0]
-  }
+  },
+  "extends": "eslint:recommended"
 }
