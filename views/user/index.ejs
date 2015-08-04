@@ -1,8 +1,8 @@
 <div id="user-list" ng-controller="UserList">
 
   <h2>User List</h2>
-  <p ng-hide="data.users.length > 0">No Users!</p>
-  <table>
+  <p id='no-users' ng-hide="data.users.length > 0">No Users!</p>
+  <table id='users' ng-hide="data.users.length === 0">
     <thead>
       <tr>
         <th>Name</th>
@@ -18,9 +18,9 @@
     </tbody>
   </table>
 
-  <p ng-show="state === 'init'"><a href="#" ng-click="setState('create')">Create User</a></p>
+  <p id='create-user' ng-show="state === 'init'"><a href="#" ng-click="setState('create')">Create User</a></p>
 
-  <fieldset ng-show="state === 'create' || state === 'edit'">
+  <fieldset id='edit-form' ng-show="state === 'create' || state === 'edit'">
     <legend>{{ state === 'create' ? 'Create' : 'Edit'}} Form</legend>
     <label for="name">Name</label>
     <input ng-model="data.user.name" type="text" name="name" id="name" />
@@ -29,7 +29,7 @@
     <button ng-click="setState('init')">cancel</button>
   </fieldset>
 
-  <fieldset ng-show="state === 'delete'">
+  <fieldset id='delete-form' ng-show="state === 'delete'">
     <legend>Delete user id {{data.user.id}} ?</legend>
     <p>Are you sure?  This operation cannot be undone.</p>
     <button ng-click="delete()">yes</button>

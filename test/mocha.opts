@@ -1,2 +1,2 @@
 --timeout 50000
-test/unit/**/*.test.js
+test/api/unit/**/*.test.js

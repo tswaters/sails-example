@@ -1,0 +1,19 @@
+{
+  "env": {
+    "browser": true,
+    "node": false,
+    "jquery": true
+  },
+  "globals": {
+    "inject": true,
+    "$expect": true,
+    "ejs": true,
+    "module": true,
+    "sinon": true,
+    "chai": true
+  },
+  "plugins": [
+    "angular"
+  ],
+  "extends": "angular"
+}
