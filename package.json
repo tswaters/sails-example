@@ -61,7 +61,6 @@
     "karma-safari-launcher": "^0.1.1",
     "karma-sinon": "^1.0.4",
     "mocha": "^2.2.5",
-    "mochawesome": "^1.2.0",
     "sinon": "^1.15.4",
     "supertest": "^1.0.1"
   }

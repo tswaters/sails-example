@@ -2,6 +2,6 @@
 
 module.exports = function (grunt) {
 
-	grunt.registerTask('reports', ['mocha_istanbul', 'karma', 'makeReport', 'mochaTest', 'eslint']);
+	grunt.registerTask('reports', ['mocha_istanbul', 'karma', 'makeReport', 'eslint']);
 
 };
