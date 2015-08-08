@@ -17,14 +17,12 @@
         4444444444     000000000      333333333333333
 -->
 <div class="main">
-  <h1>
-    Forbidden
-  </h1>
+  <h1><%= __('ERRORS.403.TITLE')%></h1>
   <h2>
     <% if (typeof error !== 'undefined') { %>
     <%= error %>
     <% } else { %>
-    You don't have permission to see the page you're trying to reach.
+    <%= __('ERRORS.403.MESSAGE') %>
     <% } %>
   </h2>
 </div>

@@ -17,14 +17,12 @@
         4444444444     000000000          000000000
 -->
 <div class="main">
-  <h1>
-    Bad Request
-  </h1>
+  <h1><%= __('ERRORS.400.TITLE')%></h1>
   <h2>
     <% if (typeof error !== 'undefined') { %>
     <%= error %>
     <% } else { %>
-    You didn't provide valid options.
+    <%= __('ERRORS.400.MESSAGE') %>
     <% } %>
   </h2>
 </div>

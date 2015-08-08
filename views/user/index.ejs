@@ -1,39 +1,39 @@
 <div id="user-list" ng-controller="UserController as vm">
 
-  <h2>User List</h2>
-  <p id='no-users' ng-hide="vm.data.users.length > 0">No Users!</p>
+  <h2><%= __('USER-LIST.HEADING') %></h2>
+  <p id='no-users' ng-hide="vm.data.users.length > 0"><%= __('USER-LIST.NONE') %></p>
   <table id='users' ng-hide="vm.data.users.length === 0">
     <thead>
       <tr>
         <th>Name</th>
-        <th colspan="2">Operations</th>
+        <th colspan="2"><%= __('USER-LIST.OPERATIONS') %></th>
       </tr>
     </thead>
     <tbody>
       <tr ng-repeat="user in vm.data.users">
         <td>{{ user.name }}</td>
-        <td><button ng-click="vm.setState('edit', user)">Edit</button></td>
-        <td><button ng-click="vm.setState('delete', user)">Delete</button></td>
+        <td><button ng-click="vm.setState('edit', user)"><%= __('COMMON.EDIT') %></button></td>
+        <td><button ng-click="vm.setState('delete', user)"><%= __('COMMON.DELETE') %></button></td>
       </tr>
     </tbody>
   </table>
 
-  <p id='create-user' ng-show="vm.state === 'init'"><a href="#" ng-click="vm.setState('create')">Create User</a></p>
+  <p id='create-user' ng-show="vm.state === 'init'"><a href="#" ng-click="vm.setState('create')"><%=__('USER-LIST.CREATE-LINK')%></a></p>
 
   <fieldset id='edit-form' ng-show="vm.state === 'create' || vm.state === 'edit'">
-    <legend>{{ vm.state === 'create' ? 'Create' : 'Edit'}} Form</legend>
-    <label for="name">Name</label>
+    <legend>{{ vm.state === 'create' ? '<%= __('COMMON.CREATE') %>' : '<%= __('COMMON.EDIT') %>'}} <%=__('USER-LIST.TITLE')%></legend>
+    <label for="name"><%= __('USER-LIST.NAME') %></label>
     <input ng-model="vm.data.user.name" type="text" name="name" id="name" />
-    <button ng-show="vm.state === 'create'" ng-click="vm.create()">create</button>
-    <button ng-show="vm.state === 'edit'" ng-click="vm.edit()">edit</button>
-    <button ng-click="vm.setState('init')">cancel</button>
+    <button ng-show="vm.state === 'create'" ng-click="vm.create()"><%= __('COMMON.CREATE')%></button>
+    <button ng-show="vm.state === 'edit'" ng-click="vm.edit()"><%= __('COMMON.EDIT') %></button>
+    <button ng-click="vm.setState('init')"><%= __('COMMON.CANCEL') %></button>
   </fieldset>
 
   <fieldset id='delete-form' ng-show="vm.state === 'delete'">
-    <legend>Delete user id {{data.user.id}} ?</legend>
-    <p>Are you sure?  This operation cannot be undone.</p>
-    <button ng-click="vm.delete()">yes</button>
-    <button ng-click="vm.setState('init')">no</button>
+    <legend><%= __('USER-LIST.DELETE.HEADER')%></legend>
+    <p><%= __('USER-LIST.DELETE.CONFIRM')  %></p>
+    <button ng-click="vm.delete()"><%=__('COMMON.YES')%></button>
+    <button ng-click="vm.setState('init')"><%=__('COMMON.NO')%></button>
   </fieldset>
 
 </div>

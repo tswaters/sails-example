@@ -17,14 +17,12 @@
         4444444444     000000000             4444444444
 -->
 <div class="main">
-  <h1>
-    Something's fishy here.
-  </h1>
+  <h1><%= __('ERRORS.404.TITLE')%></h1>
   <h2>
   	<% if (typeof error !== 'undefined') { %>
     <%= error %>
     <% } else { %>
-    The page you were trying to reach doesn't exist.
+    <%= __('ERRORS.404.MESSAGE') %>
     <% } %>
   </h2>
 </div>

@@ -17,14 +17,12 @@
      555555555          000000000          000000000
 -->
 <div class="main">
-  <h1>
-    Something isn't right here.
-  </h1>
+  <h1><%= __('ERRORS.500.TITLE')%></h1>
   <h2>
   	<% if (typeof error !== 'undefined') { %>
     <%= error %>
     <% } else { %>
-    A team of highly trained sea bass is working on this as we speak.
+    <%= __('ERRORS.500.MESSAGE') %>
     <% } %>
   </h2>
 </div>

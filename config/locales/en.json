@@ -1,4 +1,45 @@
 {
-	"Welcome": "Welcome",
-	"A brand new app.": "A brand new app."
+	"SITE": {
+		"TITLE": "Sample Sails App",
+		"WELCOME": "Welcome!"
+	},
+	"ERRORS": {
+		"500": {
+			"TITLE": "Something isn't right here.",
+			"MESSAGE": "A team of highly trained sea bass is working on this as we speak."
+		},
+		"404": {
+			"TITLE": "Something's fishy here.",
+			"MESSAGE": "The page you were trying to reach doesn't exist."
+		},
+		"403": {
+			"TITLE": "You can't do that!",
+			"MESSAGE": "You don't have permission to see the page you're trying to reach."
+		},
+		"400": {
+			"TITLE": "I didn't quite catch that",
+			"MESSAGE": "The message was understood, but was incomplete and rejected."
+		}
+	},
+	"COMMON": {
+		"YES": "Yes",
+		"NO": "No",
+		"CANCEL": "Cancel",
+		"CREATE": "Create",
+		"DELETE": "Delete",
+		"EDIT": "Edit"
+	},
+	"USER-LIST": {
+		"TITLE": "Users",
+		"URL": "/user",
+		"HEADING": "Users List",
+		"NONE": "No Users!",
+		"OPERATIONS": "Operations",
+		"CREATE-LINK": "Create User",
+		"DELETE": {
+			"HEADER": "Delete User?",
+			"CONFIRM": "Are you sure? This operation cannot be undone."
+		},
+		"NAME": "Name"
+	}
 }

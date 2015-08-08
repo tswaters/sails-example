@@ -1,13 +1,12 @@
 <!-- Default home page -->
 <div class="default-page">
     <div class="header">
-        <h1 id="main-title" class="container"><%= __('A brand new app.') %></h1>
-        <h3 class="container">You're looking at: <code><%= view.pathFromApp + '.' +view.ext %></code></h3>
+        <h1 id="main-title" class="container"><%= __('SITE.TITLE') %></h1>
     </div>
     <div class="main container clearfix">
-      <p>Welcome</p>
+      <p><%= __('SITE.WELCOME')%></p>
       <ul>
-        <li><a href="/user">Users</a></li>
+        <li><a href="<%= __('USER-LIST.URL') %>"><%= __('USER-LIST.TITLE') %></a></li>
       </ul>
     </div>
 </div>
