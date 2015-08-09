@@ -23,9 +23,9 @@ module.exports.list = function (req, res) {
 };
 
 module.exports.edit = function (req, res) {
-	sails.log.info('UserController#edit called');
 	var id = req.param('id');
 	var data = req.body;
+	sails.log.info('UserController#edit called for id #', id, ' and ', data);
 	UserService.edit(id, data, function (err) {
 		if (err) { return res.notOk(err); }
 		res.ok(null, {status: 204});
@@ -33,8 +33,8 @@ module.exports.edit = function (req, res) {
 };
 
 module.exports.delete = function (req, res) {
-	sails.log.info('UserController#delete called');
 	var id = req.param('id');
+	sails.log.info('UserController#delete called for id #', id);
 	UserService.delete(id, function (err) {
 		if (err) { return res.notOk(err); }
 		res.ok(null, {status: 204});
@@ -42,8 +42,8 @@ module.exports.delete = function (req, res) {
 };
 
 module.exports.create = function (req, res) {
-	sails.log.info('UserController#create called');
 	var data = req.body;
+	sails.log.info('UserController#create called with ', data);
 	UserService.create(data, function (err) {
 		if (err) { return res.notOk(err); }
 		res.ok(null, {status: 204});
