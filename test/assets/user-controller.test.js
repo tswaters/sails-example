@@ -121,7 +121,10 @@ describe('user list', function () {
       var viewHtml = $templateCache.get('views/user/index');
       if (!viewHtml) {
         var template = $.ajax('base/views/user/index.ejs', {async: false}).responseText;
-        viewHtml = ejs.render(template);
+        viewHtml = ejs.render(template, {
+          // add stubs for things server views might need.
+          __: function (tag) { return tag; }
+        });
         $templateCache.put('views/user/index', viewHtml);
       }
       // create a form element and apply a new scope, append to body.

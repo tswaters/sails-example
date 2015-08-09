@@ -27,10 +27,10 @@ module.exports = function(config) {
       dir : 'reports'
     },
 
-    reporters: ['coverage'],
+    reporters: ['dot', 'progress', 'coverage'],
     port: 9876,
     colors: true,
-    logLevel: config.LOG_DISABLE,
+    logLevel: config.LOG_ERROR,
     browsers: ['Chrome' /*, 'Firefox', 'IE', 'Safari', 'Opera'*/],
     autoWatch: false,
     singleRun: true
