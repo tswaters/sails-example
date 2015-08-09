@@ -31,7 +31,7 @@
 	},
 	"USER-LIST": {
 		"TITLE": "Users",
-		"URL": "/user",
+		"URL": "/en/user",
 		"HEADING": "Users List",
 		"NONE": "No Users!",
 		"OPERATIONS": "Operations",

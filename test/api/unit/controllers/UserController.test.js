@@ -23,7 +23,7 @@ describe('UserController', function () {
 
   describe('#home', function () {
     it('should render the page', function (next) {
-      this.request.get('/user').expect(200).end(next);
+      this.request.get('/en/user').expect(200).end(next);
     });
   });
 

@@ -10,7 +10,7 @@
 module.exports.home = function (req, res) {
 	sails.log.info('UserController#home called');
 	return res.ok({
-		'title': 'User List'
+		'title': req.__('USER-LIST.TITLE')
 	}, 'user/index');
 };
 
