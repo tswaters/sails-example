@@ -35,6 +35,12 @@ describe('ContactController', function () {
   });
 
   describe('#home', function () {
+    it('should throw unauthorized if user is not authorized', function (done) {
+      async.series([
+        function (next) {request.get(base.uris.logout).redirects(1).end(next)},
+        function (next) {request.get('/en/contact').expect(401).end(next);}
+      ], done);
+    });
     it('should render the page', function (next) {
       this.request.get('/en/contact').expect(200).end(next);
     });

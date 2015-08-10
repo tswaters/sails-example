@@ -11,6 +11,7 @@ module.exports.fixtures = require('./fixtures');
 
 module.exports.uris = {
   login: '/api/auth/login',
+  register: '/api/auth/register',
   logout: '/en/logout'
 };
 

@@ -12,8 +12,7 @@ module.exports = function (req, res, cb) {
     function (next) { AuthService.initialize()(req, res, next) },
     function (next) { AuthService.session()(req, res, next) }
   ], function (err) {
-    if (err) { return cb(err); }
     res.locals.user = req.user;
-    cb();
+    cb(err);
   });
 }

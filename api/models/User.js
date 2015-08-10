@@ -23,7 +23,7 @@ module.exports = {
    */
   verify: function (opts, cb) {
     User.findOne({username: opts.username}).exec(function (err, user) {
-      if (err) { return cb(err); }
+      if (err) { return cb(new ExceptionService.DatabaseError(err)); }
       if (!user) { return cb(null, false, new ExceptionService.Unauthorized('not found')); }
       user.verify(opts.password, function (err, isValid) {
         if (err) {  return cb(err); }
@@ -53,14 +53,6 @@ module.exports = {
       values.password = hash;
       cb(err, values);
     });
-  },
-
-  /**
-   * Overload toJSON to remove password
-   */
-  toJSON: function () {
-    var ret = this.toJSON();
-    delete ret.password;
-    return ret;
   }
+
 };
