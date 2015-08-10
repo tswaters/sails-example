@@ -19,7 +19,12 @@
 
 module.exports.policies = {
 
-  '*': ['localize'],
+  '*': ['localize', 'passport'],
+
+  'ContactController': {
+    '*': ['logged-in']
+  }
+  //'AuthController': {}
 
   /***************************************************************************
   *                                                                          *

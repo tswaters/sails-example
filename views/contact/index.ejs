@@ -1,8 +1,8 @@
 <div id="contact-list" ng-controller="ContactController as vm">
 
   <h2><%= __('CONTACT-LIST.HEADING') %></h2>
-  <p id='no-users' ng-hide="vm.data.users.length > 0"><%= __('CONTACT-LIST.NONE') %></p>
-  <table id='users' ng-hide="vm.data.users.length === 0">
+  <p id='no-contacts' ng-hide="vm.data.contacts.length > 0"><%= __('CONTACT-LIST.NONE') %></p>
+  <table id='contacts' ng-hide="vm.data.contacts.length === 0">
     <thead>
       <tr>
         <th>Name</th>
@@ -10,20 +10,20 @@
       </tr>
     </thead>
     <tbody>
-      <tr ng-repeat="user in vm.data.users">
-        <td>{{ user.name }}</td>
-        <td><button ng-click="vm.setState('edit', user)"><%= __('COMMON.EDIT') %></button></td>
-        <td><button ng-click="vm.setState('delete', user)"><%= __('COMMON.DELETE') %></button></td>
+      <tr ng-repeat="contact in vm.data.contacts">
+        <td>{{ contact.name }}</td>
+        <td><button ng-click="vm.setState('edit', contact)"><%= __('COMMON.EDIT') %></button></td>
+        <td><button ng-click="vm.setState('delete', contact)"><%= __('COMMON.DELETE') %></button></td>
       </tr>
     </tbody>
   </table>
 
-  <p id='create-user' ng-show="vm.state === 'init'"><a href="#" ng-click="vm.setState('create')"><%=__('CONTACT-LIST.CREATE-LINK')%></a></p>
+  <p id='create-contact' ng-show="vm.state === 'init'"><a href="#" ng-click="vm.setState('create')"><%=__('CONTACT-LIST.CREATE-LINK')%></a></p>
 
   <fieldset id='edit-form' ng-show="vm.state === 'create' || vm.state === 'edit'">
     <legend>{{ vm.state === 'create' ? '<%= __('COMMON.CREATE') %>' : '<%= __('COMMON.EDIT') %>'}} <%=__('CONTACT-LIST.TITLE')%></legend>
     <label for="name"><%= __('CONTACT-LIST.NAME') %></label>
-    <input ng-model="vm.data.user.name" type="text" name="name" id="name" />
+    <input ng-model="vm.data.contact.name" type="text" name="name" id="name" />
     <button ng-show="vm.state === 'create'" ng-click="vm.create()"><%= __('COMMON.CREATE')%></button>
     <button ng-show="vm.state === 'edit'" ng-click="vm.edit()"><%= __('COMMON.EDIT') %></button>
     <button ng-click="vm.setState('init')"><%= __('COMMON.CANCEL') %></button>

@@ -1,0 +1,19 @@
+<form ng-controller="AuthController as vm">
+  <div>
+    <h1><%= __('AUTH.REGISTER.TITLE') %></h1>
+  </div>
+  <div>
+    <label for="username"><%= __('AUTH.USERNAME')%></label>
+    <input type="text" id="username" name="username" ng-model="vm.data.username" />
+  </div>
+  <div>
+    <label for="password"><%= __('AUTH.PASSWORD') %></label>
+    <input type="password" id="password" name="password" ng-model="vm.data.password" />
+  </div>
+  <div>
+    <button ng-click="vm.register()"><%= __('AUTH.REGISTER.REGISTER') %></button>
+  </div>
+  <div>
+    {{ vm.error.message }}
+  </div>
+</form>

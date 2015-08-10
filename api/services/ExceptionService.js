@@ -5,3 +5,4 @@ module.exports.DatabaseError = require('./exceptions/DatabaseError');
 module.exports.NotFound = require('./exceptions/NotFound');
 module.exports.BadRequest = require('./exceptions/BadRequest');
 module.exports.Forbidden = require('./exceptions/Forbidden');
+module.exports.Unauthorized = require('./exceptions/Unauthorized');

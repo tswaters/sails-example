@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports.list = function (cb) {
-  User.find({}).exec(function (err, data) {
+  Contact.find({}).exec(function (err, data) {
     if (err) {
       return cb(new ExceptionService.DatabaseError(err));
     }
@@ -10,11 +10,11 @@ module.exports.list = function (cb) {
 };
 
 module.exports.delete = function (id, cb) {
-  User.destroy({id: id}).exec(function (err, users) {
+  Contact.destroy({id: id}).exec(function (err, contacts) {
     if (err) {
       return cb(new ExceptionService.DatabaseError(err));
     }
-    if (users.length === 0) {
+    if (contacts.length === 0) {
       return cb(new ExceptionService.NotFound());
     }
     cb(null, null);
@@ -22,11 +22,11 @@ module.exports.delete = function (id, cb) {
 };
 
 module.exports.edit = function (id, data, cb) {
-  User.update({id: id}, data).exec(function (err, users) {
+  Contact.update({id: id}, data).exec(function (err, contacts) {
     if (err) {
       return cb(new ExceptionService.DatabaseError(err));
     }
-    if (users.length === 0) {
+    if (contacts.length === 0) {
       return cb(new ExceptionService.NotFound());
     }
     cb(null, null);
@@ -34,7 +34,7 @@ module.exports.edit = function (id, data, cb) {
 };
 
 module.exports.create = function (data, cb) {
-  User.create(data).exec(function (err) {
+  Contact.create(data).exec(function (err) {
     if (err) {
       return cb(new ExceptionService.DatabaseError(err));
     }

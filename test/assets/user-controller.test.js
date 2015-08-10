@@ -2,69 +2,69 @@
 
 var expect = chai.expect;
 
-describe('user list', function () {
+describe('contact list', function () {
 
   var $compile;
   var $rootScope;
   var $httpBackend;
 
-  beforeEach(module('UserList'));
+  beforeEach(module('ContactList'));
 
   beforeEach(inject(function ($templateCache, _$httpBackend_, _$compile_, _$rootScope_) {
     $compile = _$compile_;
     $rootScope = _$rootScope_;
     $httpBackend = _$httpBackend_;
-    $httpBackend.when('GET', '/api/user/').respond();
-    $httpBackend.when('POST', '/api/user/').respond();
-    $httpBackend.when('POST', '/api/user/1').respond();
-    $httpBackend.when('DELETE', '/api/user/1').respond();
+    $httpBackend.when('GET', '/api/contact/').respond();
+    $httpBackend.when('POST', '/api/contact/').respond();
+    $httpBackend.when('POST', '/api/contact/1').respond();
+    $httpBackend.when('DELETE', '/api/contact/1').respond();
   }));
 
   describe('service', function () {
-    var UserService;
+    var ContactService;
 
-    beforeEach(inject(function(_UserService_){
-      UserService = _UserService_;
+    beforeEach(inject(function(_ContactService_){
+      ContactService = _ContactService_;
     }));
 
     it('should call list properly', function () {
-      UserService.list()
+      ContactService.list()
       $httpBackend.flush();
-      $httpBackend.expect('GET', '/api/user/');
+      $httpBackend.expect('GET', '/api/contact/');
     });
 
     it('should call edit properly', function () {
-      UserService.edit(1, {})
+      ContactService.edit(1, {})
       $httpBackend.flush();
-      $httpBackend.expect('POST', '/api/user/1');
+      $httpBackend.expect('POST', '/api/contact/1');
     });
 
     it('should call create properly', function () {
-      UserService.create({})
+      ContactService.create({})
       $httpBackend.flush();
-      $httpBackend.expect('POST', '/api/user/');
+      $httpBackend.expect('POST', '/api/contact/');
     });
 
     it('should call delete properly', function () {
-      UserService.delete(1)
+      ContactService.delete(1)
       $httpBackend.flush();
-      $httpBackend.expect('DELETE', '/api/user/1');
+      $httpBackend.expect('DELETE', '/api/contact/1');
     });
   });
 
   describe('controller', function () {
-    var UserService;
+    var ContactService;
     var vm;
     var scope;
 
-    beforeEach(inject(function (_UserService_, $controller, $q) {
-      UserService = _UserService_;
-      sinon.stub(UserService, 'list', promiseStub);
-      sinon.stub(UserService, 'delete', promiseStub);
-      sinon.stub(UserService, 'create', promiseStub);
-      sinon.stub(UserService, 'edit', promiseStub);
+    beforeEach(inject(function (_ContactService_, $controller, $q) {
+      ContactService = _ContactService_;
+      sinon.stub(ContactService, 'list', promiseStub);
+      sinon.stub(ContactService, 'delete', promiseStub);
+      sinon.stub(ContactService, 'create', promiseStub);
+      sinon.stub(ContactService, 'edit', promiseStub);
       scope = $rootScope.$new();
-      vm = $controller('UserController', {scope: scope});
+      vm = $controller('ContactController', {scope: scope});
       function promiseStub () {
         var deferred = $q.defer();
         deferred.resolve('Remote call result');
@@ -73,40 +73,40 @@ describe('user list', function () {
     }));
 
     afterEach(function () {
-      UserService.list.restore();
-      UserService.delete.restore();
-      UserService.create.restore();
-      UserService.edit.restore();
+      ContactService.list.restore();
+      ContactService.delete.restore();
+      ContactService.create.restore();
+      ContactService.edit.restore();
     })
 
     it('should call fetch during initializaiton', function () {
-      expect(UserService.list.callCount).to.equal(1);
+      expect(ContactService.list.callCount).to.equal(1);
     });
 
     it('should call edit and fetch when calling edit', function () {
       vm.edit();
       scope.$root.$apply();
-      expect(UserService.edit.callCount).to.equal(1);
-      expect(UserService.list.callCount).to.equal(2);
+      expect(ContactService.edit.callCount).to.equal(1);
+      expect(ContactService.list.callCount).to.equal(2);
     });
 
     it('should call delete and fetch when calling edit', function () {
       vm.delete();
       scope.$root.$apply();
-      expect(UserService.delete.callCount.length, 1);
-      expect(UserService.list.callCount.length, 2);
+      expect(ContactService.delete.callCount.length, 1);
+      expect(ContactService.list.callCount.length, 2);
     });
 
     it('should call create and fetch when calling edit', function () {
       vm.create();
       scope.$root.$apply();
-      expect(UserService.create.callCount.length, 1);
-      expect(UserService.list.callCount.length, 2);
+      expect(ContactService.create.callCount.length, 1);
+      expect(ContactService.list.callCount.length, 2);
     });
 
-    it('should set the state and user properly when calling setState', function () {
+    it('should set the state and contact properly when calling setState', function () {
       vm.setState('dummy', {name:'Test'});
-      expect(vm.data.user.name).to.equal('Test');
+      expect(vm.data.contact.name).to.equal('Test');
       expect(vm.state).to.equal('dummy');
     })
 
@@ -118,14 +118,14 @@ describe('user list', function () {
 
     beforeEach(inject(function ($templateCache) {
       // load the html, render ejs if necessary
-      var viewHtml = $templateCache.get('views/user/index');
+      var viewHtml = $templateCache.get('views/contact/index');
       if (!viewHtml) {
-        var template = $.ajax('base/views/user/index.ejs', {async: false}).responseText;
+        var template = $.ajax('base/views/contact/index.ejs', {async: false}).responseText;
         viewHtml = ejs.render(template, {
           // add stubs for things server views might need.
           __: function (tag) { return tag; }
         });
-        $templateCache.put('views/user/index', viewHtml);
+        $templateCache.put('views/contact/index', viewHtml);
       }
       // create a form element and apply a new scope, append to body.
       formElement = angular.element(viewHtml);
@@ -138,15 +138,15 @@ describe('user list', function () {
       formElement.remove();
     });
 
-    it('should show/hide no users div and users table based on lengths of users', function () {
+    it('should show/hide no contacts div and contacts table based on lengths of contacts', function () {
 
-      formElement.scope().$apply(function (scope) { scope.vm.data = {'users': []}; });
-      $expect('#users').to.be.hidden();
-      $expect('#no-users').not.to.be.hidden();
+      formElement.scope().$apply(function (scope) { scope.vm.data = {'contacts': []}; });
+      $expect('#contacts').to.be.hidden();
+      $expect('#no-contacts').not.to.be.hidden();
 
-      formElement.scope().$apply(function (scope) { scope.vm.data = {'users': [{}]}; });
-      $expect('#users').not.to.be.hidden();
-      $expect('#no-users').to.be.hidden();
+      formElement.scope().$apply(function (scope) { scope.vm.data = {'contacts': [{}]}; });
+      $expect('#contacts').not.to.be.hidden();
+      $expect('#no-contacts').to.be.hidden();
 
     });
 

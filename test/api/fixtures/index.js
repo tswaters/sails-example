@@ -1,4 +1,5 @@
 
 'use strict';
 
-module.exports.users = require('./user');
+module.exports.contacts = require('./contacts');
+module.exports.users = require('./users');

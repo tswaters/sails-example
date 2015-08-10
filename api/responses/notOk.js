@@ -13,7 +13,10 @@ module.exports = function (data) {
    data instanceof ExceptionService.DatabaseError ? 500 :
    data instanceof ExceptionService.NotFound ? 404 :
    data instanceof ExceptionService.Forbidden ? 403 :
+   data instanceof ExceptionService.Unauthorized ? 401 :
    data instanceof ExceptionService.BadRequest ? 400 : 500;
+
+  sails.log.info('sending status', status, 'and data', data);
 
   res.status(status);
   if (sails.config.environment === 'production') {

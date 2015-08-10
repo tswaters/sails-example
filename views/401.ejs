@@ -17,12 +17,16 @@
         4444444444     000000000          000000000
 -->
 <div class="main">
-  <h1><%= __('ERRORS.400.TITLE')%></h1>
+  <h1><%= __('ERRORS.401.TITLE')%></h1>
   <h2>
     <% if (typeof message !== 'undefined') { %>
     <%= error %>
     <% } else { %>
-    <%= __('ERRORS.400.MESSAGE') %>
+    <%= __('ERRORS.401.MESSAGE') %>
     <% } %>
   </h2>
+  <ul>
+    <li><a href="<%= __('AUTH.LOGIN.URL') %>"><%= __('AUTH.LOGIN.TITLE') %></a></li>
+    <li><a href="<%= __('AUTH.REGISTER.URL') %>"><%= __('AUTH.REGISTER.TITLE') %></a></li>
+  </ul>
 </div>

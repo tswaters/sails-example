@@ -3,11 +3,14 @@
     "node": true
   },
   "globals": {
+    "AuthService": true,
+    "CryptoService": true,
+    "ContactService": true,
     "ExceptionService": true,
     "sails": true,
+    "Contact": true,
     "User": true,
-    "UserController": true,
-    "UserService": true
+    "UserController": true
   },
   "rules": {
     "quotes": [2, "single"],

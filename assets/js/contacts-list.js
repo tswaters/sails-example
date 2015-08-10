@@ -1,10 +1,10 @@
 'use strict';
 
-angular.module('UserList', [])
-  .factory('UserService', [
+angular.module('ContactList', [])
+  .factory('ContactService', [
     '$http',
     function ($http) {
-      var endPoint = '/api/user/';
+      var endPoint = '/api/contact/';
       return {
         list: function () {
           return $http.get(endPoint);
@@ -21,39 +21,39 @@ angular.module('UserList', [])
       };
     }
   ])
-  .controller('UserController', [
-    'UserService',
-    function (UserService) {
+  .controller('ContactController', [
+    'ContactService',
+    function (ContactsService) {
       var vm = this;
 
-      vm.setState = function (state, user) {
+      vm.setState = function (state, contact) {
         vm.state = state;
-        vm.data.user = angular.copy(user);
+        vm.data.contact = angular.copy(contact);
       };
 
       vm.delete = function () {
-        UserService.delete(vm.data.user.id).then(vm.fetch);
+        ContactsService.delete(vm.data.contact.id).then(vm.fetch);
       };
 
       vm.create = function () {
-        UserService.create(vm.data.user).then(vm.fetch);
+        ContactsService.create(vm.data.contact).then(vm.fetch);
       };
 
       vm.edit = function () {
-        UserService.edit(vm.data.user.id, vm.data.user).then(vm.fetch);
+        ContactsService.edit(vm.data.contact.id, vm.data.contact).then(vm.fetch);
       };
 
       vm.fetch = function () {
-        UserService.list().then(function (e) {
-          vm.data.users = e.data;
-          vm.data.user = {};
+        ContactsService.list().then(function (e) {
+          vm.data.contacts = e.data;
+          vm.data.contact = {};
         });
         vm.state = 'init';
       };
 
       vm.data = {
-        users: [],
-        user: {}
+        contacts: [],
+        contact: {}
       };
       vm.fetch();
 

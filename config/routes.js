@@ -23,14 +23,19 @@
 module.exports.routes = {
 
   // api routes
-  'GET /api/user': 'UserController.list',
-  'POST /api/user': 'UserController.create',
-  'POST /api/user/:id': 'UserController.edit',
-  'DELETE /api/user/:id': 'UserController.delete',
+  'POST /api/auth/login': 'AuthController.login',
+  'POST /api/auth/register': 'AuthController.register',
+  'GET /api/contact': 'ContactController.list',
+  'POST /api/contact': 'ContactController.create',
+  'POST /api/contact/:id': 'ContactController.edit',
+  'DELETE /api/contact/:id': 'ContactController.delete',
 
   // view routes
   '/': 'HomeController.home',
   '/:lang': 'HomeController.home',
-  '/:lang/user': 'UserController.home'
+  '/:lang/contact': 'ContactController.home',
+  '/:lang/login': 'AuthController.loginForm',
+  '/:lang/register': 'AuthController.registerForm',
+  '/:lang/logout': 'AuthController.logout'
 
 };

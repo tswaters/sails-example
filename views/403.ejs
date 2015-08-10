@@ -19,10 +19,14 @@
 <div class="main">
   <h1><%= __('ERRORS.403.TITLE')%></h1>
   <h2>
-    <% if (typeof error !== 'undefined') { %>
+    <% if (typeof message !== 'undefined') { %>
     <%= error %>
     <% } else { %>
     <%= __('ERRORS.403.MESSAGE') %>
     <% } %>
   </h2>
+  <ul>
+    <li><a href="<%= __('AUTH.LOGIN.URL') %>"><%= __('AUTH.LOGIN.TITLE') %></a></li>
+    <li><a href="<%= __('AUTH.REGISTER.URL') %>"><%= __('AUTH.REGISTER.TITLE') %></a></li>
+  </ul>
 </div>

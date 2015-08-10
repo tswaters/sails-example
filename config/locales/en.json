@@ -16,6 +16,10 @@
 			"TITLE": "You can't do that!",
 			"MESSAGE": "You don't have permission to see the page you're trying to reach."
 		},
+		"401": {
+			"TITLE": "Unauthorized",
+			"MESSAGE": "You need to log in to do that."
+		},
 		"400": {
 			"TITLE": "I didn't quite catch that",
 			"MESSAGE": "The message was understood, but was incomplete and rejected."
@@ -29,15 +33,33 @@
 		"DELETE": "Delete",
 		"EDIT": "Edit"
 	},
-	"USER-LIST": {
-		"TITLE": "Users",
-		"URL": "/en/user",
-		"HEADING": "Users List",
-		"NONE": "No Users!",
+	"AUTH": {
+		"USERNAME": "User Name",
+		"PASSWORD": "Password",
+		"LOGIN": {
+			"TITLE": "Log into Sample Application",
+			"LOGIN": "Log in",
+			"URL": "/en/login"
+		},
+		"REGISTER": {
+			"TITLE": "Register for Sample Application",
+			"REGISTER": "Register",
+			"URL": "/en/register"
+		},
+		"LOGOUT": {
+			"TITLE": "Log Out from Sample Application",
+			"URL": "/en/logout"
+		}
+	},
+	"CONTACT-LIST": {
+		"TITLE": "Contacts",
+		"URL": "/en/contact",
+		"HEADING": "Contacts List",
+		"NONE": "No Contacts!",
 		"OPERATIONS": "Operations",
-		"CREATE-LINK": "Create User",
+		"CREATE-LINK": "Create Contact",
 		"DELETE": {
-			"HEADER": "Delete User?",
+			"HEADER": "Delete Contact?",
 			"CONFIRM": "Are you sure? This operation cannot be undone."
 		},
 		"NAME": "Name"
