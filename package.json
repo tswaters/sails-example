@@ -40,6 +40,7 @@
   "author": "anonymous node/sails user",
   "license": "",
   "devDependencies": {
+    "chai": "^3.2.0",
     "eslint": "^1.0.0",
     "eslint-config-angular": "^0.2.0",
     "eslint-config-defaults": "^3.1.0",
@@ -54,6 +55,7 @@
     "karma": "^0.13.3",
     "karma-chai": "^0.1.0",
     "karma-chrome-launcher": "^0.2.0",
+    "karma-commonjs": "0.0.13",
     "karma-coverage": "^0.4.2",
     "karma-firefox-launcher": "^0.1.6",
     "karma-ie-launcher": "^0.2.0",

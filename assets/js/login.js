@@ -18,7 +18,8 @@ angular.module('Login', [])
 
   .controller('AuthController', [
     'AuthService',
-    function (AuthService) {
+    '$window',
+    function (AuthService, $window) {
       var vm = this;
 
       vm.error = null;
@@ -31,7 +32,7 @@ angular.module('Login', [])
         vm.error = null;
         AuthService.register(vm.data).then(
           function () {
-            location.replace('/');
+            $window.location.replace('/');
           },
           function (res) {
             vm.error = res.data;
@@ -43,7 +44,7 @@ angular.module('Login', [])
         vm.error = null;
         AuthService.login(vm.data).then(
           function () {
-            location.replace('/');
+            $window.location.replace('/');
           },
           function (res) {
             vm.error = res.data;

@@ -11,7 +11,7 @@
     <input type="password" id="password" name="password" ng-model="vm.data.password" />
   </div>
   <div>
-    <button ng-click="vm.login()"><%= __('AUTH.LOGIN.LOGIN') %></button>
+    <button id="login" ng-click="vm.login()"><%= __('AUTH.LOGIN.LOGIN') %></button>
   </div>
   <div>
     {{ vm.error.message }}

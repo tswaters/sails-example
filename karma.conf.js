@@ -2,7 +2,7 @@
 module.exports = function(config) {
   config.set({
     basePath: '',
-    frameworks: ['mocha', 'sinon', 'chai', 'jquery-expect'],
+    frameworks: ['mocha', 'sinon', 'chai', 'jquery-expect', 'commonjs'],
     files: [
       'assets/vendor/jquery/dist/jquery.js',
       'assets/vendor/angular/angular.js',
@@ -10,13 +10,14 @@ module.exports = function(config) {
       'node_modules/ejs/ejs.js',
       {pattern: 'views/**/*.ejs', included: false, served: true},
       'assets/js/*.js',
-      'test/assets/**/*.test.js'
+      'test/assets/**/*.js'
     ],
     exclude: [
     ],
 
     preprocessors: {
-      'assets/js/*.js': ['coverage']
+      'assets/js/*.js': ['coverage'],
+      'test/assets/**/*.js': ['commonjs']
     },
 
     coverageReporter: {

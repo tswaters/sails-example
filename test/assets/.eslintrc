@@ -1,7 +1,6 @@
 {
   "env": {
     "browser": true,
-    "node": false,
     "jquery": true
   },
   "globals": {
@@ -11,6 +10,9 @@
     "module": true,
     "sinon": true,
     "chai": true
+  },
+  "rules": {
+    "angular/ng_no_angular_mock": [0]
   },
   "plugins": [
     "angular"

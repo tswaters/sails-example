@@ -1,30 +1,24 @@
 'use strict';
 
+var templateHelper = require('../helpers/templateHelper');
+var promiseHelper = require('../helpers/promiseHelper');
 var expect = chai.expect;
 
 describe('contact list', function () {
 
-  var $compile;
-  var $rootScope;
-  var $httpBackend;
-
-  beforeEach(module('ContactList'));
-
-  beforeEach(inject(function ($templateCache, _$httpBackend_, _$compile_, _$rootScope_) {
-    $compile = _$compile_;
-    $rootScope = _$rootScope_;
-    $httpBackend = _$httpBackend_;
-    $httpBackend.when('GET', '/api/contact/').respond();
-    $httpBackend.when('POST', '/api/contact/').respond();
-    $httpBackend.when('POST', '/api/contact/1').respond();
-    $httpBackend.when('DELETE', '/api/contact/1').respond();
-  }));
-
   describe('service', function () {
     var ContactService;
+    var $httpBackend;
 
-    beforeEach(inject(function(_ContactService_){
+    beforeEach(angular.mock.module('ContactList'));
+
+    beforeEach(inject(function(_ContactService_, _$httpBackend_){
       ContactService = _ContactService_;
+      $httpBackend = _$httpBackend_;
+      $httpBackend.when('GET', '/api/contact/').respond();
+      $httpBackend.when('POST', '/api/contact/').respond();
+      $httpBackend.when('POST', '/api/contact/1').respond();
+      $httpBackend.when('DELETE', '/api/contact/1').respond();
     }));
 
     it('should call list properly', function () {
@@ -57,19 +51,17 @@ describe('contact list', function () {
     var vm;
     var scope;
 
-    beforeEach(inject(function (_ContactService_, $controller, $q) {
+    beforeEach(angular.mock.module('ContactList'));
+
+    beforeEach(inject(function (_ContactService_, $controller, $q, $rootScope) {
       ContactService = _ContactService_;
+      var promiseStub = promiseHelper($q).resolve('data');
       sinon.stub(ContactService, 'list', promiseStub);
       sinon.stub(ContactService, 'delete', promiseStub);
       sinon.stub(ContactService, 'create', promiseStub);
       sinon.stub(ContactService, 'edit', promiseStub);
       scope = $rootScope.$new();
       vm = $controller('ContactController', {scope: scope});
-      function promiseStub () {
-        var deferred = $q.defer();
-        deferred.resolve('Remote call result');
-        return deferred.promise;
-      }
     }));
 
     afterEach(function () {
@@ -77,7 +69,7 @@ describe('contact list', function () {
       ContactService.delete.restore();
       ContactService.create.restore();
       ContactService.edit.restore();
-    })
+    });
 
     it('should call fetch during initializaiton', function () {
       expect(ContactService.list.callCount).to.equal(1);
@@ -116,21 +108,12 @@ describe('contact list', function () {
 
     var formElement;
 
-    beforeEach(inject(function ($templateCache) {
-      // load the html, render ejs if necessary
-      var viewHtml = $templateCache.get('views/contact/index');
-      if (!viewHtml) {
-        var template = $.ajax('base/views/contact/index.ejs', {async: false}).responseText;
-        viewHtml = ejs.render(template, {
-          // add stubs for things server views might need.
-          __: function (tag) { return tag; }
-        });
-        $templateCache.put('views/contact/index', viewHtml);
-      }
-      // create a form element and apply a new scope, append to body.
-      formElement = angular.element(viewHtml);
-      $compile(formElement)($rootScope.$new());
+    beforeEach(angular.mock.module('ContactList'));
+
+    beforeEach(inject(function ($templateCache, $compile, $rootScope, $httpBackend) {
+      formElement = templateHelper($templateCache, $compile, $rootScope, 'views/contact/index.ejs');
       angular.element('body').append(formElement);
+      $httpBackend.when('GET', '/api/contact/').respond();
     }));
 
     afterEach(function () {
