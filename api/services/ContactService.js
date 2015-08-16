@@ -1,7 +1,8 @@
 'use strict';
 
-module.exports.list = function (cb) {
-  Contact.find({}).exec(function (err, data) {
+module.exports.list = function (opts, cb) {
+  var userId = opts.user;
+  Contact.find({owner: userId}).exec(function (err, data) {
     if (err) {
       return cb(new ExceptionService.DatabaseError(err));
     }
@@ -9,8 +10,8 @@ module.exports.list = function (cb) {
   });
 };
 
-module.exports.delete = function (id, cb) {
-  Contact.destroy({id: id}).exec(function (err, contacts) {
+module.exports.delete = function (opts, cb) {
+  Contact.destroy({id: opts.id, owner: opts.user}).exec(function (err, contacts) {
     if (err) {
       return cb(new ExceptionService.DatabaseError(err));
     }
@@ -21,8 +22,8 @@ module.exports.delete = function (id, cb) {
   });
 };
 
-module.exports.edit = function (id, data, cb) {
-  Contact.update({id: id}, data).exec(function (err, contacts) {
+module.exports.edit = function (opts, cb) {
+  Contact.update({id: opts.id, owner: opts.user}, opts.data).exec(function (err, contacts) {
     if (err) {
       return cb(new ExceptionService.DatabaseError(err));
     }

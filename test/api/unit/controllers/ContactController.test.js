@@ -48,7 +48,7 @@ describe('ContactController', function () {
 
   describe('#list', function () {
     it('should respond to upstream errors properly', function (next) {
-      sinon.stub(ContactService, 'list', function (cb) {
+      sinon.stub(ContactService, 'list', function (opts, cb) {
         cb(new Error('error'));
       });
       request.get('/api/contact').expect(500).end(function (err) {

@@ -1,2 +1,2 @@
---timeout 50000
+--timeout 5000
 test/api/unit/**/*.test.js

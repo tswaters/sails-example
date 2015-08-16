@@ -1,6 +1,9 @@
 
 module.exports = {
   attributes: {
-    name: 'string'
+    name: 'string',
+    owner: {
+      model: 'User'
+    }
   }
 }
