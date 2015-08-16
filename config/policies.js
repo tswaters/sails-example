@@ -22,7 +22,7 @@ module.exports.policies = {
   '*': ['localize', 'passport'],
 
   'ContactController': {
-    '*': ['logged-in']
+    '*': ['localize', 'passport', 'logged-in']
   }
   //'AuthController': {}
 
