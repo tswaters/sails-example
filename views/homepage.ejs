@@ -5,14 +5,5 @@
     </div>
     <div class="main container clearfix">
       <p><%= __('SITE.WELCOME')%></p>
-      <ul>
-        <li><a href="<%= __('CONTACT-LIST.URL') %>"><%= __('CONTACT-LIST.TITLE') %></a></li>
-        <% if (typeof user !== 'undefined') {%>
-          <li><a href="<%= __('AUTH.LOGOUT.URL') %>"><%= __('AUTH.LOGOUT.TITLE') %></a></li>
-        <%} else {%>
-          <li><a href="<%= __('AUTH.LOGIN.URL') %>"><%= __('AUTH.LOGIN.TITLE') %></a></li>
-          <li><a href="<%= __('AUTH.REGISTER.URL') %>"><%= __('AUTH.REGISTER.TITLE') %></a></li>
-        <% } %>
-      </ul>
     </div>
 </div>

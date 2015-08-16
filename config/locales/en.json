@@ -33,6 +33,10 @@
 		"DELETE": "Delete",
 		"EDIT": "Edit"
 	},
+	"HOME": {
+		"TITLE": "Home",
+		"URL": "/en"
+	},
 	"AUTH": {
 		"USERNAME": "User Name",
 		"PASSWORD": "Password",
