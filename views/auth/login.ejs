@@ -1,19 +1,29 @@
-<form ng-controller="AuthController as vm">
-  <div>
-    <h1><%= __('AUTH.LOGIN.TITLE') %></h1>
+
+<div class="page-header">
+  <h1><%= __('AUTH.LOGIN.TITLE') %></h1>
+</div>
+
+<form class="col-xs-offset-3 col-xs-6 form-horizontal" name="loginForm" novalidate ng-submit="vm.login()" ng-controller="AuthController as vm">
+  <div class="form-group" ng-class="{'has-error': vm.isError('loginForm', 'username') }">
+    <label class="col-xs-4 control-label" for="username"><%= __('AUTH.USERNAME')%></label>
+    <div class="col-xs-8">
+      <input class="form-control" type="text" id="username" name="username" required ng-model="vm.data.username" />
+      <p class="help-block" ng-show="vm.isError('loginForm', 'username')"><%= __('AUTH.USERNAME-REQUIRED') %></p>
+    </div>
   </div>
-  <div>
-    <label for="username"><%= __('AUTH.USERNAME')%></label>
-    <input type="text" id="username" name="username" ng-model="vm.data.username" />
+  <div class="form-group" ng-class="{'has-error': vm.isError('loginForm', 'password') }">
+    <label class="col-xs-4 control-label" for="password"><%= __('AUTH.PASSWORD') %></label>
+    <div class="col-xs-8">
+      <input class="form-control" type="password" id="password" name="password" required ng-model="vm.data.password" />
+      <p class="help-block" ng-show="vm.isError('loginForm', 'password')"><%= __('AUTH.PASSWORD-REQUIRED') %></p>
+    </div>
   </div>
-  <div>
-    <label for="password"><%= __('AUTH.PASSWORD') %></label>
-    <input type="password" id="password" name="password" ng-model="vm.data.password" />
-  </div>
-  <div>
-    <button id="login" ng-click="vm.login()"><%= __('AUTH.LOGIN.LOGIN') %></button>
-  </div>
-  <div>
-    {{ vm.error.message }}
+  <div class="form-group text-right" ng-class="{'has-error': vm.error }">
+    <div class="col-xs-12">
+      <button type="submit" class="btn btn-default text-right" ng-disabled="loginForm.$invalid" id="login"><%= __('AUTH.LOGIN.LOGIN') %></button>
+      <p ng-show="vm.error" class="help-block">
+        {{ vm.error.message }}
+      </p>
+    </div>
   </div>
 </form>

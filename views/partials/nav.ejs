@@ -1,11 +1,12 @@
-
-<ul>
-  <li><a href="<%= __('HOME.URL') %>"><%= __('HOME.TITLE') %></a></li>
+<nav class="navbar navbar-default">
+<ul class="nav navbar-nav">
+  <%- createLink('HOME') %>
   <% if (typeof user !== 'undefined') {%>
-    <li><a href="<%= __('CONTACT-LIST.URL') %>"><%= __('CONTACT-LIST.TITLE') %></a></li>
-    <li><a href="<%= __('AUTH.LOGOUT.URL') %>"><%= __('AUTH.LOGOUT.TITLE') %></a></li>
+    <%- createLink('CONTACT-LIST') %>
+    <%- createLink('AUTH.LOGOUT') %>
   <%} else {%>
-    <li><a href="<%= __('AUTH.LOGIN.URL') %>"><%= __('AUTH.LOGIN.TITLE') %></a></li>
-    <li><a href="<%= __('AUTH.REGISTER.URL') %>"><%= __('AUTH.REGISTER.TITLE') %></a></li>
+    <%- createLink('AUTH.LOGIN') %>
+    <%- createLink('AUTH.REGISTER') %>
   <% } %>
 </ul>
+</nav>

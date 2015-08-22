@@ -1,19 +1,29 @@
-<form ng-controller="AuthController as vm">
-  <div>
-    <h1><%= __('AUTH.REGISTER.TITLE') %></h1>
+
+<div class="page-header">
+  <h1><%= __('AUTH.REGISTER.TITLE') %></h1>
+</div>
+
+<form class="col-xs-offset-3 col-xs-6 form-horizontal" name="registerForm" novalidate ng-submit="vm.register()" ng-controller="AuthController as vm">
+  <div class="form-group" ng-class="{'has-error': vm.isError('registerForm', 'username') }">
+    <label class="col-xs-4 control-label" for="username"><%= __('AUTH.USERNAME')%></label>
+    <div class="col-xs-8">
+      <input class="form-control" type="text" id="username" name="username" required ng-model="vm.data.username" />
+      <p class="help-block" ng-show="vm.isError('registerForm', 'username')"><%= __('AUTH.USERNAME-REQUIRED') %></p>
+    </div>
   </div>
-  <div>
-    <label for="username"><%= __('AUTH.USERNAME')%></label>
-    <input type="text" id="username" name="username" ng-model="vm.data.username" />
+  <div class="form-group" ng-class="{'has-error': vm.isError('registerForm', 'password') }">
+    <label class="col-xs-4 control-label" for="password"><%= __('AUTH.PASSWORD') %></label>
+    <div class="col-xs-8">
+      <input class="form-control" type="password" id="password" name="password" required ng-model="vm.data.password" />
+      <p class="help-block" ng-show="vm.isError('registerForm', 'password')"><%= __('AUTH.PASSWORD-REQUIRED') %></p>
+    </div>
   </div>
-  <div>
-    <label for="password"><%= __('AUTH.PASSWORD') %></label>
-    <input type="password" id="password" name="password" ng-model="vm.data.password" />
-  </div>
-  <div>
-    <button id="register" ng-click="vm.register()"><%= __('AUTH.REGISTER.REGISTER') %></button>
-  </div>
-  <div>
-    {{ vm.error.message }}
+  <div class="form-group text-right" ng-class="{'has-error': vm.error }">
+    <div class="col-xs-12">
+      <button type="submit" class="btn btn-default text-right" ng-disabled="registerForm.$invalid" id="register"><%= __('AUTH.REGISTER.REGISTER') %></button>
+      <p ng-show="vm.error" class="help-block">
+        {{ vm.error.message }}
+      </p>
+    </div>
   </div>
 </form>

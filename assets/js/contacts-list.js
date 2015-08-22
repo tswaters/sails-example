@@ -23,10 +23,15 @@ angular.module('ContactList', [])
   ])
   .controller('ContactController', [
     'ContactService',
-    function (ContactsService) {
+    'FormService',
+    '$scope',
+    function (ContactsService, FormService, $scope) {
       var vm = this;
 
+      vm.isError = _.curry(FormService.isError)($scope);
+
       vm.setState = function (state, contact) {
+        $scope.editCreateForm.$setPristine();
         vm.state = state;
         vm.data.contact = angular.copy(contact);
       };

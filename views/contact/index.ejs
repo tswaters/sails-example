@@ -1,39 +1,60 @@
-<div id="contact-list" ng-controller="ContactController as vm">
+<div class="page-header">
+  <h1><%= __('CONTACT-LIST.HEADING') %></h1>
+</div>
 
-  <h2><%= __('CONTACT-LIST.HEADING') %></h2>
+<div id="contact-list" ng-controller="ContactController as vm">
   <p id='no-contacts' ng-hide="vm.data.contacts.length > 0"><%= __('CONTACT-LIST.NONE') %></p>
-  <table id='contacts' ng-hide="vm.data.contacts.length === 0">
+  <table class="table table-bordered" id='contacts' ng-hide="vm.data.contacts.length === 0">
     <thead>
       <tr>
-        <th>Name</th>
-        <th colspan="2"><%= __('CONTACT-LIST.OPERATIONS') %></th>
+        <th class="col-xs-10">Name</th>
+        <th class="col-xs-2"><%= __('CONTACT-LIST.OPERATIONS') %></th>
       </tr>
     </thead>
     <tbody>
       <tr ng-repeat="contact in vm.data.contacts">
         <td>{{ contact.name }}</td>
-        <td><button ng-click="vm.setState('edit', contact)"><%= __('COMMON.EDIT') %></button></td>
-        <td><button ng-click="vm.setState('delete', contact)"><%= __('COMMON.DELETE') %></button></td>
+        <td>
+          <button class="btn btn-primary" ng-click="vm.setState('edit', contact)"><%= __('COMMON.EDIT') %></button>
+          <button class="btn btn-danger" ng-click="vm.setState('delete', contact)"><%= __('COMMON.DELETE') %></button>
+        </td>
       </tr>
     </tbody>
   </table>
 
   <p id='create-contact' ng-show="vm.state === 'init'"><a href="#" ng-click="vm.setState('create')"><%=__('CONTACT-LIST.CREATE-LINK')%></a></p>
 
-  <fieldset id='edit-form' ng-show="vm.state === 'create' || vm.state === 'edit'">
+  <fieldset class="form-horizontal" id='edit-form' ng-show="vm.state === 'create' || vm.state === 'edit'">
     <legend>{{ vm.state === 'create' ? '<%= __('COMMON.CREATE') %>' : '<%= __('COMMON.EDIT') %>'}} <%=__('CONTACT-LIST.TITLE')%></legend>
-    <label for="name"><%= __('CONTACT-LIST.NAME') %></label>
-    <input ng-model="vm.data.contact.name" type="text" name="name" id="name" />
-    <button ng-show="vm.state === 'create'" ng-click="vm.create()"><%= __('COMMON.CREATE')%></button>
-    <button ng-show="vm.state === 'edit'" ng-click="vm.edit()"><%= __('COMMON.EDIT') %></button>
-    <button ng-click="vm.setState('init')"><%= __('COMMON.CANCEL') %></button>
+    <form name="editCreateForm" novalidate>
+    <div class="form-group" ng-class="{'has-error': vm.isError('editCreateForm', 'name')}">
+      <label class="col-xs-4 control-label" for="name"><%= __('CONTACT-LIST.NAME') %></label>
+      <div class="col-xs-4">
+        <input class="form-control" required ng-model="vm.data.contact.name" type="text" name="name" id="name" />
+        <p class="help-block" ng-show="vm.isError('editCreateForm', 'name')"><%= __('CONTACT-LIST.NAME-REQUIRED') %></p>
+      </div>
+    </div>
+    <div class="form-group text-right">
+      <div class="col-xs-8">
+        <button class="btn btn-primary" ng-disabled="editCreateForm.$invalid" ng-show="vm.state === 'create'" ng-click="vm.create()"><%= __('COMMON.CREATE')%></button>
+        <button class="btn btn-primary" ng-disabled="editCreateForm.$invalid" ng-show="vm.state === 'edit'" ng-click="vm.edit()"><%= __('COMMON.EDIT') %></button>
+        <button class="btn btn-default" ng-click="vm.setState('init')"><%= __('COMMON.CANCEL') %></button>
+      </div>
+    </div>
+    </form>
   </fieldset>
 
   <fieldset id='delete-form' ng-show="vm.state === 'delete'">
     <legend><%= __('CONTACT-LIST.DELETE.HEADER')%></legend>
-    <p><%= __('CONTACT-LIST.DELETE.CONFIRM')  %></p>
-    <button ng-click="vm.delete()"><%=__('COMMON.YES')%></button>
-    <button ng-click="vm.setState('init')"><%=__('COMMON.NO')%></button>
+    <div class="col-xs-offset-4 col-xs-4">
+      <p class="help-text"><%= __('CONTACT-LIST.DELETE.CONFIRM')  %></p>
+    </div>
+    <div class="form-group text-right">
+      <div class="col-xs-offset-4 col-xs-4">
+        <button class="btn btn-danger" ng-click="vm.delete()"><%=__('COMMON.YES')%></button>
+        <button class="btn btn-default" ng-click="vm.setState('init')"><%=__('COMMON.NO')%></button>
+      </div>
+    </div>
   </fieldset>
 
 </div>

@@ -18,8 +18,10 @@ angular.module('Login', [])
 
   .controller('AuthController', [
     'AuthService',
+    'FormService',
+    '$scope',
     '$window',
-    function (AuthService, $window) {
+    function (AuthService, FormService, $scope, $window) {
       var vm = this;
 
       vm.error = null;
@@ -27,6 +29,8 @@ angular.module('Login', [])
         username: null,
         password: null
       };
+
+      vm.isError = _.curry(FormService.isError)($scope)
 
       vm.register = function () {
         vm.error = null;

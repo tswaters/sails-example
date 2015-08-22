@@ -39,19 +39,21 @@
 	},
 	"AUTH": {
 		"USERNAME": "User Name",
+		"USERNAME-REQUIRED": "User Name is a required field.",
 		"PASSWORD": "Password",
+		"PASSWORD-REQUIRED": "Password is a required field.",
 		"LOGIN": {
-			"TITLE": "Log into Sample Application",
+			"TITLE": "Log In",
 			"LOGIN": "Log in",
 			"URL": "/en/login"
 		},
 		"REGISTER": {
-			"TITLE": "Register for Sample Application",
+			"TITLE": "Register",
 			"REGISTER": "Register",
 			"URL": "/en/register"
 		},
 		"LOGOUT": {
-			"TITLE": "Log Out from Sample Application",
+			"TITLE": "Log Out",
 			"URL": "/en/logout"
 		}
 	},
@@ -62,6 +64,7 @@
 		"NONE": "No Contacts!",
 		"OPERATIONS": "Operations",
 		"CREATE-LINK": "Create Contact",
+		"NAME-REQUIRED": "Name is a required field",
 		"DELETE": {
 			"HEADER": "Delete Contact?",
 			"CONFIRM": "Are you sure? This operation cannot be undone."

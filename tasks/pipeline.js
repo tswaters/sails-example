@@ -26,6 +26,7 @@ var jsFilesToInject = [
   // Dependencies like jQuery, or Angular are brought in here
   'vendor/jquery/dist/jquery.min.js',
   'vendor/angular/angular.min.js',
+  'vendor/lodash/lodash.min.js',
 
   // All of the rest of your client-side js files
   // will be injected here in no particular order.
