@@ -31,7 +31,7 @@ module.exports.routes = {
   'DELETE /api/contact/:id': 'ContactController.delete',
 
   // view routes
-  '/': 'HomeController.home',
+  '/': 'HomeController.noLocale',
   '/:lang': 'HomeController.home',
   '/:lang/contact': 'ContactController.home',
   '/:lang/login': 'AuthController.loginForm',

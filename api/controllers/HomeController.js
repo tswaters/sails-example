@@ -4,3 +4,7 @@ module.exports.home = function (req, res) {
     title: req.__('SITE.TITLE')
   }, 'homepage');
 }
+
+module.exports.noLocale = function (req, res) {
+  res.redirect(302, '/' + req.locale);
+};
