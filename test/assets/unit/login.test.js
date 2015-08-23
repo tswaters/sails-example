@@ -48,7 +48,7 @@ describe('login', function () {
       $q = _$q_;
       AuthService = _AuthService_;
       scope = $rootScope.$new();
-      vm = $controller('AuthController', {scope: scope});
+      vm = $controller('AuthController', {$scope: scope});
     }));
 
     it('should call login with current state data', function () {

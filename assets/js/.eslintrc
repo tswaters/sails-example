@@ -1,8 +1,10 @@
 {
   "env": {
     "browser": true,
-    "jquery": true,
-    "lodash": true
+    "jquery": true
+  },
+  "globals": {
+    "_": true
   },
   "plugins": [
     "angular"

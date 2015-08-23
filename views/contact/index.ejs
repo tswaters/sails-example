@@ -1,8 +1,7 @@
-<div class="page-header">
-  <h1><%= __('CONTACT-LIST.HEADING') %></h1>
-</div>
-
 <div id="contact-list" ng-controller="ContactController as vm">
+  <div class="page-header">
+    <h1><%= __('CONTACT-LIST.HEADING') %></h1>
+  </div>
   <p id='no-contacts' ng-hide="vm.data.contacts.length > 0"><%= __('CONTACT-LIST.NONE') %></p>
   <table class="table table-bordered" id='contacts' ng-hide="vm.data.contacts.length === 0">
     <thead>

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('ContactList', [])
+angular.module('ContactList', ['Forms'])
   .factory('ContactService', [
     '$http',
     function ($http) {

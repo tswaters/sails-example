@@ -5,6 +5,7 @@ module.exports = function(config) {
     frameworks: ['mocha', 'sinon', 'chai', 'jquery-expect', 'commonjs'],
     files: [
       'assets/vendor/jquery/dist/jquery.js',
+      'assets/vendor/lodash/lodash.min.js',
       'assets/vendor/angular/angular.js',
       'assets/vendor/angular-mocks/angular-mocks.js',
       'node_modules/ejs/ejs.js',

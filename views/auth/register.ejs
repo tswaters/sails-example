@@ -1,9 +1,7 @@
-
-<div class="page-header">
-  <h1><%= __('AUTH.REGISTER.TITLE') %></h1>
-</div>
-
 <form class="col-xs-offset-3 col-xs-6 form-horizontal" name="registerForm" novalidate ng-submit="vm.register()" ng-controller="AuthController as vm">
+  <div class="page-header">
+    <h1><%= __('AUTH.REGISTER.TITLE') %></h1>
+  </div>
   <div class="form-group" ng-class="{'has-error': vm.isError('registerForm', 'username') }">
     <label class="col-xs-4 control-label" for="username"><%= __('AUTH.USERNAME')%></label>
     <div class="col-xs-8">

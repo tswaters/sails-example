@@ -30,7 +30,7 @@ describe('AuthController', function () {
 
   afterEach(function (done) {
     async.series([
-      function (next) { request.get(base.uris.logout).redirects(1).end(next); },
+      function (next) { request.get(base.uris.logout).redirects(2).end(next); },
       function (next) { User.destroy({}).exec(next); }
     ], done)
   });
@@ -51,7 +51,7 @@ describe('AuthController', function () {
     it('should log the user out', function (done) {
       async.series([
         function (next) { request.post(base.uris.login).send(loginUser).end(next)},
-        function (next) { request.get(base.uris.logout).redirects(1).expect(200).end(next)},
+        function (next) { request.get(base.uris.logout).redirects(2).expect(200).end(next)},
         function (next) {
           request.get('/en/testing-return-session').end(function (err, res) {
             assert.equal(res.body.authenticated, false);

@@ -1,5 +1,5 @@
 
-angular.module('Login', [])
+angular.module('Login', ['Forms'])
 
   .service('AuthService', [
     '$http',

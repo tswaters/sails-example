@@ -61,7 +61,10 @@ describe('contact list', function () {
       sinon.stub(ContactService, 'create', promiseStub);
       sinon.stub(ContactService, 'edit', promiseStub);
       scope = $rootScope.$new();
-      vm = $controller('ContactController', {scope: scope});
+      scope.editCreateForm = {
+        $setPristine: sinon.stub()
+      }
+      vm = $controller('ContactController', {$scope: scope});
     }));
 
     afterEach(function () {
@@ -98,6 +101,7 @@ describe('contact list', function () {
 
     it('should set the state and contact properly when calling setState', function () {
       vm.setState('dummy', {name:'Test'});
+      expect(scope.editCreateForm.$setPristine.calledOnce);
       expect(vm.data.contact.name).to.equal('Test');
       expect(vm.state).to.equal('dummy');
     })

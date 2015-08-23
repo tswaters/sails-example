@@ -28,7 +28,7 @@ describe('ContactController', function () {
 
   afterEach(function (done) {
     async.series([
-      function (next) {request.get(base.uris.logout).redirects(1).end(next) },
+      function (next) {request.get(base.uris.logout).redirects(2).end(next) },
       function (next) {Contact.destroy({}).exec(next);},
       function (next) {User.destroy({}).exec(next);}
     ], done);
@@ -37,7 +37,7 @@ describe('ContactController', function () {
   describe('#home', function () {
     it('should throw unauthorized if user is not authorized', function (done) {
       async.series([
-        function (next) {request.get(base.uris.logout).redirects(1).end(next)},
+        function (next) {request.get(base.uris.logout).redirects(2).end(next)},
         function (next) {request.get('/en/contact').expect(401).end(next);}
       ], done);
     });
