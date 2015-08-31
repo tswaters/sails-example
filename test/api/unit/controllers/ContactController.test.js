@@ -7,6 +7,7 @@ var base = require('../../base.js');
 
 describe('ContactController', function () {
   var request;
+  var contact;
   var contacts;
   var users;
   var loginUser;
@@ -16,6 +17,7 @@ describe('ContactController', function () {
     contacts = base.fixtures.contacts;
     users = base.fixtures.users;
     loginUser = _.first(base.fixtures.users);
+    contact = _.first(contacts);
   });
 
   beforeEach(function (done) {
@@ -76,81 +78,106 @@ describe('ContactController', function () {
   });
 
   describe('#list', function () {
+    var stub;
+    var uri;
+    before(function () {
+      stub = sinon.stub(ContactService, 'list');
+      uri = '/api/contact';
+    })
+    afterEach(function () {
+      stub.reset();
+    });
+    after(function () {
+      stub.restore();
+    });
     it('should respond to upstream errors properly', function (next) {
-      sinon.stub(ContactService, 'list', function (opts, cb) {
-        cb(new Error('error'));
-      });
-      request.get('/api/contact').expect(500).end(function (err) {
-        ContactService.list.restore();
-        next(err);
-      });
+      stub.callsArgWith(1, new Error('error'));
+      request.get(uri).expect(500).end(next);
     });
     it('should render a list of contacts properly', function (next) {
-      request.get('/api/contact').expect(200).end(next);
+      stub.callsArgWith(1, null, [])
+      request.get(uri).expect(200).end(next);
     });
   });
 
   describe('#edit', function () {
-    var contact;
+    var stub;
+    var uri;
+    var payload;
     before(function () {
-      contact = _.first(contacts);
+      stub = sinon.stub(ContactService, 'edit');
+      uri = '/api/contact/' + contact.id;
+      payload = {name: 'dummy'};
+    });
+    afterEach(function () {
+      stub.reset();
+    });
+    after(function () {
+      stub.restore()
     });
     it('should respond to upstream errors properly', function (next) {
-      sinon.stub(ContactService, 'edit', function (id, data, cb) {
-        cb(new ExceptionService.DatabaseError('error'));
-      });
-      request.post('/api/contact/' + contact.id).expect(500).end(function (err) {
-        ContactService.edit.restore();
-        next(err);
-      });
+      stub.callsArgWith(1, new ExceptionService.DatabaseError());
+      request.post(uri).send(payload).expect(500).end(next);
     });
     it('should respond with 404 if the contact wasnt found', function (next) {
-      request.post('/api/contact/999').send({name: 'dummy'}).expect(404).end(next);
+      stub.callsArgWith(1, new ExceptionService.NotFound());
+      request.post(uri).send(payload).expect(404).end(next);
     });
     it('should update the contact properly', function (next) {
-      request.post('/api/contact/' + contact.id).send({name: 'dummy'}).expect(204).end(next);
+      stub.callsArgWith(1, null);
+      request.post(uri).send(payload).expect(204).end(next);
     });
   });
 
   describe('#delete', function () {
-    var contact;
+    var stub;
+    var uri;
     before(function () {
-      contact = _.first(contacts);
+      stub = sinon.stub(ContactService, 'delete');
+      uri = '/api/contact/' + contact.id;
+    });
+    afterEach(function () {
+      stub.reset();
+    });
+    after(function () {
+      stub.restore();
     });
     it('should respond to upstream errors properly', function (next) {
-      sinon.stub(ContactService, 'delete', function (id, cb) {
-        cb(new ExceptionService.DatabaseError('error'));
-      });
-      request.delete('/api/contact/' + contact.id).expect(500).end(function (err) {
-        ContactService.delete.restore();
-        next(err);
-      });
+      stub.callsArgWith(1, new ExceptionService.DatabaseError());
+      request.delete(uri).expect(500).end(next);
     });
     it('should respond with 404 if the contact wasnt found', function (next) {
-      request.delete('/api/contact/999').expect(404).end(next);
+      stub.callsArgWith(1, new ExceptionService.NotFound());
+      request.delete(uri).expect(404).end(next);
     });
     it('should delete the entity properly', function (next) {
-      request.delete('/api/contact/' + contact.id).expect(204).end(next);
+      stub.callsArgWith(1, null);
+      request.delete(uri).expect(204).end(next);
     });
   });
 
   describe('#create', function () {
-    var url;
+    var stub;
+    var uri;
+    var payload;
     before(function () {
-      url = '/api/contact';
+      stub = sinon.stub(ContactService, 'create');
+      uri = '/api/contact';
+      payload = {name: 'hiya'};
+    });
+    afterEach(function () {
+      stub.reset();
+    });
+    after(function () {
+      stub.restore();
     });
     it('should respond to upstream errors properly', function (next) {
-      sinon.stub(ContactService, 'create', function (id, cb) {
-        cb(new ExceptionService.DatabaseError('error'));
-      });
-      request.post(url).expect(500).end(function (err) {
-        ContactService.create.restore();
-        next(err);
-      });
+      stub.callsArgWith(1, new ExceptionService.DatabaseError());
+      request.post(uri).send(payload).expect(500).end(next);
     });
-
     it('should create a contact properly', function (next) {
-      request.post(url).send({name: 'hiya'}).expect(204).end(next);
+      stub.callsArgWith(1, null, null);
+      request.post(uri).send(payload).expect(204).end(next);
     });
   });
 });
