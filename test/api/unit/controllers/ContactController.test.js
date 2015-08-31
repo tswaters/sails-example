@@ -46,6 +46,35 @@ describe('ContactController', function () {
     });
   });
 
+  describe('#get', function () {
+    var stub;
+    var uri;
+    var contact;
+    before(function () {
+      contact = _.first(contacts);
+      stub = sinon.stub(ContactService, 'get');
+      uri = '/api/contact/' + contact.id;
+    });
+    afterEach(function () {
+      stub.reset();
+    })
+    after(function () {
+      stub.restore();
+    })
+    it('should respond to upstream errors properly', function (next) {
+      stub.callsArgWith(1, new ExceptionService.DatabaseError());
+      request.get(uri).expect(500).end(next);
+    });
+    it('should return 404 for an invalid contact', function (next) {
+      stub.callsArgWith(1, new ExceptionService.NotFound(), null);
+      request.get(uri).expect(404).end(next);
+    });
+    it('should return the contact properly', function (next) {
+      stub.callsArgWith(1, null, contact);
+      request.get(uri).expect(200).end(next);
+    });
+  });
+
   describe('#list', function () {
     it('should respond to upstream errors properly', function (next) {
       sinon.stub(ContactService, 'list', function (opts, cb) {

@@ -10,12 +10,12 @@ var Deferred = require(path.join(
   'lib/waterline/query/deferred'
 ));
 
-module.exports.stub = function (message) {
-  sinon.stub(Deferred.prototype, 'exec', function (cb) {
-    cb(new Error(message));
-  });
+module.exports.stub = function () {
+  return sinon.stub(Deferred.prototype, 'exec');
 };
 
-module.exports.restore = function () {
-  Deferred.prototype.exec.restore();
-};
+module.exports.stubError = function (message) {
+  return sinon.stub(Deferred.prototype, 'exec', function (cb) {
+    cb(message);
+  })
+}

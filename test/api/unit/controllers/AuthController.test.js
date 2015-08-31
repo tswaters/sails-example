@@ -128,9 +128,9 @@ describe('AuthController', function () {
 
   describe('#register', function () {
     it('should respond to database problems properly', function (next) {
-      databaseHelper.stub('error');
+      var stub = databaseHelper.stubError('error');
       this.request.post(base.uris.register).send(loginUser).expect(500).end(function (err) {
-        databaseHelper.restore();
+        stub.restore();
         next(err);
       });
     });

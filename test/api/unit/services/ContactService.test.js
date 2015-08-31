@@ -2,7 +2,7 @@
 'use strict';
 
 var async = require('async');
-//var _ = require('lodash');
+var _ = require('lodash');
 var databaseHelper = require('../../helpers/database');
 var base = require('../../base.js');
 var assert = require('assert');
@@ -23,6 +23,49 @@ function afterEachAll (done) {
 }
 
 describe('Contact Service', function () {
+
+  describe('#get', function () {
+    var stub;
+    var payload = {
+      user: 1,
+      id: 1
+    };
+    before(function () {
+      stub = databaseHelper.stub();
+    });
+    afterEach(function () {
+      stub.reset();
+    });
+    after(function () {
+      stub.restore();
+    });
+    it('should respond with DatabaseError if encountering database problems', function (next) {
+      stub.callsArgWith(0, 'error');
+      ContactService.get(payload, function (err, contacts) {
+        assert(err instanceof ExceptionService.DatabaseError);
+        assert.equal(err.originalError, 'error');
+        assert.equal(contacts, null);
+        next();
+      });
+    });
+    it('should return a given contact properly', function (next) {
+      stub.callsArgWith(0, null, null)
+      ContactService.get(payload, function (err, contact) {
+        assert(err instanceof ExceptionService.NotFound);
+        assert.equal(contact, null);
+        next();
+      });
+    });
+    it('should return a given contact properly', function (next) {
+      stub.callsArgWith(0, null, {})
+      ContactService.get(payload, function (err, contact) {
+        assert.equal(err, null);
+        assert(_.isObject(contact));
+        next();
+      });
+    });
+  });
+
   describe('#list', function () {
     var payload;
     beforeEach(beforeEachAll);
@@ -31,12 +74,12 @@ describe('Contact Service', function () {
     });
     afterEach(afterEachAll);
     it('should respond with DatabaseError if encountering database problems', function (next) {
-      databaseHelper.stub('error');
+      var stub = databaseHelper.stubError('error');
       ContactService.list(payload, function (err, contacts) {
         assert(err instanceof ExceptionService.DatabaseError);
         assert.equal(err.originalError.message, 'error');
         assert.equal(contacts, null);
-        databaseHelper.restore();
+        stub.restore();
         next();
       });
     });
@@ -56,11 +99,11 @@ describe('Contact Service', function () {
     });
     afterEach(afterEachAll);
     it('should respond with DatabaseError if encountering database problems', function (next) {
-      databaseHelper.stub('error');
+      var stub = databaseHelper.stubError('error');
       ContactService.create(payload, function (err) {
         assert(err instanceof ExceptionService.DatabaseError);
         assert.equal(err.originalError.message, 'error');
-        databaseHelper.restore();
+        stub.restore();
         next();
       });
     });
@@ -89,9 +132,9 @@ describe('Contact Service', function () {
     });
     afterEach(afterEachAll);
     it('should respond with DatabaseError if encountering database problems', function (next) {
-      databaseHelper.stub('error');
+      var stub = databaseHelper.stubError('error');
       ContactService.edit(payload, function (err) {
-        databaseHelper.restore();
+        stub.restore();
         assert(err instanceof ExceptionService.DatabaseError);
         assert.equal(err.originalError.message, 'error');
         next();
@@ -124,11 +167,11 @@ describe('Contact Service', function () {
     });
     afterEach(afterEachAll);
     it('should respond with DatabaseError if encountering database problems', function (next) {
-      databaseHelper.stub('error');
+      var stub = databaseHelper.stubError('error');
       ContactService.delete(payload, function (err) {
         assert(err instanceof ExceptionService.DatabaseError);
         assert.equal(err.originalError.message, 'error');
-        databaseHelper.restore();
+        stub.restore();
         next();
       });
     });

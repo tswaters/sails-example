@@ -1,5 +1,19 @@
 'use strict';
 
+module.exports.get = function (opts, cb) {
+  var userId = opts.user;
+  var id = opts.id
+  Contact.findOne({id: id, owner: userId}).exec(function (err, data) {
+    if (err) {
+      return cb(new ExceptionService.DatabaseError(err));
+    }
+    if (!data) {
+      return cb(new ExceptionService.NotFound());
+    }
+    return cb(null, data);
+  });
+};
+
 module.exports.list = function (opts, cb) {
   var userId = opts.user;
   Contact.find({owner: userId}).exec(function (err, data) {

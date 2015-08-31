@@ -25,9 +25,9 @@ describe('User model', function () {
     });
 
     it('should respond to database errors properly', function (next) {
-      databaseHelper.stub('error');
+      var stub = databaseHelper.stubError('error');
       User.verify(user, function (err) {
-        databaseHelper.restore();
+        stub.restore();
         assert(err instanceof ExceptionService.DatabaseError);
         next();
       });

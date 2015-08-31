@@ -14,6 +14,15 @@ module.exports.home = function (req, res) {
 	}, 'contact/index');
 };
 
+module.exports.get = function (req, res) {
+	var id = req.param('id');
+	sails.log.info('ContactController#get called with', id);
+	ContactService.get({id: id, user: req.user.id}, function (err, contact) {
+		if (err) { return res.notOk(err); }
+		res.ok(contact);
+	});
+};
+
 module.exports.list = function (req, res) {
 	sails.log.info('ContactController#list called');
 	ContactService.list({user: req.user.id}, function (err, contacts) {
