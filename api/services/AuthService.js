@@ -19,9 +19,7 @@ passport.serializeUser(function (user, done) {
 });
 
 passport.deserializeUser(function (id, done) {
-  User.findOne(id).exec(function (err, user) {
-    done(err, user)
-  });
+  User.findOne(id).exec(done);
 });
 
 module.exports = passport;
