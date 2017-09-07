@@ -1,7 +1,7 @@
 'use strict';
 
 var _ = require('lodash');
-var buildDictionary = require('sails/node_modules/sails-build-dictionary');
+var buildDictionary = require('sails-build-dictionary');
 
 module.exports = function (overrides) {
   var config = {};

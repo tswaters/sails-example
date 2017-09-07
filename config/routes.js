@@ -26,6 +26,7 @@ module.exports.routes = {
   'POST /api/auth/login': 'AuthController.login',
   'POST /api/auth/register': 'AuthController.register',
   'GET /api/contact': 'ContactController.list',
+  'GET /api/contact/:id': 'ContactController.get',
   'POST /api/contact': 'ContactController.create',
   'POST /api/contact/:id': 'ContactController.edit',
   'DELETE /api/contact/:id': 'ContactController.delete',

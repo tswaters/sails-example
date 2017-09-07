@@ -108,8 +108,9 @@ describe('User model', function () {
     it('should hash the user password properly', function (next) {
       var oldHash = user.password;
       createdUser.password = 'new password';
-      createdUser.save(function (err, updatedUser) {
-        assert.notEqual(updatedUser.password, oldHash);
+      createdUser.save(function (err) {
+        assert.equal(err, null)
+        assert.notEqual(createdUser.password, oldHash);
         next();
       });
     });

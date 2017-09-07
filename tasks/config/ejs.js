@@ -1,7 +1,7 @@
 'use strict';
 
 var path = require('path');
-var i18n = require('sails/node_modules/i18n');
+var i18n = require('i18n');
 var i18nConfig = require('../../config/i18n').i18n;
 
 module.exports = function (grunt) {

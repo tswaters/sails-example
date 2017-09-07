@@ -5,7 +5,6 @@ var sinon = require('sinon');
 
 var Deferred = require(path.join(
   process.cwd(),
-  'node_modules/sails',
   'node_modules/waterline',
   'lib/waterline/query/deferred'
 ));
