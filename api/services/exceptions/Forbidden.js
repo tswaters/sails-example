@@ -1,12 +1,16 @@
 
+
 'use strict'
 
 const BaseError = require('./BaseError')
 
 module.exports = class Forbidden extends BaseError {
-  constructor (err) {
-    super('Forbidden', err)
-    this.error = 'you are not permitted to perform that operation'
+  constructor (err, replacements = []) {
+    const error = err.message ? err.message : err
+    super(error, replacements)
+
+    this.error = error
     this.status = 403
+    this.type = 'Forbidden'
   }
 }

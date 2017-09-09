@@ -18,11 +18,7 @@
 -->
 <div class="main">
   <h1><%= __('ERRORS.400.TITLE')%></h1>
-  <h2>
-    <% if (typeof message !== 'undefined') { %>
-    <%= error %>
-    <% } else { %>
-    <%= __('ERRORS.400.MESSAGE') %>
-    <% } %>
-  </h2>
+  <h2><%= __('ERRORS.400.INTRO') %></h2>
+  <%= error.message %>
+  <% if (error.stack) {%> <pre><%= error.stack %></pre> <% } %>
 </div>

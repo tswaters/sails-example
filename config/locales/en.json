@@ -5,24 +5,36 @@
 	},
 	"ERRORS": {
 		"500": {
-			"TITLE": "Something isn't right here.",
-			"MESSAGE": "A team of highly trained sea bass is working on this as we speak."
+			"TITLE": "You maniacs!",
+      "INTRO": "You blew it all up!",
+      "UNKNOWN": "God damn you all to hell!"
 		},
 		"404": {
 			"TITLE": "Something's fishy here.",
-			"MESSAGE": "The page you were trying to reach doesn't exist."
+      "INTRO": "Whatever you're looking for doesn't exist here.",
+      "CONTACT-NOT-FOUND": "That contact doesn't exist",
+      "GENERIC": "Could not find the following file: %s"
 		},
 		"403": {
 			"TITLE": "You can't do that!",
-			"MESSAGE": "You don't have permission to see the page you're trying to reach."
+			"INTRO": "Nooope."
 		},
 		"401": {
 			"TITLE": "Unauthorized",
-			"MESSAGE": "You need to log in to do that."
+      "INTRO": "You need to log in to do that.",
+      "USER-NOT-FOUND": "Could not find anyone with that user/password combination",
+      "PASSWORD-INVALID": "Could not find anyone with that user/password combination",
+      "USER-NOT-LOGGED-IN": "You need to be logged in to do that",
+      "TOKEN-INVALID": "Your session has timed out, please login again"
 		},
 		"400": {
 			"TITLE": "I didn't quite catch that",
-			"MESSAGE": "The message was understood, but was incomplete and rejected."
+      "INTRO": "The message was understood, but was incomplete and rejected.",
+      "INVALID-LOCALE": "We don't support that language",
+      "INVALID-NAME": "Name must be provided",
+      "INVALID-USERNAME": "Username must be provided",
+      "INVALID-PASSWORD": "Password must be provided",
+      "USER-ALREADY-EXISTS": "Someone with that username already exists, choose another"
 		}
 	},
 	"COMMON": {

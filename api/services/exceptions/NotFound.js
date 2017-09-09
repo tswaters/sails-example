@@ -1,12 +1,16 @@
 
+
 'use strict'
 
 const BaseError = require('./BaseError')
 
 module.exports = class NotFound extends BaseError {
-  constructor (err) {
-    super('NotFound', err)
-    this.error = 'the requested resource was not found'
+  constructor (err, replacements = []) {
+    const error = err.message ? err.message : err
+    super(error, replacements)
+
+    this.error = error
     this.status = 404
+    this.type = 'NotFound'
   }
 }
