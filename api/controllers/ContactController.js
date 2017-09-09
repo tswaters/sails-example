@@ -14,55 +14,47 @@ exports.home = (req, res) => {
   }, 'contact/index')
 }
 
-exports.get = (req, res) => {
+exports.get = (req, res, next) => {
   const id = req.param('id')
-  sails.log.info('ContactController#get called with', id)
-  ContactService.get({id, user: req.user.id}, (err, contact) => {
-    if (err) { return res.notOk(err) }
-    res.ok(contact)
-  })
+  const user = req.user.id
+  sails.log.info('ContactController#get called for user', user, 'with', id)
+  ContactService.get({id, user})
+    .then(contact => res.ok(contact))
+    .catch(err => next(err))
 }
 
-exports.list = (req, res) => {
-  sails.log.info('ContactController#list called')
-  ContactService.list({user: req.user.id}, (err, contacts) => {
-    if (err) { return res.notOk(err) }
-    res.ok(contacts)
-  })
+exports.list = (req, res, next) => {
+  const user = req.user.id
+  sails.log.info('ContactController#list called for user', user)
+  ContactService.list({user})
+    .then(contacts => res.ok(contacts))
+    .catch(err => next(err))
 }
 
-exports.edit = (req, res) => {
+exports.edit = (req, res, next) => {
   const id = req.param('id')
   const data = req.body
-  sails.log.info('ContactController#edit called for id #', id, ' and ', data)
-  ContactService.edit({
-    id,
-    data,
-    user: req.user.id
-  }, err => {
-    if (err) { return res.notOk(err) }
-    res.ok(null, {status: 204})
-  })
+  const user=  req.user.id
+  sails.log.info('ContactController#edit called for ', user, 'with', id, 'and', data)
+  ContactService.edit({id, data, user})
+    .then(() => res.ok(null, {status: 204}))
+    .catch(err => next(err))
 }
 
-exports.delete = (req, res) => {
+exports.delete = (req, res, next) => {
   const id = req.param('id')
-  sails.log.info('ContactController#delete called for id #', id)
-  ContactService.delete({
-    id,
-    user: req.user.id
-  }, err => {
-    if (err) { return res.notOk(err) }
-    res.ok(null, {status: 204})
-  })
+  const user = req.user.id
+  sails.log.info('ContactController#delete called for ', user, 'with', id)
+  ContactService.delete({id, user})
+    .then(() => res.ok(null, {status: 204}))
+    .catch(err => next(err))
 }
 
-exports.create = (req, res) => {
+exports.create = (req, res, next) => {
   const data = req.body
   data.owner = req.user.id
   sails.log.info('ContactController#create called with ', data)
-  ContactService.create(data, err => {
-    if (err) { return res.notOk(err) }
-    res.ok(null, {status: 204})
-  })
+  ContactService.create(data)
+    .then(() => res.ok(null, {status: 204}))
+    .catch(err => next(err))
 }

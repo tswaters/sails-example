@@ -11,7 +11,15 @@
 
 'use strict'
 
-module.exports.http = {
+exports.http = {
+
+  middleware: {
+    500: (err, req, res, next) => {
+      if (res.headersSent) { return next(err) }
+      sails.log.error(err)
+      res.notOk(err)
+    }
+  }
 
   /****************************************************************************
   *                                                                           *

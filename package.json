@@ -71,6 +71,7 @@
     "karma-sinon": "^1.0.4",
     "mocha": "^2.2.5",
     "sinon": "^1.15.4",
-    "supertest": "^1.0.1"
+    "sinon-as-promised": "^4.0.3",
+    "supertest": "^3.0.0"
   }
 }

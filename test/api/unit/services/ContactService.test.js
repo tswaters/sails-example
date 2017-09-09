@@ -1,197 +1,213 @@
 
 'use strict'
 
-const _ = require('lodash')
 const {execStub} = require('../../helpers/database')
 const assert = require('assert')
 
 describe('Contact Service', () => {
 
   describe('#get', () => {
-    let stub
-    const payload = {
-      user: 1,
-      id: 1
-    }
-    before(() => {
-      stub = execStub()
+
+    let stub = null
+    let payload = null
+
+    before(() => stub = execStub())
+
+    beforeEach(() => {
+      payload = {
+        user: 1,
+        id: 1
+      }
     })
-    afterEach(() => {
-      stub.reset()
-    })
-    after(() => {
-      stub.restore()
-    })
-    it('should respond with DatabaseError if encountering database problems', next => {
-      stub.callsArgWith(0, 'error')
-      ContactService.get(payload, (err, contacts) => {
+
+    afterEach(() => stub.reset())
+
+    after(() => stub.restore())
+
+    it('should respond with DatabaseError if encountering database problems', async () => {
+      stub.callsArgWith(0, new Error('aw snap!'))
+      try {
+        await ContactService.get(payload)
+        assert.ok(false)
+      } catch (err) {
         assert(err instanceof ExceptionService.DatabaseError)
-        assert.equal(err.originalError, 'error')
-        assert.equal(contacts, null)
-        next()
-      })
+        assert.equal(err.originalError.message, 'aw snap!')
+      }
     })
-    it('should return a given contact properly', next => {
+
+    it('should return a given contact properly', async () => {
       stub.callsArgWith(0, null, null)
-      ContactService.get(payload, (err, contact) => {
+      try {
+        await ContactService.get(payload)
+        assert.ok(false)
+      } catch (err) {
         assert(err instanceof ExceptionService.NotFound)
-        assert.equal(contact, null)
-        next()
-      })
+      }
     })
-    it('should return a given contact properly', next => {
-      stub.callsArgWith(0, null, {})
-      ContactService.get(payload, (err, contact) => {
-        assert.equal(err, null)
-        assert(_.isObject(contact))
-        next()
-      })
+
+    it('should return a given contact properly', async () => {
+      stub.callsArgWith(0, null, {id: '1234'})
+      const contact = await ContactService.get(payload)
+      assert.deepEqual(contact, {id: '1234'})
     })
+
   })
 
   describe('#list', () => {
-    let stub
-    const payload = {
-      user: 1
-    }
-    before(() => {
-      stub = execStub()
+
+    let stub = null
+    let payload = null
+
+    before(() => stub = execStub())
+
+    beforeEach(() => {
+      payload = {user: 1}
     })
-    afterEach(() => {
-      stub.reset()
-    })
-    after(() => {
-      stub.restore()
-    })
-    it('should respond with DatabaseError if encountering database problems', next => {
-      stub.callsArgWith(0, 'error')
-      ContactService.list(payload, (err, contacts) => {
+
+    afterEach(() => stub.reset())
+
+    after(() => stub.restore())
+
+    it('should respond with DatabaseError if encountering database problems', async () => {
+      stub.callsArgWith(0, new Error('aw snap!'))
+      try {
+        await ContactService.list(payload)
+        assert.ok(false)
+      } catch (err) {
         assert(err instanceof ExceptionService.DatabaseError)
-        assert.equal(err.originalError, 'error')
-        assert.equal(contacts, null)
-        next()
-      })
+        assert.equal(err.originalError.message, 'aw snap!')
+      }
     })
-    it('should return contacts for a given user properly', next => {
-      stub.callsArgWith(0, null, [])
-      ContactService.list(payload, (err, contacts) => {
-        assert.equal(err, null)
-        assert.equal(contacts.length, 0)
-        next()
-      })
+
+    it('should return contacts for a given user properly', async () => {
+      stub.callsArgWith(0, null, [{id: '1234'}])
+      const contacts = await ContactService.list(payload)
+      assert.deepEqual(contacts, [{id: '1234'}])
     })
+
   })
 
   describe('#create', () => {
-    let stub
-    const payload = {
-      name: 'hiya',
-      owner: 1
-    }
-    before(() => {
-      stub = execStub()
+    let stub = null
+    let payload = null
+
+    before(() => stub = execStub())
+
+    beforeEach(() => {
+      payload = {name: 'hiya', owner: 1}
     })
-    afterEach(() => {
-      stub.reset()
-    })
-    after(() => {
-      stub.restore()
-    })
-    it('should respond with DatabaseError if encountering database problems', next => {
-      stub.callsArgWith(0, 'error')
-      ContactService.create(payload, (err, contact) => {
+
+    afterEach(() => stub.reset())
+
+    after(() => stub.restore())
+
+    it('should respond with DatabaseError if encountering database problems', async () => {
+      stub.callsArgWith(0, new Error('aw snap!'))
+      try {
+        await ContactService.create(payload)
+        assert.ok(false)
+      } catch (err) {
         assert(err instanceof ExceptionService.DatabaseError)
-        assert.equal(err.originalError, 'error')
-        assert.equal(contact, null)
-        next()
-      })
+        assert.equal(err.originalError.message, 'aw snap!')
+      }
     })
-    it('should create a contact properly', next => {
-      stub.callsArgWith(0, null, {})
-      ContactService.create(payload, err => {
-        assert.equal(err, null)
-        next()
-      })
+
+    it('should create a contact properly', async () => {
+      stub.callsArgWith(0, null, {id: '1234'})
+      const result = await ContactService.create(payload)
+      assert.deepEqual(result, {id: '1234'})
     })
+
   })
 
   describe('#edit', () => {
-    let stub
-    const payload = {
-      id: 1,
-      user: 1,
-      data: {name: 'new-name'}
-    }
-    before(() => {
-      stub = execStub()
+    let stub = null
+    let payload = null
+
+    before(() => stub = execStub())
+
+    beforeEach(() => {
+      payload = {
+        id: 1,
+        user: 1,
+        data: {name: 'new-name'}
+      }
     })
-    afterEach(() => {
-      stub.reset()
-    })
-    after(() => {
-      stub.restore()
-    })
-    it('should respond with DatabaseError if encountering database problems', next => {
-      stub.callsArgWith(0, 'error')
-      ContactService.edit(payload, err => {
+
+    afterEach(() => stub.reset())
+
+    after(() => stub.restore())
+
+    it('should respond with DatabaseError if encountering database problems', async () => {
+      stub.callsArgWith(0, new Error('aw snap!'))
+      try {
+        await ContactService.edit(payload)
+        assert.ok(false)
+      } catch (err) {
         assert(err instanceof ExceptionService.DatabaseError)
-        assert.equal(err.originalError, 'error')
-        next()
-      })
+        assert.equal(err.originalError.message, 'aw snap!')
+      }
     })
-    it('should respond with NotFound if the contact was not found', next => {
+
+    it('should respond with NotFound if the contact was not found', async () => {
       stub.callsArgWith(0, null, [])
-      ContactService.edit(payload, err => {
+      try {
+        await ContactService.edit(payload)
+      } catch (err) {
         assert(err instanceof ExceptionService.NotFound)
-        next()
-      })
+      }
     })
-    it('should edit the contact properly', next => {
+
+    it('should edit the contact properly', async () => {
       stub.callsArgWith(0, null, [{}])
-      ContactService.edit(payload, err => {
-        assert.equal(err, null)
-        next()
-      })
+      await ContactService.edit(payload)
     })
+
   })
 
   describe('#delete', () => {
     let stub
-    const payload = {
-      id: 1,
-      user: 1
-    }
-    before(() => {
-      stub = execStub()
+    let payload = null
+
+    before(() => stub = execStub())
+
+    beforeEach(() => {
+      payload = {
+        id: 1,
+        user: 1
+      }
     })
-    afterEach(() => {
-      stub.reset()
-    })
-    after(() => {
-      stub.restore()
-    })
-    it('should respond with DatabaseError if encountering database problems', next => {
-      stub.callsArgWith(0, 'error')
-      ContactService.delete(payload, err => {
+
+    afterEach(() => stub.reset())
+
+    after(() => stub.restore())
+
+    it('should respond with DatabaseError if encountering database problems', async () => {
+      stub.callsArgWith(0, new Error('aw snap!'))
+      try {
+        await ContactService.delete(payload)
+        assert.ok(false)
+      } catch (err) {
         assert(err instanceof ExceptionService.DatabaseError)
-        assert.equal(err.originalError, 'error')
-        next()
-      })
+        assert.equal(err.originalError.message, 'aw snap!')
+      }
     })
-    it('should respond with NotFound if the contact was not found', next => {
+
+    it('should respond with NotFound if the contact was not found', async () => {
       stub.callsArgWith(0, null, [])
-      ContactService.delete(payload, err => {
+      try {
+        await ContactService.delete(payload)
+        assert.ok(false)
+      } catch (err) {
         assert(err instanceof ExceptionService.NotFound)
-        next()
-      })
+      }
     })
-    it('should delete the contact properly', next => {
+
+    it('should delete the contact properly', async () => {
       stub.callsArgWith(0, null, [{}])
-      ContactService.delete(payload, err => {
-        assert.equal(err, null)
-        next()
-      })
+      await ContactService.delete(payload)
     })
+
   })
 
 })

@@ -1,59 +1,36 @@
 
 'use strict'
 
-exports.get = (opts, cb) => {
-  const userId = opts.user
-  const id = opts.id
-  Contact.findOne({id, owner: userId}).exec((err, data) => {
-    if (err) {
-      return cb(new ExceptionService.DatabaseError(err))
-    }
-    if (!data) {
-      return cb(new ExceptionService.NotFound())
-    }
-    return cb(null, data)
-  })
+exports.get = opts => {
+  const {id, user: owner} = opts
+  return Contact.findOne({id, owner})
+    .catch(err => { throw new ExceptionService.DatabaseError(err) })
+    .then(data => { if (!data) { throw new ExceptionService.NotFound()} return data})
 }
 
-exports.list = (opts, cb) => {
-  const userId = opts.user
-  Contact.find({owner: userId}).exec((err, data) => {
-    if (err) {
-      return cb(new ExceptionService.DatabaseError(err))
-    }
-    return cb(null, data)
-  })
+exports.list = opts => {
+  const {user: owner} = opts
+  return Contact.find({owner})
+    .catch(err => {throw new ExceptionService.DatabaseError(err)})
 }
 
-exports.delete = (opts, cb) => {
-  Contact.destroy({id: opts.id, owner: opts.user}).exec((err, contacts) => {
-    if (err) {
-      return cb(new ExceptionService.DatabaseError(err))
-    }
-    if (contacts.length === 0) {
-      return cb(new ExceptionService.NotFound())
-    }
-    cb(null, null)
-  })
+exports.delete = opts => {
+  const {id, user: owner} = opts
+  return Contact.destroy({id, owner})
+    .catch(err => {
+      throw new ExceptionService.DatabaseError(err)
+    })
+    .then(data => {if (data.length === 0) { throw new ExceptionService.NotFound() }})
 }
 
-exports.edit = (opts, cb) => {
-  Contact.update({id: opts.id, owner: opts.user}, opts.data).exec((err, contacts) => {
-    if (err) {
-      return cb(new ExceptionService.DatabaseError(err))
-    }
-    if (contacts.length === 0) {
-      return cb(new ExceptionService.NotFound())
-    }
-    cb(null, null)
-  })
+exports.edit = opts => {
+  const {id, user: owner, data} = opts
+  return Contact.update({id, owner}, data)
+    .catch(err => { throw new ExceptionService.DatabaseError(err) })
+    .then(contacts => { if (contacts.length === 0) { throw new ExceptionService.NotFound() }})
 }
 
-exports.create = (data, cb) => {
-  Contact.create(data).exec(err => {
-    if (err) {
-      return cb(new ExceptionService.DatabaseError(err))
-    }
-    cb(null, null)
-  })
+exports.create = data => {
+  return Contact.create(data)
+    .catch(err => {throw new ExceptionService.DatabaseError(err)})
 }

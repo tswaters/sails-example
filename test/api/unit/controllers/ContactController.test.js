@@ -2,183 +2,209 @@
 'use strict'
 
 const _ = require('lodash')
-const async = require('async')
+const assert = require('assert')
 const sinon = require('sinon')
 const {fixtures, uris} = require('../../base.js')
 
+require('sinon-as-promised')
+
 describe('ContactController', () => {
-  let request
-  let contact
-  let contacts
+
   let users
   let loginUser
 
-  before(function () {
-    request = this.request
-    contacts = fixtures.contacts
+  before(() => {
     users = fixtures.users
     loginUser = _.first(fixtures.users)
-    contact = _.first(contacts)
   })
 
-  beforeEach(done => {
-    async.series([
-      function (next) {Contact.create(contacts).exec(next)},
-      function (next) {User.create(users).exec(next)},
-      function (next) {request.post(uris.login).send(loginUser).end(next) }
-    ], done)
+  beforeEach(async function () {
+    await User.create(users)
+    await this.request.post(uris.login).send(loginUser)
   })
 
-  afterEach(done => {
-    async.series([
-      function (next) {request.get(uris.logout).redirects(2).end(next) },
-      function (next) {Contact.destroy({}).exec(next)},
-      function (next) {User.destroy({}).exec(next)}
-    ], done)
+  afterEach(async function () {
+    await this.request.get(uris.logout).redirects(2)
+    await User.destroy({})
   })
 
   describe('#home', () => {
-    it('should throw unauthorized if user is not authorized', done => {
-      async.series([
-        function (next) {request.get(uris.logout).redirects(2).end(next)},
-        function (next) {request.get('/en/contact').expect(401).end(next)}
-      ], done)
+
+    it('should throw unauthorized if user is not authorized', async function () {
+      await this.request.get(uris.logout).redirects(2)
+      await this.request.get('/en/contact').expect(401)
     })
-    it('should render the page', function (next) {
-      this.request.get('/en/contact').expect(200).end(next)
+
+    it('should render the page', async function () {
+      await this.request.get('/en/contact').expect(200)
     })
+
   })
 
   describe('#get', () => {
-    let stub
-    let uri
-    let contact
-    before(() => {
-      contact = _.first(contacts)
-      stub = sinon.stub(ContactService, 'get')
-      uri = '/api/contact/' + contact.id
+
+    let stub = null
+    let uri = null
+    let contact = null
+
+    before(() => stub = sinon.stub(ContactService, 'get'))
+
+    beforeEach(() => {
+      contact = {id: '12345'}
+      uri = `/api/contact/${contact.id}`
     })
-    afterEach(() => {
-      stub.reset()
+
+    afterEach(() => stub.reset())
+
+    after(() => stub.restore())
+
+    it('should respond to upstream errors properly', async function () {
+      stub.rejects(new ExceptionService.DatabaseError('aw snap!'))
+      const res = await this.request.get(uri).expect(500)
+      assert.equal(res.body.originalError, 'aw snap!')
     })
-    after(() => {
-      stub.restore()
+
+    it('should return 404 for an invalid contact', async function () {
+      stub.rejects(new ExceptionService.NotFound())
+      await this.request.get(uri).expect(404)
     })
-    it('should respond to upstream errors properly', next => {
-      stub.callsArgWith(1, new ExceptionService.DatabaseError())
-      request.get(uri).expect(500).end(next)
+
+    it('should return the contact properly', async function () {
+      stub.resolves(contact)
+      await this.request.get(uri).expect(200, contact)
     })
-    it('should return 404 for an invalid contact', next => {
-      stub.callsArgWith(1, new ExceptionService.NotFound(), null)
-      request.get(uri).expect(404).end(next)
-    })
-    it('should return the contact properly', next => {
-      stub.callsArgWith(1, null, contact)
-      request.get(uri).expect(200).end(next)
-    })
+
   })
 
   describe('#list', () => {
-    let stub
-    let uri
-    before(() => {
-      stub = sinon.stub(ContactService, 'list')
+
+    let stub = null
+    let uri = null
+    let response = null
+
+    before(() => stub = sinon.stub(ContactService, 'list'))
+
+    beforeEach(() => {
       uri = '/api/contact'
+      response = [{id: '1234'}]
     })
-    afterEach(() => {
-      stub.reset()
+
+    afterEach(() => stub.reset())
+
+    after(() => stub.restore())
+
+    it('should respond to upstream errors properly', async function () {
+      stub.rejects(new ExceptionService.DatabaseError('aw snap!'))
+      const res = await this.request.get(uri).expect(500)
+      assert.equal(res.body.originalError, 'aw snap!')
     })
-    after(() => {
-      stub.restore()
+
+    it('should render a list of contacts properly', async function () {
+      stub.resolves(response)
+      await this.request.get(uri).expect(200, response)
     })
-    it('should respond to upstream errors properly', next => {
-      stub.callsArgWith(1, new Error('error'))
-      request.get(uri).expect(500).end(next)
-    })
-    it('should render a list of contacts properly', next => {
-      stub.callsArgWith(1, null, [])
-      request.get(uri).expect(200).end(next)
-    })
+
   })
 
   describe('#edit', () => {
-    let stub
-    let uri
-    let payload
-    before(() => {
-      stub = sinon.stub(ContactService, 'edit')
+
+    let stub = null
+    let uri = null
+    let contact = null
+    let payload = null
+
+    before(() => stub = sinon.stub(ContactService, 'edit'))
+
+    beforeEach(() => {
+      contact = {id: '1234'}
       uri = '/api/contact/' + contact.id
       payload = {name: 'dummy'}
     })
-    afterEach(() => {
-      stub.reset()
+
+    afterEach(() => stub.reset())
+
+    after(() => stub.restore())
+
+    it('should respond to upstream errors properly', async function () {
+      stub.rejects(new ExceptionService.DatabaseError('aw snap!'))
+      const res = await this.request.post(uri).send(payload).expect(500)
+      assert.equal(res.body.originalError, 'aw snap!')
     })
-    after(() => {
-      stub.restore()
+
+    it('should respond with 404 if the contact wasnt found', async function () {
+      stub.rejects(new ExceptionService.NotFound())
+      await this.request.post(uri).send(payload).expect(404)
     })
-    it('should respond to upstream errors properly', next => {
-      stub.callsArgWith(1, new ExceptionService.DatabaseError())
-      request.post(uri).send(payload).expect(500).end(next)
+
+    it('should update the contact properly', async function () {
+      stub.resolves(null)
+      await this.request.post(uri).send(payload).expect(204, {})
     })
-    it('should respond with 404 if the contact wasnt found', next => {
-      stub.callsArgWith(1, new ExceptionService.NotFound())
-      request.post(uri).send(payload).expect(404).end(next)
-    })
-    it('should update the contact properly', next => {
-      stub.callsArgWith(1, null)
-      request.post(uri).send(payload).expect(204).end(next)
-    })
+
   })
 
   describe('#delete', () => {
-    let stub
-    let uri
-    before(() => {
-      stub = sinon.stub(ContactService, 'delete')
+
+    let stub = null
+    let contact = null
+    let uri = null
+
+    before(() => stub = sinon.stub(ContactService, 'delete'))
+
+    beforeEach(() => {
+      contact = {id: '1234'}
       uri = '/api/contact/' + contact.id
     })
-    afterEach(() => {
-      stub.reset()
+
+    afterEach(() => stub.reset())
+
+    after(() => stub.restore())
+
+    it('should respond to upstream errors properly', async function () {
+      stub.rejects(new ExceptionService.DatabaseError('aw snap!'))
+      const res = await this.request.delete(uri).expect(500)
+      assert.equal(res.body.originalError, 'aw snap!')
     })
-    after(() => {
-      stub.restore()
+
+    it('should respond with 404 if the contact wasnt found', async function () {
+      stub.rejects(new ExceptionService.NotFound())
+      await this.request.delete(uri).expect(404)
     })
-    it('should respond to upstream errors properly', next => {
-      stub.callsArgWith(1, new ExceptionService.DatabaseError())
-      request.delete(uri).expect(500).end(next)
+
+    it('should delete the entity properly', async function () {
+      stub.resolves()
+      await this.request.delete(uri).expect(204, {})
     })
-    it('should respond with 404 if the contact wasnt found', next => {
-      stub.callsArgWith(1, new ExceptionService.NotFound())
-      request.delete(uri).expect(404).end(next)
-    })
-    it('should delete the entity properly', next => {
-      stub.callsArgWith(1, null)
-      request.delete(uri).expect(204).end(next)
-    })
+
   })
 
   describe('#create', () => {
-    let stub
-    let uri
-    let payload
-    before(() => {
-      stub = sinon.stub(ContactService, 'create')
+
+    let stub = null
+    let uri = null
+    let payload = null
+
+    before(() => stub = sinon.stub(ContactService, 'create'))
+
+    beforeEach(() => {
       uri = '/api/contact'
       payload = {name: 'hiya'}
     })
-    afterEach(() => {
-      stub.reset()
+
+    afterEach(() => stub.reset())
+
+    after(() => stub.restore())
+
+    it('should respond to upstream errors properly', async function () {
+      stub.rejects(new ExceptionService.DatabaseError('aw snap!'))
+      const res = await this.request.post(uri).send(payload).expect(500)
+      assert.equal(res.body.originalError, 'aw snap!')
     })
-    after(() => {
-      stub.restore()
+
+    it('should create a contact properly', async function () {
+      stub.resolves()
+      await this.request.post(uri).send(payload).expect(204)
     })
-    it('should respond to upstream errors properly', next => {
-      stub.callsArgWith(1, new ExceptionService.DatabaseError())
-      request.post(uri).send(payload).expect(500).end(next)
-    })
-    it('should create a contact properly', next => {
-      stub.callsArgWith(1, null, null)
-      request.post(uri).send(payload).expect(204).end(next)
-    })
+
   })
 })
