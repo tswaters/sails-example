@@ -1,10 +1,12 @@
-'use strict';
 
-module.exports = function (grunt) {
-	grunt.registerTask('syncAssets', [
-		'ejs',
-		'less:dev',
-		'sync:dev',
-		'coffee:dev'
-	]);
-};
+'use strict'
+
+
+module.exports = grunt => {
+  grunt.registerTask('syncAssets', [
+    'ejs',
+    'less:dev',
+    'sync:dev',
+    'coffee:dev'
+  ])
+}

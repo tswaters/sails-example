@@ -8,8 +8,9 @@
  * For more info on Sails models, see:
  * http://sailsjs.org/#/documentation/concepts/ORM
  */
+'use strict'
 
-module.exports.models = {
+exports.models = {
 
   /***************************************************************************
   *                                                                          *
@@ -29,4 +30,4 @@ module.exports.models = {
   ***************************************************************************/
   migrate: 'safe'
 
-};
+}

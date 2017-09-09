@@ -1,17 +1,13 @@
-'use strict';
 
-var BaseException = require('./BaseException');
 
-var BadRequest = module.exports = function DatabaseError (err) {
-  BaseException.call(this, 'BadRequest', err);
-  this.error = 'The provided request was not complete';
-};
+'use strict'
 
-// do the unholy javascript prototype dance.
-BadRequest.prototype = Object.create(BaseException.prototype, {
-  constructor: {
-    value: BadRequest,
-    writable: true,
-    configurable: true
+const BaseError = require('./BaseError')
+
+module.exports = class BadRequest extends BaseError {
+  constructor (err) {
+    super('BadRequest', err)
+    this.error = 'The provided request was not complete'
+    this.status = 400
   }
-});
+}

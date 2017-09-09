@@ -4,12 +4,12 @@
  * @description
  * Hooks into passport and verifies the user.
  */
-'use strict';
+'use strict'
 
 module.exports = function (req, res, next) {
   if (req.session.authenticated) {
-    return next();
+    return next()
   }
 
-  return res.notOk(new ExceptionService.Unauthorized());
-};
+  return res.notOk(new ExceptionService.Unauthorized())
+}

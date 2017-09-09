@@ -10,21 +10,22 @@
  * For usage docs see:
  * 		https://github.com/gruntjs/grunt-contrib-concat
  */
+'use strict'
 
-'use strict';
+const {jsFilesToInject, cssFilesToInject} = require('../pipeline')
 
-module.exports = function(grunt) {
+module.exports = grunt => {
 
-	grunt.config.set('concat', {
-		js: {
-			src: require('../pipeline').jsFilesToInject,
-			dest: '.tmp/public/concat/production.js'
-		},
-		css: {
-			src: require('../pipeline').cssFilesToInject,
-			dest: '.tmp/public/concat/production.css'
-		}
-	});
+  grunt.config.set('concat', {
+    js: {
+      src: jsFilesToInject,
+      dest: '.tmp/public/concat/production.js'
+    },
+    css: {
+      src: cssFilesToInject,
+      dest: '.tmp/public/concat/production.css'
+    }
+  })
 
-	grunt.loadNpmTasks('grunt-contrib-concat');
-};
+  grunt.loadNpmTasks('grunt-contrib-concat')
+}

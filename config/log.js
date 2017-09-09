@@ -9,8 +9,9 @@
  * For more information on the Sails logger, check out:
  * http://sailsjs.org/#/documentation/concepts/Logging
  */
+'use strict'
 
-module.exports.log = {
+exports.log = {
 
   /***************************************************************************
   *                                                                          *
@@ -26,4 +27,4 @@ module.exports.log = {
 
   // level: 'info'
 
-};
+}

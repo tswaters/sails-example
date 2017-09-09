@@ -5,28 +5,28 @@
  * Handles crytographic operations (i.e. password hash)
  */
 
-'use strict';
+'use strict'
 
-var crypto = require('crypto');
+const crypto = require('crypto')
 
-var ALGORITHM = 'sha512';
-var ITERATIONS = 4096;
-var SALT_LENGTH = 32;
+const ALGORITHM = 'sha512'
+const ITERATIONS = 4096
+const SALT_LENGTH = 32
 
 /**
  * Creates a hash from a password
  * @param {string} password password to hash
  * @param {function(object?,string)} cb callback (err, 'hash$salt')
  */
-module.exports.hash = function (password, cb) {
-  crypto.randomBytes(SALT_LENGTH, function (err, salt) {
-    if (err) { return cb(err); }
-    crypto.pbkdf2(password, salt, ITERATIONS, SALT_LENGTH, ALGORITHM, function (err, hash) {
-      if (err) { return cb(err); }
-      cb(null, [hash.toString('hex'), salt.toString('hex')].join('$'));
-    });
-  });
-};
+exports.hash = (password, cb) => {
+  crypto.randomBytes(SALT_LENGTH, (err, salt) => {
+    if (err) { return cb(err) }
+    crypto.pbkdf2(password, salt, ITERATIONS, SALT_LENGTH, ALGORITHM, (err, hash) => {
+      if (err) { return cb(err) }
+      cb(null, [hash.toString('hex'), salt.toString('hex')].join('$'))
+    })
+  })
+}
 
 /**
  * Compares a provided password with previously created hash.
@@ -34,11 +34,11 @@ module.exports.hash = function (password, cb) {
  * @param {string} userHash previously created hash ('hash$salt')
  * @param {function(object?,boolean)} cb callback (err, isValid)
  */
-module.exports.compare = function (password, userHash, cb)  {
-  var hash = userHash.split('$')[0];
-  var salt = userHash.split('$')[1];
-  crypto.pbkdf2(password, new Buffer(salt, 'hex'), ITERATIONS, SALT_LENGTH, ALGORITHM, function (err, compare) {
-    if (err) { return cb(err); }
-    cb(null, hash === compare.toString('hex'));
-  });
+exports.compare = (password, userHash, cb) => {
+  const hash = userHash.split('$')[0]
+  const salt = userHash.split('$')[1]
+  crypto.pbkdf2(password, new Buffer(salt, 'hex'), ITERATIONS, SALT_LENGTH, ALGORITHM, (err, compare) => {
+    if (err) { return cb(err) }
+    cb(null, hash === compare.toString('hex'))
+  })
 }

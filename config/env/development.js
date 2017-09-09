@@ -9,16 +9,8 @@
  * any private information to this file!
  *
  */
+'use strict'
 
-module.exports = {
-
-  /***************************************************************************
-   * Set the default database connection for models in the development       *
-   * environment (see config/connections.js and config/models.js )           *
-   ***************************************************************************/
-
-  models: {
-    connection: 'mongoDb'
-  }
-
-};
+exports.models = {
+  connection: 'mongoDb'
+}

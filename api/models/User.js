@@ -5,13 +5,15 @@
 * @docs        :: http://sailsjs.org/#!documentation/models
 */
 
+'use strict'
+
 module.exports = {
 
   attributes: {
     username: 'string',
     password: 'string',
-    verify: function (pass, next) {
-      CryptoService.compare(pass, this.password, next);
+    verify (pass, next) {
+      CryptoService.compare(pass, this.password, next)
     }
   },
 
@@ -21,38 +23,38 @@ module.exports = {
    * @param {string} password password to check
    * @param {function} cb callback (err, isVerified, data)
    */
-  verify: function (opts, cb) {
-    User.findOne({username: opts.username}).exec(function (err, user) {
-      if (err) { return cb(new ExceptionService.DatabaseError(err)); }
-      if (!user) { return cb(null, false, new ExceptionService.Unauthorized('not found')); }
-      user.verify(opts.password, function (err, isValid) {
-        if (err) {  return cb(err); }
-        if (!isValid) { return cb(null, false, new ExceptionService.Unauthorized('invalid password')); }
-        return cb(null, true, user);
-      });
-    });
+  verify (opts, cb) {
+    User.findOne({username: opts.username}).exec((err, user) => {
+      if (err) { return cb(new ExceptionService.DatabaseError(err)) }
+      if (!user) { return cb(null, false, new ExceptionService.Unauthorized('not found')) }
+      user.verify(opts.password, (err, isValid) => {
+        if (err) {  return cb(err) }
+        if (!isValid) { return cb(null, false, new ExceptionService.Unauthorized('invalid password')) }
+        return cb(null, true, user)
+      })
+    })
   },
 
   /**
    * Before create lifecycle event, hash the password
    * @param {function} cb callback when done
    */
-  beforeCreate: function (values, cb) {
-    CryptoService.hash(values.password, function (err, hash) {
-      values.password = hash;
-      cb(err, values);
-    });
+  beforeCreate (values, cb) {
+    CryptoService.hash(values.password, (err, hash) => {
+      values.password = hash
+      cb(err, values)
+    })
   },
 
   /**
    * Before create lifecycle event, hash the password
    * @param {function} cb callback when done
    */
-  beforeUpdate: function (values, cb) {
-    CryptoService.hash(values.password, function (err, hash) {
-      values.password = hash;
-      cb(err, values);
-    });
+  beforeUpdate (values, cb) {
+    CryptoService.hash(values.password, (err, hash) => {
+      values.password = hash
+      cb(err, values)
+    })
   }
 
-};
+}

@@ -8,20 +8,22 @@
  * for matching multiple files.)
  */
 
-'use strict';
+'use strict'
 
 // CSS files to inject in order
 //
 // (if you're using LESS with the built-in default config, you'll want
 //  to change `assets/styles/importer.less` instead.)
-var cssFilesToInject = [
+exports.cssFilesToInject = [
   'styles/**/*.css'
-];
+].map(path => {
+  return '.tmp/public/' + path
+})
 
 
 // Client-side javascript files to inject in order
 // (uses Grunt-style wildcard/glob/splat expressions)
-var jsFilesToInject = [
+exports.jsFilesToInject = [
 
   // Dependencies like jQuery, or Angular are brought in here
   'vendor/jquery/dist/jquery.min.js',
@@ -31,7 +33,9 @@ var jsFilesToInject = [
   // All of the rest of your client-side js files
   // will be injected here in no particular order.
   'js/**/*.js'
-];
+].map(path => {
+  return '.tmp/public/' + path
+})
 
 
 // Client-side HTML templates are injected using the sources below
@@ -43,22 +47,9 @@ var jsFilesToInject = [
 // with the linker, no problem-- you'll just want to make sure the precompiled
 // templates get spit out to the same file.  Be sure and check out `tasks/README.md`
 // for information on customizing and installing new tasks.
-var templateFilesToInject = [
+exports.templateFilesToInject = [
   'templates/**/*.html',
   'templates/**/*.ejs'
-];
-
-
-
-// Prefix relative paths to source files so they point to the proper locations
-// (i.e. where the other Grunt tasks spit them out, or in some cases, where
-// they reside in the first place)
-module.exports.cssFilesToInject = cssFilesToInject.map(function(path) {
-  return '.tmp/public/' + path;
-});
-module.exports.jsFilesToInject = jsFilesToInject.map(function(path) {
-  return '.tmp/public/' + path;
-});
-module.exports.templateFilesToInject = templateFilesToInject.map(function(path) {
-  return 'assets/' + path;
-});
+].map(path => {
+  return 'assets/' + path
+})

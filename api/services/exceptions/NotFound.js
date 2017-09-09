@@ -1,17 +1,12 @@
-'use strict';
 
-var BaseException = require('./BaseException');
+'use strict'
 
-var NotFound = module.exports = function NotFound (err) {
-  BaseException.call(this, 'NotFound', err);
-  this.error = 'the requested resource was not found';
-};
+const BaseError = require('./BaseError')
 
-// do the unholy javascript prototype dance.
-NotFound.prototype = Object.create(BaseException.prototype, {
-  constructor: {
-    value: NotFound,
-    writable: true,
-    configurable: true
+module.exports = class NotFound extends BaseError {
+  constructor (err) {
+    super('NotFound', err)
+    this.error = 'the requested resource was not found'
+    this.status = 404
   }
-});
+}

@@ -1,5 +1,9 @@
+'use strict'
 
-'use strict';
+const contacts = require('./contacts')
+const users = require('./users')
 
-module.exports.contacts = require('./contacts');
-module.exports.users = require('./users');
+module.exports = {
+  contacts,
+  users
+}

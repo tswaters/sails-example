@@ -1,10 +1,12 @@
 
-module.exports.home = function (req, res) {
+'use strict'
+
+exports.home = (req, res) => {
   res.ok({
     title: req.__('SITE.TITLE')
-  }, 'homepage');
+  }, 'homepage')
 }
 
-module.exports.noLocale = function (req, res) {
-  res.redirect(302, '/' + req.locale);
-};
+exports.noLocale = (req, res) => {
+  res.redirect(302, '/' + req.locale)
+}

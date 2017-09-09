@@ -1,6 +1,7 @@
 /**
  * Test environment settings
  */
+'use strict'
 
 module.exports = {
 
@@ -17,4 +18,4 @@ module.exports = {
     level: 'silent'
   }
 
-};
+}

@@ -19,8 +19,9 @@
  * For more information on configuring custom routes, check out:
  * http://sailsjs.org/#/documentation/concepts/Routes/RouteTargetSyntax.html
  */
+'use strict'
 
-module.exports.routes = {
+exports.routes = {
 
   // api routes
   'POST /api/auth/login': 'AuthController.login',
@@ -39,4 +40,4 @@ module.exports.routes = {
   '/:lang/register': 'AuthController.registerForm',
   '/:lang/logout': 'AuthController.logout'
 
-};
+}

@@ -1,12 +1,14 @@
-'use strict';
 
-var path = require('path');
-var i18n = require('i18n');
-var i18nConfig = require('../../config/i18n').i18n;
+'use strict'
 
-module.exports = function (grunt) {
+const path = require('path')
+const i18n = require('i18n')
+const {i18n: i18nConfig} = require('../../config/i18n')
+const {templateFilesToInject} = require('../pipeline')
 
-  var gruntConfig = {};
+module.exports = grunt => {
+
+  const gruntConfig = {}
 
   i18n.configure({
     locales: i18nConfig.locales,
@@ -14,23 +16,23 @@ module.exports = function (grunt) {
     updateFiles: false,
     objectNotation: true,
     directory: path.join(process.cwd(), 'config', 'locales')
-  });
+  })
 
-  i18nConfig.locales.forEach(function (locale) {
+  i18nConfig.locales.forEach(locale => {
     gruntConfig[locale] = {
-      src: require('../pipeline').templateFilesToInject,
+      src: templateFilesToInject,
       dest: '.tmp/public/templates/' + locale,
       ext: '.html',
       expand: true,
       flatten: true,
       options: {
-        __: function (key) {
-          return i18n.__({locale: locale, phrase: key});
+        __ (key) {
+          return i18n.__({locale, phrase: key})
         }
       }
-    };
-  });
+    }
+  })
 
   grunt.config.set('ejs', gruntConfig)
-  grunt.loadNpmTasks('grunt-ejs');
-};
+  grunt.loadNpmTasks('grunt-ejs')
+}

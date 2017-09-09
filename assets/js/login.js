@@ -1,16 +1,17 @@
+'use strict'
 
 angular.module('Login', ['Forms'])
 
   .service('AuthService', [
     '$http',
     function ($http) {
-      var endPoint = '/api/auth'
+      const endPoint = '/api/auth'
       return {
-        login: function (data) {
-          return $http.post(endPoint + '/login', data);
+        login (data) {
+          return $http.post(endPoint + '/login', data)
         },
-        register: function (data) {
-          return $http.post(endPoint + '/register', data);
+        register (data) {
+          return $http.post(endPoint + '/register', data)
         }
       }
     }
@@ -22,38 +23,38 @@ angular.module('Login', ['Forms'])
     '$scope',
     '$window',
     function (AuthService, FormService, $scope, $window) {
-      var vm = this;
+      const vm = this
 
-      vm.error = null;
+      vm.error = null
       vm.data = {
         username: null,
         password: null
-      };
+      }
 
       vm.isError = _.curry(FormService.isError)($scope)
 
       vm.register = function () {
-        vm.error = null;
+        vm.error = null
         AuthService.register(vm.data).then(
-          function () {
-            $window.location.replace('/');
+          () => {
+            $window.location.replace('/')
           },
-          function (res) {
-            vm.error = res.data;
+          res => {
+            vm.error = res.data
           }
-        );
+        )
       }
 
       vm.login = function () {
-        vm.error = null;
+        vm.error = null
         AuthService.login(vm.data).then(
-          function () {
-            $window.location.replace('/');
+          () => {
+            $window.location.replace('/')
           },
-          function (res) {
-            vm.error = res.data;
+          res => {
+            vm.error = res.data
           }
-        );
+        )
       }
 
     }

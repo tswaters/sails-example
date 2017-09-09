@@ -22,8 +22,9 @@
  * http://sailsjs.org/#/documentation/reference/sails.config/sails.config.blueprints.html
  *
  */
+'use strict'
 
-module.exports.blueprints = {
+exports.blueprints = {
 
   /***************************************************************************
   *                                                                          *
@@ -147,4 +148,4 @@ module.exports.blueprints = {
 
   // defaultLimit: 30
 
-};
+}

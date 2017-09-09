@@ -1,17 +1,12 @@
-'use strict';
 
-var BaseException = require('./BaseException');
+'use strict'
 
-var DatabaseError = module.exports = function DatabaseError (err) {
-  BaseException.call(this, 'DatabaseError', err);
-  this.error = 'unknown internal error';
-};
+const BaseError = require('./BaseError')
 
-// do the unholy javascript prototype dance.
-DatabaseError.prototype = Object.create(BaseException.prototype, {
-  constructor: {
-    value: DatabaseError,
-    writable: true,
-    configurable: true
+module.exports = class DatabaseError extends BaseError {
+  constructor (err) {
+    super('DatabaseError', err)
+    this.error = 'unknown internal error'
+    this.status = 500
   }
-});
+}

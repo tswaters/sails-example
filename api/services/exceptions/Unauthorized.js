@@ -1,17 +1,12 @@
-'use strict';
 
-var BaseException = require('./BaseException');
+'use strict'
 
-var Unauthorized = module.exports = function Unauthorized (err) {
-  BaseException.call(this, 'Unauthorized', err);
-  this.message = err;
-};
+const BaseError = require('./BaseError')
 
-// do the unholy javascript prototype dance.
-Unauthorized.prototype = Object.create(BaseException.prototype, {
-  constructor: {
-    value: Unauthorized,
-    writable: true,
-    configurable: true
+module.exports = class Unauthorized extends BaseError {
+  constructor (err) {
+    super('Unauthorized', err)
+    this.message = err
+    this.status = 401
   }
-});
+}

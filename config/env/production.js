@@ -9,6 +9,7 @@
  * any private information to this file!
  *
  */
+'use strict'
 
 module.exports = {
 
@@ -35,4 +36,4 @@ module.exports = {
   //   level: "silent"
   // }
 
-};
+}

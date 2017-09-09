@@ -1,4 +1,5 @@
-'use strict';
+'use strict'
+
 module.exports = function(config) {
   config.set({
     basePath: '',
@@ -36,5 +37,5 @@ module.exports = function(config) {
     browsers: ['Chrome' /*, 'Firefox', 'IE', 'Safari', 'Opera'*/],
     autoWatch: false,
     singleRun: true
-  });
-};
+  })
+}

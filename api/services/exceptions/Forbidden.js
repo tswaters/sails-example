@@ -1,17 +1,12 @@
-'use strict';
 
-var BaseException = require('./BaseException');
+'use strict'
 
-var Forbidden = module.exports = function Forbidden (err) {
-  BaseException.call(this, 'Forbidden', err);
-  this.error = 'you are not permitted to perform that operation';
-};
+const BaseError = require('./BaseError')
 
-// do the unholy javascript prototype dance.
-Forbidden.prototype = Object.create(BaseException.prototype, {
-  constructor: {
-    value: Forbidden,
-    writable: true,
-    configurable: true
+module.exports = class Forbidden extends BaseError {
+  constructor (err) {
+    super('Forbidden', err)
+    this.error = 'you are not permitted to perform that operation'
+    this.status = 403
   }
-});
+}

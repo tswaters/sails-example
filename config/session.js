@@ -11,8 +11,9 @@
  * For more information on configuring the session, check out:
  * http://sailsjs.org/#/documentation/reference/sails.config/sails.config.session.html
  */
+'use strict'
 
-module.exports.session = {
+exports.session = {
 
   /***************************************************************************
   *                                                                          *
@@ -88,4 +89,4 @@ module.exports.session = {
   // ssl: false,
   // stringify: true
 
-};
+}

@@ -1,7 +1,9 @@
-'use strict';
 
-module.exports = function (grunt) {
+'use strict'
 
-	grunt.registerTask('reports', ['mocha_istanbul', 'karma', 'makeReport', 'eslint']);
 
-};
+module.exports = grunt => {
+
+  grunt.registerTask('reports', ['mocha_istanbul', 'karma', 'makeReport', 'eslint'])
+
+}

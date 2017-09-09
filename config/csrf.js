@@ -41,6 +41,7 @@
  * http://beta.sailsjs.org/#/documentation/reference/sails.config/sails.config.csrf.html
  *
  */
+'use strict'
 
 /****************************************************************************
 *                                                                           *

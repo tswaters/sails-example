@@ -4,22 +4,23 @@
  * @description
  * Handles the heavy lifting related to passport integreation
  */
+'use strict'
 
-var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
+const passport = require('passport')
+const {Strategy: LocalStrategy} = require('passport-local')
 
 passport.use(new LocalStrategy(
-  function (username, password, done) {
-    User.verify({username: username, password: password}, done);
-  }
+  ((username, password, done) => {
+    User.verify({username, password}, done)
+  })
 ))
 
-passport.serializeUser(function (user, done) {
-  done(null, user.id);
-});
+passport.serializeUser((user, done) => {
+  done(null, user.id)
+})
 
-passport.deserializeUser(function (id, done) {
-  User.findOne(id).exec(done);
-});
+passport.deserializeUser((id, done) => {
+  User.findOne(id).exec(done)
+})
 
-module.exports = passport;
+module.exports = passport

@@ -1,18 +1,20 @@
 
+'use strict'
+
 module.exports = function ($q) {
   return {
-    resolve: function (value) {
+    resolve (value) {
       return function () {
-        var deferred = $q.defer();
-        deferred.resolve(value);
-        return deferred.promise;
+        const deferred = $q.defer()
+        deferred.resolve(value)
+        return deferred.promise
       }
     },
-    reject: function (value) {
+    reject (value) {
       return function () {
-        var deferred = $q.defer();
-        deferred.reject(value);
-        return deferred.promise;
+        const deferred = $q.defer()
+        deferred.reject(value)
+        return deferred.promise
       }
     }
   }

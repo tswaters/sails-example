@@ -1,12 +1,14 @@
 
-require('../../base.js');
+'use strict'
 
-describe('HomeController', function () {
+require('../../base.js')
 
-  describe('#home', function () {
+describe('HomeController', () => {
+
+  describe('#home', () => {
     it('should render the page', function (next) {
-      this.request.get('/en').expect(200).end(next);
-    });
-  });
+      this.request.get('/en').expect(200).end(next)
+    })
+  })
 
-});
+})

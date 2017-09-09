@@ -1,4 +1,7 @@
+'use strict'
 
-process.chdir(__dirname);
+const sails = require('sails')
+const sailsConfig = require('./sails.config')
 
-require('sails').lift(require('./sails.config')());
+process.chdir(__dirname)
+sails.lift(sailsConfig())

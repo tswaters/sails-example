@@ -8,12 +8,11 @@
  * For more information on bootstrapping your app, check out:
  * http://sailsjs.org/#/documentation/reference/sails.config/sails.config.bootstrap.html
  */
+'use strict'
 
-'use strict';
-
-module.exports.bootstrap = function(cb) {
+exports.bootstrap = cb => {
 
   // It's very important to trigger this callback method when you are finished
   // with the bootstrap!  (otherwise your server will never lift, since it's waiting on the bootstrap)
-  cb();
-};
+  cb()
+}

@@ -1,10 +1,11 @@
-'use strict';
+'use strict'
 
-var _ = require('lodash');
-var buildDictionary = require('sails-build-dictionary');
+const _ = require('lodash')
+const rc = require('rc')
+const buildDictionary = require('sails-build-dictionary')
 
-module.exports = function (overrides) {
-  var config = {};
+module.exports = overrides => {
+  const config = {}
 
   _.merge(config, {
 
@@ -14,21 +15,21 @@ module.exports = function (overrides) {
      * But with once difference, "dont call bindToSails on the services!"
      * This allows for checking instanceof on returned objects.
      */
-    moduleLoaderOverride: function (sails) {
+    moduleLoaderOverride (sails) {
       return {
-        loadServices: function (cb) {
+        loadServices (cb) {
           buildDictionary.optional({
-            'dirname': sails.config.paths.services,
-            'filter': /(.+)\.(js|coffee|litcoffee)$/,
-            'depth': 1,
-            'caseSensitive': true
-          }, cb);
+            dirname: sails.config.paths.services,
+            filter: /(.+)\.(js|coffee|litcoffee)$/,
+            depth: 1,
+            caseSensitive: true
+          }, cb)
         }
-      };
+      }
     }
-  });
+  })
 
-  _.merge(config, overrides);
-  _.merge(config, require('rc')('sails'));
-  return config;
-};
+  _.merge(config, overrides)
+  _.merge(config, rc('sails'))
+  return config
+}

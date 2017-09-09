@@ -25,8 +25,9 @@
  *  http://sailsjs.org/#/documentation/reference/sails.config/sails.config.cors.html
  *
  */
+'use strict'
 
-module.exports.cors = {
+exports.cors = {
 
   /***************************************************************************
   *                                                                          *
@@ -75,4 +76,4 @@ module.exports.cors = {
 
   // headers: 'content-type'
 
-};
+}

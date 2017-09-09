@@ -1,162 +1,163 @@
-'use strict';
 
-var templateHelper = require('../helpers/templateHelper');
-var promiseHelper = require('../helpers/promiseHelper');
-var expect = chai.expect;
+'use strict'
 
-describe('contact list', function () {
+const templateHelper = require('../helpers/templateHelper')
+const promiseHelper = require('../helpers/promiseHelper')
+const expect = chai.expect
 
-  describe('service', function () {
-    var ContactService;
-    var $httpBackend;
+describe('contact list', () => {
 
-    beforeEach(angular.mock.module('ContactList'));
+  describe('service', () => {
+    let ContactService
+    let $httpBackend
 
-    beforeEach(inject(function(_ContactService_, _$httpBackend_){
-      ContactService = _ContactService_;
-      $httpBackend = _$httpBackend_;
-      $httpBackend.when('GET', '/api/contact/').respond();
-      $httpBackend.when('POST', '/api/contact/').respond();
-      $httpBackend.when('POST', '/api/contact/1').respond();
-      $httpBackend.when('DELETE', '/api/contact/1').respond();
-    }));
+    beforeEach(angular.mock.module('ContactList'))
 
-    it('should call list properly', function () {
+    beforeEach(inject((_ContactService_, _$httpBackend_) => {
+      ContactService = _ContactService_
+      $httpBackend = _$httpBackend_
+      $httpBackend.when('GET', '/api/contact/').respond()
+      $httpBackend.when('POST', '/api/contact/').respond()
+      $httpBackend.when('POST', '/api/contact/1').respond()
+      $httpBackend.when('DELETE', '/api/contact/1').respond()
+    }))
+
+    it('should call list properly', () => {
       ContactService.list()
-      $httpBackend.flush();
-      $httpBackend.expect('GET', '/api/contact/');
-    });
+      $httpBackend.flush()
+      $httpBackend.expect('GET', '/api/contact/')
+    })
 
-    it('should call edit properly', function () {
+    it('should call edit properly', () => {
       ContactService.edit(1, {})
-      $httpBackend.flush();
-      $httpBackend.expect('POST', '/api/contact/1');
-    });
+      $httpBackend.flush()
+      $httpBackend.expect('POST', '/api/contact/1')
+    })
 
-    it('should call create properly', function () {
+    it('should call create properly', () => {
       ContactService.create({})
-      $httpBackend.flush();
-      $httpBackend.expect('POST', '/api/contact/');
-    });
+      $httpBackend.flush()
+      $httpBackend.expect('POST', '/api/contact/')
+    })
 
-    it('should call delete properly', function () {
+    it('should call delete properly', () => {
       ContactService.delete(1)
-      $httpBackend.flush();
-      $httpBackend.expect('DELETE', '/api/contact/1');
-    });
-  });
+      $httpBackend.flush()
+      $httpBackend.expect('DELETE', '/api/contact/1')
+    })
+  })
 
-  describe('controller', function () {
-    var ContactService;
-    var vm;
-    var scope;
+  describe('controller', () => {
+    let ContactService
+    let vm
+    let scope
 
-    beforeEach(angular.mock.module('ContactList'));
+    beforeEach(angular.mock.module('ContactList'))
 
-    beforeEach(inject(function (_ContactService_, $controller, $q, $rootScope) {
-      ContactService = _ContactService_;
-      var promiseStub = promiseHelper($q).resolve('data');
-      sinon.stub(ContactService, 'list', promiseStub);
-      sinon.stub(ContactService, 'delete', promiseStub);
-      sinon.stub(ContactService, 'create', promiseStub);
-      sinon.stub(ContactService, 'edit', promiseStub);
-      scope = $rootScope.$new();
+    beforeEach(inject((_ContactService_, $controller, $q, $rootScope) => {
+      ContactService = _ContactService_
+      const promiseStub = promiseHelper($q).resolve('data')
+      sinon.stub(ContactService, 'list', promiseStub)
+      sinon.stub(ContactService, 'delete', promiseStub)
+      sinon.stub(ContactService, 'create', promiseStub)
+      sinon.stub(ContactService, 'edit', promiseStub)
+      scope = $rootScope.$new()
       scope.editCreateForm = {
         $setPristine: sinon.stub()
       }
-      vm = $controller('ContactController', {$scope: scope});
-    }));
+      vm = $controller('ContactController', {$scope: scope})
+    }))
 
-    afterEach(function () {
-      ContactService.list.restore();
-      ContactService.delete.restore();
-      ContactService.create.restore();
-      ContactService.edit.restore();
-    });
-
-    it('should call fetch during initializaiton', function () {
-      expect(ContactService.list.callCount).to.equal(1);
-    });
-
-    it('should call edit and fetch when calling edit', function () {
-      vm.edit();
-      scope.$root.$apply();
-      expect(ContactService.edit.callCount).to.equal(1);
-      expect(ContactService.list.callCount).to.equal(2);
-    });
-
-    it('should call delete and fetch when calling edit', function () {
-      vm.delete();
-      scope.$root.$apply();
-      expect(ContactService.delete.callCount.length, 1);
-      expect(ContactService.list.callCount.length, 2);
-    });
-
-    it('should call create and fetch when calling edit', function () {
-      vm.create();
-      scope.$root.$apply();
-      expect(ContactService.create.callCount.length, 1);
-      expect(ContactService.list.callCount.length, 2);
-    });
-
-    it('should set the state and contact properly when calling setState', function () {
-      vm.setState('dummy', {name:'Test'});
-      expect(scope.editCreateForm.$setPristine.calledOnce);
-      expect(vm.data.contact.name).to.equal('Test');
-      expect(vm.state).to.equal('dummy');
+    afterEach(() => {
+      ContactService.list.restore()
+      ContactService.delete.restore()
+      ContactService.create.restore()
+      ContactService.edit.restore()
     })
 
-  });
+    it('should call fetch during initializaiton', () => {
+      expect(ContactService.list.callCount).to.equal(1)
+    })
 
-  describe('view', function () {
+    it('should call edit and fetch when calling edit', () => {
+      vm.edit()
+      scope.$root.$apply()
+      expect(ContactService.edit.callCount).to.equal(1)
+      expect(ContactService.list.callCount).to.equal(2)
+    })
 
-    var formElement;
+    it('should call delete and fetch when calling edit', () => {
+      vm.delete()
+      scope.$root.$apply()
+      expect(ContactService.delete.callCount.length, 1)
+      expect(ContactService.list.callCount.length, 2)
+    })
 
-    beforeEach(angular.mock.module('ContactList'));
+    it('should call create and fetch when calling edit', () => {
+      vm.create()
+      scope.$root.$apply()
+      expect(ContactService.create.callCount.length, 1)
+      expect(ContactService.list.callCount.length, 2)
+    })
 
-    beforeEach(inject(function ($templateCache, $compile, $rootScope, $httpBackend) {
-      formElement = templateHelper($templateCache, $compile, $rootScope, 'views/contact/index.ejs');
-      angular.element('body').append(formElement);
-      $httpBackend.when('GET', '/api/contact/').respond();
-    }));
+    it('should set the state and contact properly when calling setState', () => {
+      vm.setState('dummy', {name:'Test'})
+      expect(scope.editCreateForm.$setPristine.calledOnce)
+      expect(vm.data.contact.name).to.equal('Test')
+      expect(vm.state).to.equal('dummy')
+    })
 
-    afterEach(function () {
+  })
+
+  describe('view', () => {
+
+    let formElement
+
+    beforeEach(angular.mock.module('ContactList'))
+
+    beforeEach(inject(($templateCache, $compile, $rootScope, $httpBackend) => {
+      formElement = templateHelper($templateCache, $compile, $rootScope, 'views/contact/index.ejs')
+      angular.element('body').append(formElement)
+      $httpBackend.when('GET', '/api/contact/').respond()
+    }))
+
+    afterEach(() => {
       // clean up the element from body.
-      formElement.remove();
-    });
+      formElement.remove()
+    })
 
-    it('should show/hide no contacts div and contacts table based on lengths of contacts', function () {
+    it('should show/hide no contacts div and contacts table based on lengths of contacts', () => {
 
-      formElement.scope().$apply(function (scope) { scope.vm.data = {'contacts': []}; });
-      $expect('#contacts').to.be.hidden();
-      $expect('#no-contacts').not.to.be.hidden();
+      formElement.scope().$apply(scope => { scope.vm.data = {contacts: []} })
+      $expect('#contacts').to.be.hidden()
+      $expect('#no-contacts').not.to.be.hidden()
 
-      formElement.scope().$apply(function (scope) { scope.vm.data = {'contacts': [{}]}; });
-      $expect('#contacts').not.to.be.hidden();
-      $expect('#no-contacts').to.be.hidden();
+      formElement.scope().$apply(scope => { scope.vm.data = {contacts: [{}]} })
+      $expect('#contacts').not.to.be.hidden()
+      $expect('#no-contacts').to.be.hidden()
 
-    });
+    })
 
-    it('should show/hide elements based upon state', function () {
+    it('should show/hide elements based upon state', () => {
 
-      formElement.scope().$apply(function (scope) { scope.vm.state = 'init'; });
-      $expect('#edit-form').to.be.hidden();
-      $expect('#delete-form').to.be.hidden();
+      formElement.scope().$apply(scope => { scope.vm.state = 'init' })
+      $expect('#edit-form').to.be.hidden()
+      $expect('#delete-form').to.be.hidden()
 
-      formElement.scope().$apply(function (scope) { scope.vm.state = 'edit'; });
-      $expect('#edit-form').not.to.be.hidden();
-      $expect('#delete-form').to.be.hidden();
+      formElement.scope().$apply(scope => { scope.vm.state = 'edit' })
+      $expect('#edit-form').not.to.be.hidden()
+      $expect('#delete-form').to.be.hidden()
 
-      formElement.scope().$apply(function (scope) { scope.vm.state = 'create'; });
-      $expect('#edit-form').not.to.be.hidden();
-      $expect('#delete-form').to.be.hidden();
+      formElement.scope().$apply(scope => { scope.vm.state = 'create' })
+      $expect('#edit-form').not.to.be.hidden()
+      $expect('#delete-form').to.be.hidden()
 
-      formElement.scope().$apply(function (scope) { scope.vm.state = 'delete'; });
-      $expect('#edit-form').to.be.hidden();
-      $expect('#delete-form').not.to.be.hidden();
+      formElement.scope().$apply(scope => { scope.vm.state = 'delete' })
+      $expect('#edit-form').to.be.hidden()
+      $expect('#delete-form').not.to.be.hidden()
 
-    });
+    })
 
-  });
+  })
 
-});
+})

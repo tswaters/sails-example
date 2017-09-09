@@ -1,8 +1,8 @@
+'use strict'
 
-'use strict';
+const eslintHtmlReporter = require('eslint-html-reporter')
 
-module.exports = function (grunt) {
-
+module.exports = grunt => {
   grunt.config.set('eslint', {
     eslint: {
       src: [
@@ -13,12 +13,12 @@ module.exports = function (grunt) {
         'test/**/*.js'
       ],
       options: {
-        format: require('eslint-html-reporter'),
+        format: eslintHtmlReporter,
         outputFile: 'reports/eslint/report.html'
       }
     }
-  });
+  })
 
-  grunt.loadNpmTasks('grunt-eslint');
+  grunt.loadNpmTasks('grunt-eslint')
 
-};
+}

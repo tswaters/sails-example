@@ -1,11 +1,12 @@
 
-'use strict';
+'use strict'
 
-module.exports = function (grunt) {
-	grunt.registerTask('build', [
-		'compileAssets',
-		'linkAssetsBuild',
-		'clean:build',
-		'copy:build'
-	]);
-};
+
+module.exports = grunt => {
+  grunt.registerTask('build', [
+    'compileAssets',
+    'linkAssetsBuild',
+    'clean:build',
+    'copy:build'
+  ])
+}

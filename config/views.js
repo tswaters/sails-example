@@ -10,21 +10,22 @@
  * For more information on views and layouts, check out:
  * http://sailsjs.org/#/documentation/concepts/Views
  */
+'use strict'
 
-module.exports.views = {
+exports.views = {
   engine: 'ejs',
   layout: 'layout',
 
   locals: {
 
-    createLink: function (page) {
-      var __ = this.req.__;
-      var path = __(page + '.URL');
-      var title = __(page + '.TITLE');
-      var liClass = (new RegExp( '^' + path + '$')).test(this.req.path) ? 'active' : '';
-      return '<li class="' + liClass + '"><a href="' + path +  '">' + title + '</a>';
+    createLink (page) {
+      const __ = this.req.__
+      const path = __(page + '.URL')
+      const title = __(page + '.TITLE')
+      const liClass = (new RegExp( '^' + path + '$')).test(this.req.path) ? 'active' : ''
+      return `<li class="${liClass}"><a href="${path}">${title}</a>`
     }
 
   }
 
-};
+}

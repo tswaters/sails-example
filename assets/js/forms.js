@@ -1,21 +1,23 @@
+'use strict'
+
 angular.module('Forms', [])
 
-.service('FormService', [function () {
+  .service('FormService', [function () {
 
-  return {
-    isError: function ($scope, _form, _formField) {
+    return {
+      isError ($scope, _form, _formField) {
 
-      var form = $scope[_form];
-      if (!form) {
-        throw new Error('form ' + _form + ' not found')
+        const form = $scope[_form]
+        if (!form) {
+          throw new Error('form ' + _form + ' not found')
+        }
+
+        const formField = form[_formField]
+        if (!formField) {
+          throw new Error('form field ' + _formField + ' not found')
+        }
+
+        return formField.$invalid && !formField.$pristine
       }
-
-      var formField = form[_formField];
-      if (!formField) {
-        throw new Error('form field ' + _formField + ' not found')
-      }
-
-      return formField.$invalid && !formField.$pristine;
     }
-  }
-}])
+  }])

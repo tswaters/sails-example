@@ -11,20 +11,19 @@
  * 		https://github.com/tomusdrw/grunt-sync
  *
  */
+'use strict'
 
-'use strict';
+module.exports = grunt => {
 
-module.exports = function(grunt) {
+  grunt.config.set('sync', {
+    dev: {
+      files: [{
+        cwd: './assets',
+        src: ['**/*.!(coffee)'],
+        dest: '.tmp/public'
+      }]
+    }
+  })
 
-	grunt.config.set('sync', {
-		dev: {
-			files: [{
-				cwd: './assets',
-				src: ['**/*.!(coffee)'],
-				dest: '.tmp/public'
-			}]
-		}
-	});
-
-	grunt.loadNpmTasks('grunt-sync');
-};
+  grunt.loadNpmTasks('grunt-sync')
+}

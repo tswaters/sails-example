@@ -9,6 +9,8 @@
  * http://sailsjs.org/#/documentation/reference/sails.config/sails.config.http.html
  */
 
+'use strict'
+
 module.exports.http = {
 
   /****************************************************************************
@@ -30,23 +32,23 @@ module.exports.http = {
   *                                                                          *
   ***************************************************************************/
 
-    // order: [
-    //   'startRequestTimer',
-    //   'cookieParser',
-    //   'session',
-    //   'myRequestLogger',
-    //   'bodyParser',
-    //   'handleBodyParserError',
-    //   'compress',
-    //   'methodOverride',
-    //   'poweredBy',
-    //   '$custom',
-    //   'router',
-    //   'www',
-    //   'favicon',
-    //   '404',
-    //   '500'
-    // ],
+  // order: [
+  //   'startRequestTimer',
+  //   'cookieParser',
+  //   'session',
+  //   'myRequestLogger',
+  //   'bodyParser',
+  //   'handleBodyParserError',
+  //   'compress',
+  //   'methodOverride',
+  //   'poweredBy',
+  //   '$custom',
+  //   'router',
+  //   'www',
+  //   'favicon',
+  //   '404',
+  //   '500'
+  // ],
 
   /****************************************************************************
   *                                                                           *
@@ -54,10 +56,10 @@ module.exports.http = {
   *                                                                           *
   ****************************************************************************/
 
-    // myRequestLogger: function (req, res, next) {
-    //     console.log("Requested :: ", req.method, req.url);
-    //     return next();
-    // }
+  // myRequestLogger: function (req, res, next) {
+  //     console.log("Requested :: ", req.method, req.url);
+  //     return next();
+  // }
 
 
   /***************************************************************************
@@ -69,7 +71,7 @@ module.exports.http = {
   *                                                                          *
   ***************************************************************************/
 
-    // bodyParser: require('skipper')
+  // bodyParser: require('skipper')
 
   // },
 
@@ -84,4 +86,4 @@ module.exports.http = {
   ***************************************************************************/
 
   // cache: 31557600000
-};
+}

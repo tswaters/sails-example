@@ -32,8 +32,9 @@
   },
   "scripts": {
     "start": "node app.js",
-    "debug": "node debug app.js",
-    "test": "grunt reports"
+    "debug": "node --inspect app.js",
+    "test": "mocha",
+    "lint": "eslint . --fix"
   },
   "main": "app.js",
   "repository": {
@@ -44,7 +45,7 @@
   "license": "",
   "devDependencies": {
     "chai": "^3.2.0",
-    "eslint": "^1.0.0",
+    "eslint": "^4.6.1",
     "eslint-config-angular": "^0.2.0",
     "eslint-config-defaults": "^3.1.0",
     "eslint-html-reporter": "^0.4.10",

@@ -1,20 +1,15 @@
-'use strict';
+'use strict'
 
-var path = require('path');
-var sinon = require('sinon');
+const sinon = require('sinon')
+const Deferred = require('waterline/lib/waterline/query/deferred')
 
-var Deferred = require(path.join(
-  process.cwd(),
-  'node_modules/waterline',
-  'lib/waterline/query/deferred'
-));
+exports.execStub = () => {
+  return sinon.stub(Deferred.prototype, 'exec')
+}
 
-module.exports.stub = function () {
-  return sinon.stub(Deferred.prototype, 'exec');
-};
-
-module.exports.stubError = function (message) {
-  return sinon.stub(Deferred.prototype, 'exec', function (cb) {
-    cb(message);
+exports.stubError = message => {
+  return sinon.stub(Deferred.prototype, 'exec', cb => {
+    cb(message)
   })
 }
+
