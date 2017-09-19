@@ -8,14 +8,20 @@
     "node": true
   },
   "globals": {
-    "AuthService": true,
-    "CryptoService": true,
-    "ContactService": true,
-    "ExceptionService": true,
-    "sails": true,
-    "Contact": true,
-    "User": true,
-    "UserController": true
+    "AuthService": false,
+    "CryptoService": false,
+    "ContactService": false,
+    "BaseError": false,
+    "BadRequest": false,
+    "NotFound": false,
+    "Unauthorized": false,
+    "Forbidden": false,
+    "DatabaseError": false,
+    "LoginToken": false,
+    "sails": false,
+    "Contact": false,
+    "User": false,
+    "UserController": false
   },
   "rules": {
     "arrow-parens": ["error", "as-needed"],
