@@ -1,40 +1,17 @@
 
 'use strict'
 
+require('../../base.js')
+
 const assert = require('assert')
-const _ = require('lodash')
-const async = require('async')
 const sinon = require('sinon')
-const {fixtures, uris} = require('../../base.js')
-const {stubError} = require('../../helpers/database')
+const policyHooks = require('../../helpers/policy-hooks')
 
 describe('AuthController', () => {
 
-  let loginUser
-  let request
-
-  before(function () {
-    request = this.request
-    this.sails.get('/:lang/testing-return-session', (req, res) => {
-      res.json(req.session)
-    })
-  })
-
-  after(function () {
-    this.sails.router.unbind('/:lang/testing-return-session')
-  })
-
-  beforeEach(done => {
-    loginUser = _.first(fixtures.users)
-    User.create(fixtures.users).exec(done)
-  })
-
-  afterEach(done => {
-    async.series([
-      function (next) { request.get(uris.logout).redirects(2).end(next) },
-      function (next) { User.destroy({}).exec(next) }
-    ], done)
-  })
+  before(policyHooks.before)
+  beforeEach(policyHooks.beforeEach)
+  after(policyHooks.after)
 
   describe('#loginForm', () => {
     it('should render the page', function (next) {
@@ -49,107 +26,141 @@ describe('AuthController', () => {
   })
 
   describe('#logout', () => {
-    it('should log the user out', done => {
-      async.series([
-        function (next) { request.post(uris.login).send(loginUser).end(next)},
-        function (next) { request.get(uris.logout).redirects(2).expect(200).end(next)},
-        function (next) {
-          request.get('/en/testing-return-session').end((err, res) => {
-            assert.equal(res.body.authenticated, false)
-            next(err)
-          })
-        }
-      ], done)
+
+    let logoutStub = null
+
+    before(() => {
+      logoutStub = sinon.stub(AuthService, 'logout')
     })
+
+    afterEach(() => {
+      logoutStub.reset()
+    })
+
+    after(() => {
+      logoutStub.restore()
+    })
+
+    it('should not hit service is user not logged in', async function () {
+      this.locals.session = {token: null}
+      await this.request.get('/en/logout').redirects(2).expect(200)
+      assert.equal(logoutStub.callCount, 0)
+    })
+
+    it('should log the user out', async function () {
+      this.locals.session = {token: '12345'}
+      logoutStub.resolves()
+      await this.request.get('/en/logout').redirects(2).expect(200)
+      assert.equal(logoutStub.callCount, 1)
+    })
+
+    it('should handle errors', async function () {
+      this.locals.session = {token: '12345'}
+      logoutStub.rejects(new DatabaseError('aw snap!'))
+      await this.request.get('/en/logout').expect(500)
+      assert.equal(logoutStub.callCount, 1)
+    })
+
   })
 
   describe('#login', () => {
 
-    it('should respond to authentication errors returned from the Auth Service', function (next) {
+    let loginStub = null
+    let payload = null
 
-      // this stub muddies the session strategy in passport -
-      // session is middleware which passes options to 2nd parameter
-      // while our authenicate has cb as second parameter.
-      // handle both cases.
-
-      sinon.stub(AuthService, 'authenticate', (strategy, cb) => {
-        return function (req, res, next) {
-          if (cb) {return cb(null, false, new ExceptionService.Unauthorized())}
-          next(null, null)
-        }
-      })
-      this.request.post(uris.login).send(loginUser).expect(401).end(err => {
-        AuthService.authenticate.restore()
-        next(err)
-      })
+    before(() => {
+      loginStub = sinon.stub(AuthService, 'login')
     })
 
-    it('should respond to authentication errors returned from the Auth Service', function (next) {
-
-      // this stub muddies the session strategy in passport -
-      // session is middleware which passes options to 2nd parameter
-      // while our authenicate has cb as second parameter.
-      // handle both cases.
-
-      sinon.stub(AuthService, 'authenticate', (strategy, cb) => {
-        return (req, res, next) => {
-          if (cb) {return cb(new ExceptionService.DatabaseError())}
-          next(null, null)
-        }
-      })
-      this.request.post(uris.login).send(loginUser).expect(500).end(err => {
-        AuthService.authenticate.restore()
-        next(err)
-      })
+    beforeEach(() => {
+      payload = {username: '12345', password: '12345'}
     })
 
-
-    it('should respond to errors in req.login properly', function (next) {
-      const request = require('http').IncomingMessage.prototype
-      sinon.stub(request, 'login', (user, done) => {
-        done('error')
-      })
-      this.request.post(uris.login).send(loginUser).expect(500).end(err => {
-        request.login.restore()
-        next(err)
-      })
+    afterEach(() => {
+      loginStub.reset()
     })
 
-    it('should log the user in properly', done => {
-      async.series([
-        function (next) {request.post(uris.login).send(loginUser).expect(200).end(next)},
-        function (next) {
-          request.get('/en/testing-return-session').end((err, res) => {
-            assert.equal(res.body.authenticated, true)
-            next(err)
-          })
-        }
-      ], done)
+    after(() => {
+      loginStub.restore()
+    })
+
+    it('should throw for no username', async function () {
+      delete payload.username
+      const res = await this.request.post('/api/auth/login').send(payload).expect(400)
+      assert.equal(res.body.type, 'BadRequest')
+      assert.equal(res.body.error, 'INVALID-USERNAME')
+    })
+
+    it('should throw for no password', async function () {
+      delete payload.password
+      const res = await this.request.post('/api/auth/login').send(payload).expect(400)
+      assert.equal(res.body.type, 'BadRequest')
+      assert.equal(res.body.error, 'INVALID-PASSWORD')
+    })
+
+    it('should log the user in', async function () {
+      loginStub.resolves()
+      const res = await this.request.post('/api/auth/login').send(payload).expect(200)
+      assert.deepEqual(res.body, {})
+    })
+
+    it('should handle errors', async function () {
+      loginStub.rejects(new Unauthorized('aw snap!'))
+      const res = await this.request.post('/api/auth/login').send(payload).expect(401)
+      assert.equal(res.body.type, 'Unauthorized')
+      assert.equal(res.body.error, 'aw snap!')
     })
 
   })
 
-  describe('#register',  () => {
-    it('should respond to database problems properly', function (next) {
-      const stub = stubError('error')
-      this.request.post(uris.register).send(loginUser).expect(500).end(err => {
-        stub.restore()
-        next(err)
-      })
+  describe('#register', () => {
+
+    let registerStub = null
+    let payload = null
+
+    before(() => {
+      registerStub = sinon.stub(AuthService, 'register')
     })
-    it('should respond to errors in req.login properly', function (next) {
-      const request = require('http').IncomingMessage.prototype
-      sinon.stub(request, 'login', (user, done) => {
-        done('error')
-      })
-      this.request.post(uris.register).send(loginUser).expect(500).end(err => {
-        request.login.restore()
-        next(err)
-      })
+
+    beforeEach(() => {
+      payload = {username: '12345', password: '12345'}
     })
-    it('should register the user properly', function (next) {
-      this.request.post(uris.register).send(loginUser).expect(200).end(next)
+
+    afterEach(() => {
+      registerStub.reset()
     })
+
+    after(() => {
+      registerStub.restore()
+    })
+
+    it('should throw for no username', async function () {
+      delete payload.username
+      const res = await this.request.post('/api/auth/register').send(payload).expect(400)
+      assert.equal(res.body.type, 'BadRequest')
+      assert.equal(res.body.error, 'INVALID-USERNAME')
+    })
+
+    it('should throw for no password', async function () {
+      delete payload.password
+      const res = await this.request.post('/api/auth/register').send(payload).expect(400)
+      assert.equal(res.body.type, 'BadRequest')
+      assert.equal(res.body.error, 'INVALID-PASSWORD')
+    })
+
+    it('should log the user in', async function () {
+      registerStub.resolves()
+      const res = await this.request.post('/api/auth/register').send(payload).expect(200)
+      assert.deepEqual(res.body, {})
+    })
+
+    it('should handle errors', async function () {
+      registerStub.rejects(new Unauthorized('aw snap!'))
+      const res = await this.request.post('/api/auth/register').send(payload).expect(401)
+      assert.equal(res.body.type, 'Unauthorized')
+      assert.equal(res.body.error, 'aw snap!')
+    })
+
   })
 
 })

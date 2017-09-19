@@ -13,20 +13,8 @@
  * @param {*} res response - renders view.
  */
 exports.loginForm = (req, res) => {
-  res.ok({
-    title: req.__('AUTH.LOGIN.TITLE')
-  }, 'auth/login')
-}
-
-/**
- * Logs the user out
- * @param {*} req request - expecting nothing
- * @param {*} res response - redirects to home.
- */
-exports.logout = (req, res) => {
-  req.logout()
-  req.session.authenticated = false
-  res.redirect('/')
+  req.log.info('AuthController.loginForm called')
+  res.ok({title: req.__('AUTH.LOGIN.TITLE')}, 'auth/login')
 }
 
 /**
@@ -35,39 +23,71 @@ exports.logout = (req, res) => {
  * @param {*} res response - renders view.
  */
 exports.registerForm = (req, res) => {
-  res.ok({
-    title: req.__('AUTH.REGISTER.TITLE')
-  }, 'auth/register')
+  req.log.info('AuthController.registerForm called')
+  res.ok({title: req.__('AUTH.REGISTER.TITLE')}, 'auth/register')
 }
 
-exports.login = (req, res) => {
-  return AuthService.authenticate('local', (err, verified, data) => {
-    if (err) {
-      return res.notOk(err)
-    }
-    if (!verified) {
-      return res.notOk(data)
-    }
-    req.login(data, err => {
-      if (err) { return res.notOk(err) }
-      req.session.authenticated = true
-      res.ok({})
+/**
+ * Logs the user out
+ * @param {*} req request - expecting token in session, not required
+ * @param {*} res response - clears login token, redirects to '/'
+ * @param {function} next return errors to error middleware
+ */
+exports.logout = function (req, res, next) {
+  req.log.info('AuthController.logout called')
+
+  if (!req.session.token) {
+    return res.redirect('/')
+  }
+
+  AuthService.logout(req.session.token)
+    .then(() => {
+      req.session.token = null
+      res.redirect('/')
     })
-  })(req, res)
+    .catch(err => next(err))
 }
 
-exports.register = (req, res) => {
-  User.create({
-    username: req.param('username'),
-    password: req.param('password')
-  }).exec((err, user) => {
-    if (err) {
-      return res.notOk(new ExceptionService.DatabaseError())
-    }
-    req.login(user, err => {
-      if (err) return res.notOk(err)
-      req.session.authenticated = true
+/**
+ * Logs the user in
+ * @param {*} req request - expecting POST with username/password in body
+ * @param {*} res response - sets session token, blank ok response
+ * @param {function} next return errors to error middleware
+ */
+exports.login = (req, res, next) => {
+
+  const {username, password} = req.body
+  req.log.info('AuthController.login called for', username)
+
+  if (!username) { return next(new BadRequest('INVALID-USERNAME')) }
+  if (!password) { return next(new BadRequest('INVALID-PASSWORD')) }
+
+  AuthService.login(username, password)
+    .then(key => {
+      req.session.token = key
       res.ok({})
     })
-  })
+    .catch(err => next(err))
+}
+
+/**
+ * Registers a new user
+ * @param {*} req request - expecting POST with username/password in body
+ * @param {*} res response - sets session token, blank ok response
+ * @param {function} next return errors to error middleware
+ */
+exports.register = (req, res, next) => {
+
+  const {username, password} = req.body
+  req.log.info('AuthController.register called for', username)
+
+  if (!username) { return next(new BadRequest('INVALID-USERNAME')) }
+  if (!password) { return next(new BadRequest('INVALID-PASSWORD')) }
+
+  AuthService.register(username, password)
+    .then(key => {
+      req.session.token = key
+      res.ok({})
+    })
+    .catch(err => next(err))
 }

@@ -6,6 +6,9 @@
     "grunt": false,
     "socket": false,
     "pubsub": false,
-    "logging": false
+    "logging": false,
+    "blueprints": false,
+    "cors": false,
+    "csrf": false
   }
 }

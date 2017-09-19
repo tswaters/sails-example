@@ -12,7 +12,8 @@
     "chai": true
   },
   "rules": {
-    "angular/ng_no_angular_mock": [0]
+    "angular/ng_no_angular_mock": [0],
+    "arrow-parens": [2, "always"]
   },
   "plugins": [
     "angular"

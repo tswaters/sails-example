@@ -1,6 +1,8 @@
 
 'use strict'
 
+require('../../base.js')
+
 const {execStub} = require('../../helpers/database')
 const assert = require('assert')
 
@@ -30,8 +32,8 @@ describe('Contact Service', () => {
         await ContactService.get(payload)
         assert.ok(false)
       } catch (err) {
-        assert(err instanceof ExceptionService.DatabaseError)
-        assert.equal(err.originalError.message, 'aw snap!')
+        assert(err instanceof DatabaseError)
+        assert.equal(err.error, 'aw snap!')
       }
     })
 
@@ -41,7 +43,7 @@ describe('Contact Service', () => {
         await ContactService.get(payload)
         assert.ok(false)
       } catch (err) {
-        assert(err instanceof ExceptionService.NotFound)
+        assert(err instanceof NotFound)
       }
     })
 
@@ -74,8 +76,8 @@ describe('Contact Service', () => {
         await ContactService.list(payload)
         assert.ok(false)
       } catch (err) {
-        assert(err instanceof ExceptionService.DatabaseError)
-        assert.equal(err.originalError.message, 'aw snap!')
+        assert(err instanceof DatabaseError)
+        assert.equal(err.error, 'aw snap!')
       }
     })
 
@@ -107,8 +109,8 @@ describe('Contact Service', () => {
         await ContactService.create(payload)
         assert.ok(false)
       } catch (err) {
-        assert(err instanceof ExceptionService.DatabaseError)
-        assert.equal(err.originalError.message, 'aw snap!')
+        assert(err instanceof DatabaseError)
+        assert.equal(err.error, 'aw snap!')
       }
     })
 
@@ -144,8 +146,8 @@ describe('Contact Service', () => {
         await ContactService.edit(payload)
         assert.ok(false)
       } catch (err) {
-        assert(err instanceof ExceptionService.DatabaseError)
-        assert.equal(err.originalError.message, 'aw snap!')
+        assert(err instanceof DatabaseError)
+        assert.equal(err.error, 'aw snap!')
       }
     })
 
@@ -154,7 +156,7 @@ describe('Contact Service', () => {
       try {
         await ContactService.edit(payload)
       } catch (err) {
-        assert(err instanceof ExceptionService.NotFound)
+        assert(err instanceof NotFound)
       }
     })
 
@@ -188,8 +190,8 @@ describe('Contact Service', () => {
         await ContactService.delete(payload)
         assert.ok(false)
       } catch (err) {
-        assert(err instanceof ExceptionService.DatabaseError)
-        assert.equal(err.originalError.message, 'aw snap!')
+        assert(err instanceof DatabaseError)
+        assert.equal(err.error, 'aw snap!')
       }
     })
 
@@ -199,7 +201,7 @@ describe('Contact Service', () => {
         await ContactService.delete(payload)
         assert.ok(false)
       } catch (err) {
-        assert(err instanceof ExceptionService.NotFound)
+        assert(err instanceof NotFound)
       }
     })
 

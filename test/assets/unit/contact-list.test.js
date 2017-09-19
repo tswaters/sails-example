@@ -128,11 +128,11 @@ describe('contact list', () => {
 
     it('should show/hide no contacts div and contacts table based on lengths of contacts', () => {
 
-      formElement.scope().$apply(scope => { scope.vm.data = {contacts: []} })
+      formElement.scope().$apply((scope) => { scope.vm.data = {contacts: []} })
       $expect('#contacts').to.be.hidden()
       $expect('#no-contacts').not.to.be.hidden()
 
-      formElement.scope().$apply(scope => { scope.vm.data = {contacts: [{}]} })
+      formElement.scope().$apply((scope) => { scope.vm.data = {contacts: [{}]} })
       $expect('#contacts').not.to.be.hidden()
       $expect('#no-contacts').to.be.hidden()
 
@@ -140,19 +140,19 @@ describe('contact list', () => {
 
     it('should show/hide elements based upon state', () => {
 
-      formElement.scope().$apply(scope => { scope.vm.state = 'init' })
+      formElement.scope().$apply((scope) => { scope.vm.state = 'init' })
       $expect('#edit-form').to.be.hidden()
       $expect('#delete-form').to.be.hidden()
 
-      formElement.scope().$apply(scope => { scope.vm.state = 'edit' })
+      formElement.scope().$apply((scope) => { scope.vm.state = 'edit' })
       $expect('#edit-form').not.to.be.hidden()
       $expect('#delete-form').to.be.hidden()
 
-      formElement.scope().$apply(scope => { scope.vm.state = 'create' })
+      formElement.scope().$apply((scope) => { scope.vm.state = 'create' })
       $expect('#edit-form').not.to.be.hidden()
       $expect('#delete-form').to.be.hidden()
 
-      formElement.scope().$apply(scope => { scope.vm.state = 'delete' })
+      formElement.scope().$apply((scope) => { scope.vm.state = 'delete' })
       $expect('#edit-form').to.be.hidden()
       $expect('#delete-form').not.to.be.hidden()
 

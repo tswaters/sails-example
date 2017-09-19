@@ -1,14 +1,16 @@
+
 'use strict'
 
 module.exports = {
+
   attributes: {
-    uuid: {
+    key: {
       primaryKey: true,
       type: 'string'
     },
-    name: 'string',
-    owner: {
-      model: 'User'
+    user: {
+      type: 'string'
     }
   }
+
 }

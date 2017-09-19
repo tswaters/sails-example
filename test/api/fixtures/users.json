@@ -1,4 +1,12 @@
 [
-  {"username": "test1", "password": "password", "id": 1},
-  {"username": "test2", "password": "password", "id": 2}
+  {
+    "username": "test1",
+    "password": "password",
+    "uuid": "123456"
+  },
+  {
+    "username": "test2",
+    "password": "password",
+    "uuid": "234567"
+  }
 ]

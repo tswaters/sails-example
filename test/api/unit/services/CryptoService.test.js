@@ -1,10 +1,11 @@
 
 'use strict'
 
+require('../../base.js')
+
 const crypto = require('crypto')
 const sinon = require('sinon')
 const assert = require('assert')
-require('../../base.js')
 
 describe('Crypto Service', () => {
 

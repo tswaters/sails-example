@@ -1,7 +1,7 @@
 <nav class="navbar navbar-default">
 <ul class="nav navbar-nav">
   <%- createLink('HOME') %>
-  <% if (typeof user !== 'undefined') {%>
+  <% if (typeof user !== 'undefined' && user !== null) {%>
     <%- createLink('CONTACT-LIST') %>
     <%- createLink('AUTH.LOGOUT') %>
   <%} else {%>

@@ -2,9 +2,9 @@
 
 exports.policies = {
 
-  '*': ['localize', 'passport'],
+  '*': ['localize', 'authentication'],
 
   ContactController: {
-    '*': ['localize', 'passport', 'logged-in']
+    '*': ['localize', 'authentication', 'logged-in']
   }
 }

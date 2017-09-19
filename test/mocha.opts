@@ -1,2 +1,4 @@
---timeout 5000
+--no-timeouts
+--require lib/exceptions.js
 test/api/unit/**/*.test.js
+test/api/integration/**/*.test.js

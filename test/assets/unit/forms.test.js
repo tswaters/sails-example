@@ -9,7 +9,7 @@ describe('form', () => {
 
     beforeEach(angular.mock.module('Forms'))
 
-    beforeEach(inject(_FormService_ => {
+    beforeEach(inject((_FormService_) => {
       FormService = _FormService_
     }))
 

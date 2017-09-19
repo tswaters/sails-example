@@ -51,14 +51,16 @@ module.exports = function (data, options) {
     // If a view was provided in options, serve it.
     // Otherwise try to guess an appropriate view, or if that doesn't
     // work, just send JSON.
-    return res.view(options.view, data)
+    res.view(options.view, data)
+    req.log.verbose(res)
 
   } else {
 
     // If no second argument provided, try to serve the implied view,
     // but fall back to sending JSON(P) if no view can be inferred.
     return res.guessView({ data }, () => {
-      return res.jsonx(data)
+      res.jsonx(data)
+      req.log.verbose(res)
     })
   }
 

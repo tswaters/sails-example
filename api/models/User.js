@@ -7,13 +7,24 @@
 
 'use strict'
 
+const {hash, compare} = require('hashifier')
+
 module.exports = {
 
   attributes: {
-    username: 'string',
-    password: 'string',
-    verify (pass, next) {
-      CryptoService.compare(pass, this.password, next)
+    uuid: {
+      type: 'string',
+      primaryKey: true,
+      required: true
+    },
+    username: {
+      type: 'string',
+      required: true
+    },
+    hash: 'string',
+    salt: 'string',
+    async verify (pass) {
+      return await compare(pass, this.hash, this.salt)
     }
   },
 
@@ -23,16 +34,18 @@ module.exports = {
    * @param {string} password password to check
    * @param {function} cb callback (err, isVerified, data)
    */
-  verify (opts, cb) {
-    User.findOne({username: opts.username}).exec((err, user) => {
-      if (err) { return cb(new ExceptionService.DatabaseError(err)) }
-      if (!user) { return cb(null, false, new ExceptionService.Unauthorized('not found')) }
-      user.verify(opts.password, (err, isValid) => {
-        if (err) {  return cb(err) }
-        if (!isValid) { return cb(null, false, new ExceptionService.Unauthorized('invalid password')) }
-        return cb(null, true, user)
-      })
-    })
+  async verify (opts) {
+
+    const {username, password} = opts
+
+    const user = await User.findOne({username})
+    if (!user) { throw new Unauthorized('USER-NOT-FOUND') }
+
+    const isValid = await user.verify(password)
+    if (!isValid) { throw new Unauthorized('PASSWORD-INVALID') }
+
+    return user
+
   },
 
   /**
@@ -40,10 +53,14 @@ module.exports = {
    * @param {function} cb callback when done
    */
   beforeCreate (values, cb) {
-    CryptoService.hash(values.password, (err, hash) => {
-      values.password = hash
-      cb(err, values)
-    })
+    hash(values.password)
+      .then(result => {
+        values.salt = result.salt
+        values.hash = result.hash
+        delete values.password
+        cb()
+      })
+      .catch(err => cb(err))
   },
 
   /**
@@ -51,10 +68,14 @@ module.exports = {
    * @param {function} cb callback when done
    */
   beforeUpdate (values, cb) {
-    CryptoService.hash(values.password, (err, hash) => {
-      values.password = hash
-      cb(err, values)
-    })
+    hash(values.password)
+      .then(result => {
+        values.salt = result.salt
+        values.hash = result.hash
+        delete values.password
+        cb()
+      })
+      .catch(err => cb(err))
   }
 
 }

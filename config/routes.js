@@ -33,11 +33,11 @@ exports.routes = {
   'DELETE /api/contact/:id': 'ContactController.delete',
 
   // view routes
-  '/': 'HomeController.noLocale',
-  '/:lang': 'HomeController.home',
-  '/:lang/contact': 'ContactController.home',
-  '/:lang/login': 'AuthController.loginForm',
-  '/:lang/register': 'AuthController.registerForm',
-  '/:lang/logout': 'AuthController.logout'
+  'GET /': 'HomeController.noLocale',
+  'GET /:lang': 'HomeController.home',
+  'GET /:lang/contact': 'ContactController.home',
+  'GET /:lang/login': 'AuthController.loginForm',
+  'GET /:lang/register': 'AuthController.registerForm',
+  'GET /:lang/logout': 'AuthController.logout'
 
 }

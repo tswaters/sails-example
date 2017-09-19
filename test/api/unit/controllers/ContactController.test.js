@@ -1,39 +1,26 @@
 
 'use strict'
 
-const _ = require('lodash')
+require('../../base.js')
+
 const assert = require('assert')
 const sinon = require('sinon')
-const {fixtures, uris} = require('../../base.js')
+const policyHooks = require('../../helpers/policy-hooks')
 
 require('sinon-as-promised')
 
 describe('ContactController', () => {
 
-  let users
-  let loginUser
+  before(policyHooks.before)
+  beforeEach(policyHooks.beforeEach)
+  after(policyHooks.after)
 
-  before(() => {
-    users = fixtures.users
-    loginUser = _.first(fixtures.users)
-  })
-
-  beforeEach(async function () {
-    await User.create(users)
-    await this.request.post(uris.login).send(loginUser)
-  })
-
-  afterEach(async function () {
-    await this.request.get(uris.logout).redirects(2)
-    await User.destroy({})
+  beforeEach(function (done) {
+    this.locals.locals = {user: {uuid: '12345'}}
+    done()
   })
 
   describe('#home', () => {
-
-    it('should throw unauthorized if user is not authorized', async function () {
-      await this.request.get(uris.logout).redirects(2)
-      await this.request.get('/en/contact').expect(401)
-    })
 
     it('should render the page', async function () {
       await this.request.get('/en/contact').expect(200)
@@ -59,14 +46,17 @@ describe('ContactController', () => {
     after(() => stub.restore())
 
     it('should respond to upstream errors properly', async function () {
-      stub.rejects(new ExceptionService.DatabaseError('aw snap!'))
+      stub.rejects(new DatabaseError('aw snap!'))
       const res = await this.request.get(uri).expect(500)
-      assert.equal(res.body.originalError, 'aw snap!')
+      assert.equal(res.body.error, 'aw snap!')
+      assert.equal(res.body.type, 'DatabaseError')
     })
 
     it('should return 404 for an invalid contact', async function () {
-      stub.rejects(new ExceptionService.NotFound())
-      await this.request.get(uri).expect(404)
+      stub.rejects(new NotFound('INVALID-CONTACT'))
+      const res = await this.request.get(uri).expect(404)
+      assert.equal(res.body.type, 'NotFound')
+      assert.equal(res.body.error, 'INVALID-CONTACT')
     })
 
     it('should return the contact properly', async function () {
@@ -94,9 +84,10 @@ describe('ContactController', () => {
     after(() => stub.restore())
 
     it('should respond to upstream errors properly', async function () {
-      stub.rejects(new ExceptionService.DatabaseError('aw snap!'))
+      stub.rejects(new DatabaseError('aw snap!'))
       const res = await this.request.get(uri).expect(500)
-      assert.equal(res.body.originalError, 'aw snap!')
+      assert.equal(res.body.error, 'aw snap!')
+      assert.equal(res.body.type, 'DatabaseError')
     })
 
     it('should render a list of contacts properly', async function () {
@@ -126,13 +117,21 @@ describe('ContactController', () => {
     after(() => stub.restore())
 
     it('should respond to upstream errors properly', async function () {
-      stub.rejects(new ExceptionService.DatabaseError('aw snap!'))
+      stub.rejects(new DatabaseError('aw snap!'))
       const res = await this.request.post(uri).send(payload).expect(500)
-      assert.equal(res.body.originalError, 'aw snap!')
+      assert.equal(res.body.error, 'aw snap!')
+      assert.equal(res.body.type, 'DatabaseError')
+    })
+
+    it('should throw bad request with invalid name', async function () {
+      delete payload.name
+      const res = await this.request.post(uri).send(payload).expect(400)
+      assert.equal(res.body.error, 'INVALID-NAME')
+      assert.equal(res.body.type, 'BadRequest')
     })
 
     it('should respond with 404 if the contact wasnt found', async function () {
-      stub.rejects(new ExceptionService.NotFound())
+      stub.rejects(new NotFound())
       await this.request.post(uri).send(payload).expect(404)
     })
 
@@ -161,13 +160,14 @@ describe('ContactController', () => {
     after(() => stub.restore())
 
     it('should respond to upstream errors properly', async function () {
-      stub.rejects(new ExceptionService.DatabaseError('aw snap!'))
+      stub.rejects(new DatabaseError('aw snap!'))
       const res = await this.request.delete(uri).expect(500)
-      assert.equal(res.body.originalError, 'aw snap!')
+      assert.equal(res.body.error, 'aw snap!')
+      assert.equal(res.body.type, 'DatabaseError')
     })
 
     it('should respond with 404 if the contact wasnt found', async function () {
-      stub.rejects(new ExceptionService.NotFound())
+      stub.rejects(new NotFound())
       await this.request.delete(uri).expect(404)
     })
 
@@ -196,9 +196,17 @@ describe('ContactController', () => {
     after(() => stub.restore())
 
     it('should respond to upstream errors properly', async function () {
-      stub.rejects(new ExceptionService.DatabaseError('aw snap!'))
+      stub.rejects(new DatabaseError('aw snap!'))
       const res = await this.request.post(uri).send(payload).expect(500)
-      assert.equal(res.body.originalError, 'aw snap!')
+      assert.equal(res.body.error, 'aw snap!')
+      assert.equal(res.body.type, 'DatabaseError')
+    })
+
+    it('should throw bad request with invalid name', async function () {
+      delete payload.name
+      const res = await this.request.post(uri).send(payload).expect(400)
+      assert.equal(res.body.error, 'INVALID-NAME')
+      assert.equal(res.body.type, 'BadRequest')
     })
 
     it('should create a contact properly', async function () {

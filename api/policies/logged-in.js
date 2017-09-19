@@ -1,15 +1,11 @@
 /**
- * Login policy
- *
- * @description
- * Hooks into passport and verifies the user.
+ * Logged-in policy
+ * Verifies a user is present.
  */
 'use strict'
 
-module.exports = function (req, res, next) {
-  if (req.session.authenticated) {
-    return next()
-  }
+const policy = require('../../lib/logged-in')
 
-  return res.notOk(new ExceptionService.Unauthorized())
+module.exports = function (req, res, next) {
+  policy.middleware(req, res, next)
 }

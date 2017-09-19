@@ -8,7 +8,7 @@
 'use strict'
 
 exports.home = (req, res) => {
-  sails.log.info('ContactController#home called')
+  req.log.info('ContactController#home called')
   return res.ok({
     title: req.__('CONTACT-LIST.TITLE')
   }, 'contact/index')
@@ -16,45 +16,56 @@ exports.home = (req, res) => {
 
 exports.get = (req, res, next) => {
   const id = req.param('id')
-  const user = req.user.id
-  sails.log.info('ContactController#get called for user', user, 'with', id)
-  ContactService.get({id, user})
+  const owner = res.locals.user.uuid
+  req.log.info('ContactController#get called for user', owner, 'with', id)
+  ContactService.get({id, owner})
     .then(contact => res.ok(contact))
     .catch(err => next(err))
 }
 
 exports.list = (req, res, next) => {
-  const user = req.user.id
-  sails.log.info('ContactController#list called for user', user)
-  ContactService.list({user})
+  const owner = res.locals.user.uuid
+  req.log.info('ContactController#list called for user', owner)
+  ContactService.list({owner})
     .then(contacts => res.ok(contacts))
     .catch(err => next(err))
 }
 
 exports.edit = (req, res, next) => {
   const id = req.param('id')
-  const data = req.body
-  const user=  req.user.id
-  sails.log.info('ContactController#edit called for ', user, 'with', id, 'and', data)
-  ContactService.edit({id, data, user})
+  const {name} = req.body
+  const owner = res.locals.user.uuid
+  req.log.info('ContactController#edit called for', owner, 'with', id, 'and', name)
+
+  if (!name) {
+    return next(new BadRequest('INVALID-NAME'))
+  }
+
+  ContactService.edit({id, name, owner})
     .then(() => res.ok(null, {status: 204}))
     .catch(err => next(err))
 }
 
 exports.delete = (req, res, next) => {
   const id = req.param('id')
-  const user = req.user.id
-  sails.log.info('ContactController#delete called for ', user, 'with', id)
-  ContactService.delete({id, user})
+  const owner = res.locals.user.uuid
+  req.log.info('ContactController#delete called for', owner, 'with', id)
+  ContactService.delete({id, owner})
     .then(() => res.ok(null, {status: 204}))
     .catch(err => next(err))
 }
 
 exports.create = (req, res, next) => {
-  const data = req.body
-  data.owner = req.user.id
-  sails.log.info('ContactController#create called with ', data)
-  ContactService.create(data)
+  const owner = res.locals.user.uuid
+  const {name} = req.body
+
+  req.log.info('ContactController#create called with', owner, 'and', name)
+
+  if (!name) {
+    return next(new BadRequest('INVALID-NAME'))
+  }
+
+  ContactService.create({owner, name})
     .then(() => res.ok(null, {status: 204}))
     .catch(err => next(err))
 }

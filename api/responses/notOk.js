@@ -6,24 +6,28 @@ module.exports = function (data) {
   const req = this.req
   const res = this.res
   const sails = req._sails
-  if (!(data instanceof ExceptionService.BaseError)) {
-    data = new ExceptionService.BaseError(data)
-  }
 
-  const response = data.toJSON(req.locale)
-  res.status(data.status)
+  const response = data instanceof BaseError
+    ? data.toJSON(req.locale)
+    : {message: data.message, stack: data.stack}
 
-  sails.log.info('sending status', data.status, 'for error code: ', data.error, data.replacements)
+  if (!data.status) { data.status = 500}
+
+  res.statusCode = data.status
+
 
   if (sails.config.environment === 'production') {
     delete response.stack
     delete response.type
+    delete response.error
   }
 
   if (req.wantsJSON) {
-    return res.json(response)
+    res.json(response)
+  } else {
+    res.view(data.status, {error: response})
   }
 
-  res.view(data.status, {error: response})
+  req.log.verbose(res)
 
 }

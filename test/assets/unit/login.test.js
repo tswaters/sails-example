@@ -41,7 +41,7 @@ describe('login', () => {
     let scope
     let vm
 
-    beforeEach(angular.mock.module('Login', $provide => {
+    beforeEach(angular.mock.module('Login', ($provide) => {
       $provide.value('$window', {location: {replace: angular.noop}})
     }))
 
@@ -119,7 +119,7 @@ describe('login', () => {
     let formElement
     let loginSpy
 
-    beforeEach(angular.mock.module('Login', $controllerProvider => {
+    beforeEach(angular.mock.module('Login', ($controllerProvider) => {
       // stub out the controller
       $controllerProvider.register('AuthController', function () {
         this.login = loginSpy = sinon.spy()
@@ -156,7 +156,7 @@ describe('login', () => {
     let formElement
     let registerSpy
 
-    beforeEach(angular.mock.module('Login', $controllerProvider => {
+    beforeEach(angular.mock.module('Login', ($controllerProvider) => {
       // stub out the controller
       $controllerProvider.register('AuthController', function () {
         this.register = registerSpy = sinon.spy()
