@@ -5,6 +5,7 @@
   "hooks": {
     "grunt": false,
     "socket": false,
-    "pubsub": false
+    "pubsub": false,
+    "logging": false
   }
 }
